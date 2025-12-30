@@ -1,56 +1,37 @@
-import React, { useEffect, useRef } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import React from 'react';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import CrowdLogo from '../assets/images/CROWD.svg';
 
 interface AnimatedSplashScreenProps {
-  onAnimationComplete: () => void;
+  onNext: () => void;
 }
 
-export default function AnimatedSplashScreen({ onAnimationComplete }: AnimatedSplashScreenProps) {
-  const fadeAnim = useRef(new Animated.Value(1)).current;
-
-  useEffect(() => {
-    // Wait 1 second, then fade out over 1 second
-    const fadeTimer = setTimeout(() => {
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 1000,
-        useNativeDriver: true,
-      }).start(() => {
-        onAnimationComplete();
-      });
-    }, 1000);
-
-    return () => {
-      clearTimeout(fadeTimer);
-    };
-  }, [fadeAnim, onAnimationComplete]);
-
+export default function AnimatedSplashScreen({ onNext }: AnimatedSplashScreenProps) {
   return (
-    <Animated.View 
-      style={[
-        styles.container,
-        {
-          opacity: fadeAnim,
-        },
-      ]}
-    >
+    <View style={styles.container}>
       <View style={styles.content}>
         <CrowdLogo width={350} height={120} />
         <View style={styles.mascotContainer}>
-          <Animated.Image
+          <Image
             source={require('../assets/images/mascot 1.png')}
             style={styles.mascot}
             resizeMode="contain"
           />
-          <Animated.Image
+          <Image
             source={require('../assets/images/mascot2.png')}
             style={styles.mascot}
             resizeMode="contain"
           />
         </View>
+        <TouchableOpacity onPress={onNext}>
+          <Image
+            source={require('../assets/images/clear blue button.png')}
+            style={styles.getStartedButton}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
       </View>
-    </Animated.View>
+    </View>
   );
 }
 
@@ -84,5 +65,25 @@ const styles = StyleSheet.create({
   mascot: {
     width: 120,
     height: 120,
+  },
+  getStartedButton: {
+    marginTop: 40,
+    width: 300,
+    height: 60,
+    borderRadius: 35,
+    backgroundColor: '#4A9EFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#4A9EFF',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.4,
+    shadowRadius: 15,
+    elevation: 10,
+  },
+  buttonText: {
+    fontSize: 26,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    letterSpacing: 0.5,
   },
 });

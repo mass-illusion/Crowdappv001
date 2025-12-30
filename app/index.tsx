@@ -1,20 +1,13 @@
 import { useState } from "react";
-import { View } from "react-native";
+import AnimatedSplashScreen from "../components/AnimatedSplashScreen";
 import OnboardingCarousel from "../components/OnboardingCarousel";
 
 export default function Index() {
-  const [showOnboarding, setShowOnboarding] = useState(true);
+  const [showSplash, setShowSplash] = useState(true);
 
-  if (showOnboarding) {
-    return <OnboardingCarousel onComplete={() => setShowOnboarding(false)} />;
+  if (showSplash) {
+    return <AnimatedSplashScreen onNext={() => setShowSplash(false)} />;
   }
 
-  return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "#FFFFFF",
-      }}
-    />
-  );
+  return <OnboardingCarousel onComplete={() => {}} />;
 }
