@@ -22,7 +22,7 @@ export default function RootLayout() {
         }}
       />
       {showSplash && (
-        <AnimatedSplashScreen onAnimationComplete={() => setShowSplash(false)} />
+        <AnimatedSplashScreen onNext={() => setShowSplash(false)} />
       )}
     </>
   );

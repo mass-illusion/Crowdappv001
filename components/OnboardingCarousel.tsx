@@ -8,9 +8,10 @@ const { width, height } = Dimensions.get('window');
 
 interface OnboardingCarouselProps {
   onComplete: () => void;
+  onBack?: () => void;
 }
 
-export default function OnboardingCarousel({ onComplete }: OnboardingCarouselProps) {
+export default function OnboardingCarousel({ onComplete, onBack }: OnboardingCarouselProps) {
   const [currentPage, setCurrentPage] = useState(0);
 
   const onboardingData = [
@@ -42,6 +43,8 @@ export default function OnboardingCarousel({ onComplete }: OnboardingCarouselPro
   const handleBack = () => {
     if (currentPage > 0) {
       setCurrentPage(currentPage - 1);
+    } else if (onBack) {
+      onBack();
     }
   };
 
@@ -67,9 +70,8 @@ export default function OnboardingCarousel({ onComplete }: OnboardingCarouselPro
       <View style={styles.footer}>
         <View style={styles.centerControls}>
           <TouchableOpacity 
-            style={[styles.backButton, currentPage === 0 && styles.disabledButton]} 
+            style={styles.backButton}
             onPress={handleBack}
-            disabled={currentPage === 0}
           >
             <Text style={styles.backIcon}>←</Text>
           </TouchableOpacity>
@@ -161,15 +163,16 @@ const styles = StyleSheet.create({
     color: '#A2CCF2',
     textAlign: 'left',
     lineHeight: 28,
-    paddingHorizontal: 20,
+    paddingLeft: 20,
+    paddingRight: 8,
   },
   descriptionSecond: {
     paddingLeft: 30,
-    paddingRight: 10,
+    paddingRight: 8,
     width: '100%',
     textAlign: 'left',
     lineHeight: 28,
-    fontSize: 20,
+    fontSize: 18,
   },
   descriptionThird: {
     paddingLeft: 30,
