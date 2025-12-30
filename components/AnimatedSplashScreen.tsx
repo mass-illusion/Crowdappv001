@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 0,
+    gap: 20,
+    zIndex: 10,
   },
   mascot: {
     width: 120,

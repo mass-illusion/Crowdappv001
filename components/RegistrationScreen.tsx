@@ -1,59 +1,85 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import SendCodeButton from '../sendcode4.svg';
 import RegisterSvg from '../assets/images/REGISTER1.svg';
 
 interface RegistrationScreenProps {
   onBack?: () => void;
+  onTermsPress?: () => void;
+  onPrivacyPress?: () => void;
 }
 
-export default function RegistrationScreen({ onBack }: RegistrationScreenProps) {
+export default function RegistrationScreen({ onBack, onTermsPress, onPrivacyPress }: RegistrationScreenProps) {
   const [phoneNumber, setPhoneNumber] = useState('');
+  const isValidPhone = phoneNumber.replace(/\D/g, '').length === 10;
+
+  const formatPhoneNumber = (text: string) => {
+    // Remove all non-numeric characters
+    const cleaned = text.replace(/\D/g, '');
+    // Format as XXX-XXX-XXXX
+    let formatted = cleaned;
+    if (cleaned.length > 3 && cleaned.length <= 6) {
+      formatted = `${cleaned.slice(0, 3)}-${cleaned.slice(3)}`;
+    } else if (cleaned.length > 6) {
+      formatted = `${cleaned.slice(0, 3)}-${cleaned.slice(3, 6)}-${cleaned.slice(6, 10)}`;
+    }
+    return formatted;
+  };
+
+  const handlePhoneChange = (text: string) => {
+    const formatted = formatPhoneNumber(text);
+    setPhoneNumber(formatted);
+  };
 
   const handleSendCode = () => {
-    // Handle send code logic here
-    console.log('Send code to:', phoneNumber);
+    if (isValidPhone) {
+      // Handle send code logic here
+      console.log('Send code to:', phoneNumber);
+    }
   };
 
   return (
-    <View style={styles.container}>
-      {onBack && (
-        <TouchableOpacity style={styles.backButton} onPress={onBack}>
-          <Text style={styles.backButtonText}>←</Text>
-        </TouchableOpacity>
-      )}
-      
-      <View style={styles.titleContainer}>
-        <RegisterSvg width={280} height={60} />
-      </View>
-      
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Phone Number</Text>
-        <View style={styles.phoneInputWrapper}>
-          <View style={styles.countryCodeContainer}>
-            <Text style={styles.countryCode}>+1</Text>
-            <Text style={styles.dropdown}>▼</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={styles.container}>
+        {onBack && (
+          <TouchableOpacity style={styles.backButton} onPress={onBack}>
+            <Text style={styles.backButtonText}>←</Text>
+          </TouchableOpacity>
+        )}
+        <View style={styles.titleContainer}>
+          <RegisterSvg width={280} height={60} />
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Phone Number</Text>
+          <View style={styles.phoneInputWrapper}>
+            <View style={styles.countryCodeContainer}>
+              <Text style={styles.countryCode}>+1</Text>
+            </View>
+            <TextInput
+              style={styles.phoneInput}
+              placeholder=""
+              keyboardType="phone-pad"
+              value={phoneNumber}
+              onChangeText={handlePhoneChange}
+              maxLength={12}
+            />
           </View>
-          <TextInput
-            style={styles.phoneInput}
-            placeholder=""
-            keyboardType="phone-pad"
-            value={phoneNumber}
-            onChangeText={setPhoneNumber}
-          />
+        </View>
+        <TouchableOpacity 
+          style={[styles.sendButton, isValidPhone && styles.sendButtonActive, { opacity: isValidPhone ? 1 : 0.4 }]} 
+          onPress={handleSendCode}
+          disabled={!isValidPhone}
+        >
+          <SendCodeButton width={800} height={80} />
+        </TouchableOpacity>
+        <View style={styles.termsContainer}>
+          <Text style={styles.termsText}>
+            By entering your number, you agree to Crowd's{'\n'}
+            <Text style={styles.link} onPress={onTermsPress}>Terms & Conditions</Text> and <Text style={styles.link} onPress={onPrivacyPress}>Privacy Policy</Text>
+          </Text>
         </View>
       </View>
-
-      <TouchableOpacity style={styles.sendButton} onPress={handleSendCode}>
-        <Text style={styles.sendButtonText}>SEND CODE</Text>
-      </TouchableOpacity>
-
-      <View style={styles.termsContainer}>
-        <Text style={styles.termsText}>
-          By entering your number, you agree to Crowd's{'\n'}
-          <Text style={styles.link}>Terms & Conditions</Text> and <Text style={styles.link}>Privacy Policy</Text>
-        </Text>
-      </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -62,19 +88,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
     paddingHorizontal: 30,
-    paddingTop: 100,
+    paddingTop: 200,
   },
   titleContainer: {
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: 20,
   },
   inputContainer: {
     marginBottom: 40,
   },
   label: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#000000',
-    marginBottom: 10,
+    marginBottom: 3,
     fontWeight: '500',
   },
   phoneInputWrapper: {
@@ -109,16 +135,13 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   sendButton: {
-    backgroundColor: '#A2CCF2',
-    borderRadius: 30,
-    paddingVertical: 18,
     alignItems: 'center',
     marginTop: 20,
-    shadowColor: '#A2CCF2',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 5,
+    width: 800,
+    alignSelf: 'center',
+  },
+  sendButtonActive: {
+    transform: [{ scale: 1.02 }],
   },
   sendButtonText: {
     fontSize: 18,
@@ -152,7 +175,7 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     fontSize: 32,
-    color: '#A2CCF2',
+    color: '#000000',
     fontWeight: '300',
   },
 });
