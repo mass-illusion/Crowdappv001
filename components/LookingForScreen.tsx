@@ -5,6 +5,16 @@ import SvgFriendgroup from '../assets/images/friendgroup.svg';
 import SvgMicrocommunity from '../assets/images/microcommunity.svg';
 import SvgRealfriends from '../assets/images/realfriends.svg';
 import SvgSharedpassion from '../assets/images/sharedpassion.svg';
+import { useNavigation } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+
+type RootStackParamList = {
+  LookingFor: undefined;
+  Also: undefined;
+  Age: undefined;
+  Gender: undefined;
+  Upload: undefined;
+};
 
 const PREFERENCES = [
   { key: 'realFriends', label: 'Real\nFriends', icon: SvgRealfriends },
@@ -16,6 +26,7 @@ const PREFERENCES = [
 ];
 
 const LookingForScreen: React.FC = () => {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [selected, setSelected] = useState<{ [key: string]: boolean }>({});
 
   const toggle = (key: string) => {
@@ -49,7 +60,7 @@ const LookingForScreen: React.FC = () => {
                 style={[styles.prefItem, selected[item.key] && styles.prefItemSelected]}
                 onPress={() => toggle(item.key)}
               >
-                <Image source={item.icon} style={styles.prefIcon} />
+                {item.icon ? <item.icon width={36} height={36} style={styles.prefIcon} /> : null}
                 <Text style={[styles.prefLabel, selected[item.key] && styles.prefLabelSelected]}>{item.label}</Text>
                 {selected[item.key] && <View style={styles.checkCircle}><View style={styles.checkDot} /></View>}
               </Pressable>
@@ -57,8 +68,11 @@ const LookingForScreen: React.FC = () => {
           </View>
         </View>
       </View>
-      <TouchableOpacity style={styles.backArrowButton} onPress={() => navigation.navigate('UploadScreen')}>
+      <TouchableOpacity style={styles.backArrowButton} onPress={() => navigation.navigate('Upload')}>
         <Text style={styles.backArrowText}>←</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={{marginTop: 32}} onPress={() => navigation.navigate('Also')}>
+        <Text style={{fontSize: 20, color: '#5A90D8'}}>Go to Also Screen</Text>
       </TouchableOpacity>
     </View>
   );

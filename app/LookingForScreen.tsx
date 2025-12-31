@@ -6,7 +6,19 @@ import SvgIndustrypeers from '../assets/images/industrypeers.svg';
 import SvgSharedpassion from '../assets/images/sharedpassion.svg';
 import SvgFriendgroup from '../assets/images/friendgroup.svg';
 import SvgMicrocommunity from '../assets/images/microcommunity.svg';
-import { useRouter } from 'expo-router';
+import SvgFindMyCrowdWhite from '../assets/images/findmycrowdwhite.svg';
+import SvgPineapple2 from '../assets/images/pineapple2.svg';
+import { useWindowDimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+
+type RootStackParamList = {
+  LookingFor: undefined;
+  Also: undefined;
+  Age: undefined;
+  Gender: undefined;
+  Upload: undefined;
+};
 
 const PREFERENCES = [
   { key: 'realFriends', label: 'Real Friends', icon: SvgRealfriends },
@@ -18,16 +30,17 @@ const PREFERENCES = [
 ];
 
 const LookingForScreen: React.FC = () => {
-  const router = useRouter();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [selected, setSelected] = useState<{ [key: string]: boolean }>({});
 
   const toggle = (key: string) => {
     setSelected(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
+  const { width } = useWindowDimensions();
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backArrowButton} onPress={() => router.replace('/Upload')}>
+      <TouchableOpacity style={styles.backArrowButton} onPress={() => navigation.replace('Upload')}>
         <Text style={styles.backArrowText}>←</Text>
       </TouchableOpacity>
       <Text style={styles.header}>I'm looking for...</Text>
@@ -90,6 +103,12 @@ const LookingForScreen: React.FC = () => {
           </View>
         </View>
       </View>
+      <View style={styles.bottomButtonContainer}>
+        <SvgPineapple2 width={width * 0.8} height={170} style={styles.bunnyFriends} />
+        <TouchableOpacity style={styles.findMyCrowdButton} onPress={() => navigation.navigate('Also')}>
+          <SvgFindMyCrowdWhite width={width * 0.8} height={80} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -124,7 +143,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#7CA6D9',
+    color: '#A2CCF2',
     marginBottom: 8,
     alignSelf: 'flex-start',
     marginLeft: 32,
@@ -137,7 +156,7 @@ const styles = StyleSheet.create({
     marginLeft: 32,
   },
   boxShadowWrap: {
-    marginTop: 32,
+    marginTop: 8,
     borderRadius: 24,
     shadowColor: '#B0B8C1',
     shadowOffset: { width: 0, height: 4 },
@@ -148,10 +167,10 @@ const styles = StyleSheet.create({
   },
   prefBox: {
     backgroundColor: '#F8F9FB',
-    borderRadius: 24,
-    paddingVertical: 18,
-    paddingHorizontal: 12,
-    width: 320,
+    borderRadius: 4,
+    paddingVertical: 2,
+    paddingHorizontal: 0,
+    width: 284,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -160,7 +179,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    marginBottom: 8,
+    marginBottom: 0,
     gap: 0,
   },
   prefItem: {
@@ -238,8 +257,28 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: '#E6E9ED',
     alignSelf: 'center',
-    marginTop: 24,
-    marginBottom: 24,
+    marginTop: 12,
+    marginBottom: 12,
+  },
+  bottomButtonContainer: {
+    position: 'absolute',
+    bottom: 40,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  findMyCrowdButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 28,
+    overflow: 'hidden',
+    marginTop: 8,
+  },
+  bunnyFriends: {
+    marginBottom: -12,
+    marginTop: 300,
   },
 });
 
