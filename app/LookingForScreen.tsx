@@ -1,14 +1,20 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image, Pressable } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Pressable } from "react-native";
+import SvgRealfriends from '../assets/images/realfriends.svg';
+import SvgEventbuddies from '../assets/images/eventbuddies.svg';
+import SvgIndustrypeers from '../assets/images/industrypeers.svg';
+import SvgSharedpassion from '../assets/images/sharedpassion.svg';
+import SvgFriendgroup from '../assets/images/friendgroup.svg';
+import SvgMicrocommunity from '../assets/images/microcommunity.svg';
 import { useRouter } from 'expo-router';
 
 const PREFERENCES = [
-  { key: 'realFriends', label: 'Real Friends', icon: require('../assets/images/realfriends.png') },
-  { key: 'eventBuddies', label: 'Event Buddies', icon: require('../assets/images/eventbuddies.png') },
-  { key: 'industryPeers', label: 'Industry Peers', icon: require('../assets/images/industrypeers.png') },
-  { key: 'sharedPassions', label: 'Shared Passions', icon: require('../assets/images/sharedpassion.png') },
-  { key: 'friendGroups', label: 'Friend Groups', icon: require('../assets/images/friendgroups.png') },
-  { key: 'microCommunity', label: 'Micro Community', icon: require('../assets/images/microcomunities.png') },
+  { key: 'realFriends', label: 'Real Friends', icon: SvgRealfriends },
+  { key: 'eventBuddies', label: 'Event Buddies', icon: SvgEventbuddies },
+  { key: 'industryPeers', label: 'Industry Peers', icon: SvgIndustrypeers },
+  { key: 'sharedPassions', label: 'Shared Passions', icon: SvgSharedpassion },
+  { key: 'friendGroups', label: 'Friend Groups', icon: SvgFriendgroup },
+  { key: 'microCommunity', label: 'Micro Community', icon: SvgMicrocommunity },
 ];
 
 const LookingForScreen: React.FC = () => {
@@ -35,21 +41,21 @@ const LookingForScreen: React.FC = () => {
                 style={[styles.prefItem, selected[item.key] && styles.prefItemSelected]}
                 onPress={() => toggle(item.key)}
               >
-                <Image
-                  source={item.icon}
-                  style={[
-                    styles.prefIcon,
-                    item.key === 'eventBuddies' && { marginBottom: 18 },
-                    !selected[item.key] && styles.prefIconGrey
-                  ]}
-                />
+                {item.icon ? <item.icon width={36} height={36} style={[
+                  styles.prefIcon,
+                  item.key === 'realFriends' && { marginTop: 6 }
+                ]} /> : null}
                 <View style={styles.prefLabelWrap}>
-                  <Text style={[styles.prefLabel, selected[item.key] && styles.prefLabelSelected]}>
-                    {item.key === 'realFriends'
-                      ? 'Real\nFriends'
-                      : item.key === 'friendGroups'
-                      ? 'Friend\nGroups'
-                      : item.label}
+                  <Text
+                    style={[
+                      styles.prefLabel,
+                      selected[item.key] && styles.prefLabelSelected
+                    ]}
+                  >
+                    {item.key === 'sharedPassions' ? 'Shared\nPassions'
+                      : item.key === 'friendGroups' ? 'Friend\nGroups'
+                      : item.key === 'microCommunity' ? 'Micro\nCommunity'
+                      : item.label.split(' ').join('\n')}
                   </Text>
                 </View>
                 {selected[item.key] && <View style={styles.checkCircle}><View style={styles.checkDot} /></View>}
@@ -64,10 +70,18 @@ const LookingForScreen: React.FC = () => {
                 style={[styles.prefItem, selected[item.key] && styles.prefItemSelected]}
                 onPress={() => toggle(item.key)}
               >
-                <Image source={item.icon} style={styles.prefIcon} />
+                {item.icon ? <item.icon width={36} height={36} style={styles.prefIcon} /> : null}
                 <View style={styles.prefLabelWrap}>
-                  <Text style={[styles.prefLabel, selected[item.key] && styles.prefLabelSelected]}>
-                    {item.key === 'friendGroups' ? 'Friend\nGroups' : item.label}
+                  <Text
+                    style={[
+                      styles.prefLabel,
+                      selected[item.key] && styles.prefLabelSelected
+                    ]}
+                  >
+                    {item.key === 'sharedPassions' ? 'Shared\nPassions'
+                      : item.key === 'friendGroups' ? 'Friend\nGroups'
+                      : item.key === 'microCommunity' ? 'Micro\nCommunity'
+                      : item.label.split(' ').join('\n')}
                   </Text>
                 </View>
                 {selected[item.key] && <View style={styles.checkCircle}><View style={styles.checkDot} /></View>}
@@ -163,16 +177,23 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     paddingTop: 0,
     paddingBottom: 0,
+    borderRightWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: '#E6E9ED',
   },
-    prefLabelWrap: {
-      height: 36,
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '100%',
-    },
+  prefLabelWrap: {
+    marginTop: 8,
+    height: 36,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
   prefItemSelected: {
     opacity: 1,
     backgroundColor: '#E6F0FB',
+    borderColor: '#5A90D8',
+    borderRightWidth: 2,
+    borderBottomWidth: 2,
   },
   prefIcon: {
     width: 36,
@@ -184,11 +205,11 @@ const styles = StyleSheet.create({
     tintColor: '#D3D6DB',
   },
   prefLabel: {
-    fontSize: 16,
-    color: '#AAB8C2',
+    fontSize: 15,
+    color: '#333333',
     textAlign: 'center',
     fontWeight: '600',
-    lineHeight: 20,
+    lineHeight: 18,
   },
   prefLabelSelected: {
     color: '#5A90D8',

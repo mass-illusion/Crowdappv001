@@ -1,13 +1,18 @@
 import React, { useState } from "react";
-import { Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import SvgEventbuddies from '../assets/images/eventbuddies.svg';
+import SvgFriendgroup from '../assets/images/friendgroup.svg';
+import SvgMicrocommunity from '../assets/images/microcommunity.svg';
+import SvgRealfriends from '../assets/images/realfriends.svg';
+import SvgSharedpassion from '../assets/images/sharedpassion.svg';
 
 const PREFERENCES = [
-  { key: 'realFriends', label: 'Real\nFriends', icon: require('../assets/images/realfriends.png') },
-  { key: 'eventBuddies', label: 'Event\nBuddies', icon: require('../assets/images/eventbuddies.png') },
-  { key: 'industryPeers', label: 'Industry\nPeers', icon: require('../assets/images/industrypeers.png') },
-  { key: 'sharedPassions', label: 'Shared\nPassions', icon: require('../assets/images/sharedpassion.png') },
-  { key: 'friendGroups', label: 'Friend\nGroups', icon: require('../assets/images/friendgroups.png') },
-  { key: 'microCommunity', label: 'Micro\nCommunity', icon: require('../assets/images/microcomunities.png') },
+  { key: 'realFriends', label: 'Real\nFriends', icon: SvgRealfriends },
+  { key: 'eventBuddies', label: 'Event\nBuddies', icon: SvgEventbuddies },
+  { key: 'industryPeers', label: 'Industry\nPeers', icon: null },
+  { key: 'sharedPassions', label: 'Shared\nPassions', icon: SvgSharedpassion },
+  { key: 'friendGroups', label: 'Friend\nGroups', icon: SvgFriendgroup },
+  { key: 'microCommunity', label: 'Micro\nCommunity', icon: SvgMicrocommunity },
 ];
 
 const LookingForScreen: React.FC = () => {
@@ -30,7 +35,7 @@ const LookingForScreen: React.FC = () => {
                 style={[styles.prefItem, selected[item.key] && styles.prefItemSelected]}
                 onPress={() => toggle(item.key)}
               >
-                <Image source={item.icon} style={styles.prefIcon} />
+                {item.icon ? <item.icon width={36} height={36} style={styles.prefIcon} /> : null}
                 <Text style={[styles.prefLabel, selected[item.key] && styles.prefLabelSelected]}>{item.label}</Text>
                 {selected[item.key] && <View style={styles.checkCircle}><View style={styles.checkDot} /></View>}
               </Pressable>
