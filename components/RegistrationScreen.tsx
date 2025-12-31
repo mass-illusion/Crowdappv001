@@ -7,9 +7,10 @@ interface RegistrationScreenProps {
   onBack?: () => void;
   onTermsPress?: () => void;
   onPrivacyPress?: () => void;
+  onSendCode?: (phoneNumber: string) => void;
 }
 
-export default function RegistrationScreen({ onBack, onTermsPress, onPrivacyPress }: RegistrationScreenProps) {
+export default function RegistrationScreen({ onBack, onTermsPress, onPrivacyPress, onSendCode }: RegistrationScreenProps) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const isValidPhone = phoneNumber.replace(/\D/g, '').length === 10;
 
@@ -32,9 +33,8 @@ export default function RegistrationScreen({ onBack, onTermsPress, onPrivacyPres
   };
 
   const handleSendCode = () => {
-    if (isValidPhone) {
-      // Handle send code logic here
-      console.log('Send code to:', phoneNumber);
+    if (isValidPhone && onSendCode) {
+      onSendCode(phoneNumber);
     }
   };
 
