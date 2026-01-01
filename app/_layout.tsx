@@ -21,9 +21,7 @@ export default function RootLayout() {
           headerShown: false,
         }}
       />
-      {showSplash && (
-        <AnimatedSplashScreen onNext={() => setShowSplash(false)} />
-      )}
+      {showSplash && <AnimatedSplashScreen onNext={() => setShowSplash(false)} />}
     </>
   );
 }

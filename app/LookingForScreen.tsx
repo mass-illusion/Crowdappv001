@@ -1,16 +1,14 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Pressable } from "react-native";
-import SvgRealfriends from '../assets/images/realfriends.svg';
+import { Pressable, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from "react-native";
 import SvgEventbuddies from '../assets/images/eventbuddies.svg';
-import SvgIndustrypeers from '../assets/images/industrypeers.svg';
-import SvgSharedpassion from '../assets/images/sharedpassion.svg';
-import SvgFriendgroup from '../assets/images/friendgroup.svg';
-import SvgMicrocommunity from '../assets/images/microcommunity.svg';
 import SvgFindMyCrowdWhite from '../assets/images/findmycrowdwhite.svg';
+import SvgFriendgroup from '../assets/images/friendgroup.svg';
+import SvgIndustrypeers from '../assets/images/industrypeers.svg';
+import SvgMicrocommunity from '../assets/images/microcommunity.svg';
 import SvgPineapple2 from '../assets/images/pineapple2.svg';
-import { useWindowDimensions } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import type { StackNavigationProp } from '@react-navigation/stack';
+import SvgRealfriends from '../assets/images/realfriends.svg';
+import SvgSharedpassion from '../assets/images/sharedpassion.svg';
 
 type RootStackParamList = {
   LookingFor: undefined;
@@ -30,7 +28,7 @@ const PREFERENCES = [
 ];
 
 const LookingForScreen: React.FC = () => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const router = useRouter();
   const [selected, setSelected] = useState<{ [key: string]: boolean }>({});
 
   const toggle = (key: string) => {
@@ -40,7 +38,7 @@ const LookingForScreen: React.FC = () => {
   const { width } = useWindowDimensions();
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backArrowButton} onPress={() => navigation.replace('Upload')}>
+      <TouchableOpacity style={styles.backArrowButton} onPress={() => router.replace('/Upload')}>
         <Text style={styles.backArrowText}>←</Text>
       </TouchableOpacity>
       <Text style={styles.header}>I'm looking for...</Text>
@@ -105,7 +103,7 @@ const LookingForScreen: React.FC = () => {
       </View>
       <View style={styles.bottomButtonContainer}>
         <SvgPineapple2 width={width * 0.8} height={170} style={styles.bunnyFriends} />
-        <TouchableOpacity style={styles.findMyCrowdButton} onPress={() => navigation.navigate('Also')}>
+        <TouchableOpacity style={styles.findMyCrowdButton} onPress={() => router.push('/Also')}>
           <SvgFindMyCrowdWhite width={width * 0.8} height={80} />
         </TouchableOpacity>
       </View>
@@ -134,7 +132,6 @@ const styles = StyleSheet.create({
     textShadowRadius: 1,
   },
   container: {
-    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'flex-start',

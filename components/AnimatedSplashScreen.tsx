@@ -1,12 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SvgUri } from 'react-native-svg';
+// import RootStackParamList correctly below if it is a default export, otherwise use the correct named import
+// If RootStackParamList is a named type export:
+import { useRouter } from 'expo-router';
+// If it's a default type export, use:
+// import type RootStackParamList from '../app/AppNavigator';
 
-interface AnimatedSplashScreenProps {
-  onNext: () => void;
-}
-
-export default function AnimatedSplashScreen({ onNext }: AnimatedSplashScreenProps) {
+export default function AnimatedSplashScreen({ onNext }: { onNext?: () => void }) {
+  const router = useRouter();
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -16,17 +18,19 @@ export default function AnimatedSplashScreen({ onNext }: AnimatedSplashScreenPro
       useNativeDriver: true,
     }).start();
   }, [fadeAnim]);
-
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.content, { opacity: fadeAnim }]}>
+      <Animated.View style={[styles.content, { opacity: fadeAnim }]}> 
         <SvgUri
           uri="https://raw.githubusercontent.com/mass-illusion/Crowdappv001/refs/heads/main/CROWD.svg"
           width={350}
           height={120}
           style={styles.logo}
         />
-        <TouchableOpacity onPress={onNext} style={styles.buttonWrapper}>
+        <TouchableOpacity onPress={() => {
+          router.push('/onboarding');
+          if (onNext) onNext();
+        }} style={styles.buttonWrapper}>
           <SvgUri
             uri="https://raw.githubusercontent.com/mass-illusion/Crowdappv001/refs/heads/main/create%20account.svg"
             width={1500}
@@ -35,7 +39,7 @@ export default function AnimatedSplashScreen({ onNext }: AnimatedSplashScreenPro
         </TouchableOpacity>
         <Text style={styles.loginText}>Already have an account?</Text>
       </Animated.View>
-      <Animated.View style={[styles.mascotContainer, { opacity: fadeAnim }]}>
+      <Animated.View style={[styles.mascotContainer, { opacity: fadeAnim }]}> 
         <Image
           source={require('../assets/images/mascot 1.png')}
           style={styles.mascot}
@@ -97,5 +101,6 @@ const styles = StyleSheet.create({
   },
   getStartedButton: {
     marginTop: 40,
-  },
+  }
 });
+

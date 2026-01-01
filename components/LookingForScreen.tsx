@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from "react";
 import { Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import SvgEventbuddies from '../assets/images/eventbuddies.svg';
@@ -5,8 +6,6 @@ import SvgFriendgroup from '../assets/images/friendgroup.svg';
 import SvgMicrocommunity from '../assets/images/microcommunity.svg';
 import SvgRealfriends from '../assets/images/realfriends.svg';
 import SvgSharedpassion from '../assets/images/sharedpassion.svg';
-import { useNavigation } from '@react-navigation/native';
-import type { StackNavigationProp } from '@react-navigation/stack';
 
 type RootStackParamList = {
   LookingFor: undefined;
@@ -26,7 +25,7 @@ const PREFERENCES = [
 ];
 
 const LookingForScreen: React.FC = () => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const router = useRouter();
   const [selected, setSelected] = useState<{ [key: string]: boolean }>({});
 
   const toggle = (key: string) => {
@@ -68,10 +67,10 @@ const LookingForScreen: React.FC = () => {
           </View>
         </View>
       </View>
-      <TouchableOpacity style={styles.backArrowButton} onPress={() => navigation.navigate('Upload')}>
+      <TouchableOpacity style={styles.backArrowButton} onPress={() => router.push('/Upload')}>
         <Text style={styles.backArrowText}>←</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={{marginTop: 32}} onPress={() => navigation.navigate('Also')}>
+      <TouchableOpacity style={{marginTop: 32}} onPress={() => router.push('/Also')}>
         <Text style={{fontSize: 20, color: '#5A90D8'}}>Go to Also Screen</Text>
       </TouchableOpacity>
     </View>
