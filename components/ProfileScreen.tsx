@@ -35,7 +35,10 @@ const ProfileScreen = () => {
         </View>
         <TouchableOpacity
           style={styles.nextButton}
-          onPress={() => router.replace('/')} // Change '/' to your next screen route if needed
+          onPress={() => {
+            const firstName = fullName.split(' ')[0] || fullName;
+            router.replace(`/welcome?name=${encodeURIComponent(firstName)}`);
+          }}
           activeOpacity={0.8}
         >
           <NextButtonSvg width="100%" height={80} />
@@ -58,11 +61,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 60,
     fontWeight: "bold",
-    marginBottom: 2,
-    alignSelf: "flex-start",
-    marginLeft: 16,
-    width: 'auto',
-    textAlign: 'center',
+    color: '#E6E9ED',
+    marginBottom: 20,
+    alignSelf: 'center',
     letterSpacing: 0.1,
   },
   nextButton: {

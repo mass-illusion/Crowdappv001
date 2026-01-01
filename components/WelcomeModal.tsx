@@ -1,36 +1,65 @@
-import React from "react";
-import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useEffect, useRef } from "react";
+import { StyleSheet, Text, TouchableOpacity, View, Animated } from "react-native";
 
-interface WelcomeModalProps {
-  visible: boolean;
-  firstName: string;
-  onGo: () => void;
-  onEdit: () => void;
-}
+const WelcomeModal: React.FC = () => {
+  const router = useRouter();
+  const { name } = useLocalSearchParams<{ name: string }>();
+  const waveAnimation = useRef(new Animated.Value(0)).current;
 
-const WelcomeModal: React.FC<WelcomeModalProps> = ({ visible, firstName, onGo, onEdit }) => {
+  useEffect(() => {
+    const startWaving = () => {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(waveAnimation, {
+            toValue: 1,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+          Animated.timing(waveAnimation, {
+            toValue: -1,
+            duration: 1600,
+            useNativeDriver: true,
+          }),
+          Animated.timing(waveAnimation, {
+            toValue: 1,
+            duration: 1600,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
+    };
+    startWaving();
+  }, [waveAnimation]);
+
+  const waveRotation = waveAnimation.interpolate({
+    inputRange: [-1, 0, 1],
+    outputRange: ['-10deg', '0deg', '10deg'],
+  });
+
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="fade"
-    >
-      <View style={styles.overlay}>
-        <View style={styles.modalBox}>
-          <Text style={styles.emoji}>🖐️</Text>
-          <Text style={styles.title}>Welcome {firstName}!</Text>
-          <Text style={styles.subtitle}>
-            There’s a lot to discover, but let’s get your profile set up first.
-          </Text>
-          <TouchableOpacity style={styles.goButton} onPress={onGo}>
-            <Text style={styles.goButtonText}>Let’s go</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={onEdit}>
-            <Text style={styles.editText}>Edit name</Text>
-          </TouchableOpacity>
-        </View>
+    <View style={styles.overlay}>
+      <View style={styles.modalBox}>
+        <Animated.Text 
+          style={[
+            styles.emoji, 
+            { transform: [{ rotate: waveRotation }] }
+          ]}
+        >
+          🖐️
+        </Animated.Text>
+        <Text style={styles.title}>Welcome {name || 'there'}!</Text>
+        <Text style={styles.subtitle}>
+          There's a lot to discover, but let's get your profile set up first.
+        </Text>
+        <TouchableOpacity style={styles.goButton} onPress={() => router.replace('/')}>
+          <Text style={styles.goButtonText}>Let's go</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => router.replace('/profile')}>
+          <Text style={styles.editText}>Edit name</Text>
+        </TouchableOpacity>
       </View>
-    </Modal>
+    </View>
   );
 };
 
