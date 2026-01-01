@@ -1,15 +1,13 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-interface TermsScreenProps {
-  onBack: () => void;
-}
-
-export default function TermsScreen({ onBack }: TermsScreenProps) {
+export default function TermsScreen() {
+  const router = useRouter();
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={onBack}>
+        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
           <Text style={styles.backButtonText}>←</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Terms & Conditions</Text>

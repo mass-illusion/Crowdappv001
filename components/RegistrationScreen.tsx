@@ -1,7 +1,8 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import SendCodeButton from '../sendcode4.svg';
+import { Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import RegisterSvg from '../assets/images/REGISTER1.svg';
+import SendCodeButton from '../sendcode4.svg';
 
 interface RegistrationScreenProps {
   onBack?: () => void;
@@ -11,6 +12,7 @@ interface RegistrationScreenProps {
 }
 
 export default function RegistrationScreen({ onBack, onTermsPress, onPrivacyPress, onSendCode }: RegistrationScreenProps) {
+  const router = useRouter();
   const [phoneNumber, setPhoneNumber] = useState('');
   const isValidPhone = phoneNumber.replace(/\D/g, '').length === 10;
 
@@ -33,8 +35,11 @@ export default function RegistrationScreen({ onBack, onTermsPress, onPrivacyPres
   };
 
   const handleSendCode = () => {
-    if (isValidPhone && onSendCode) {
-      onSendCode(phoneNumber);
+    if (isValidPhone) {
+      if (onSendCode) {
+        onSendCode(phoneNumber);
+      }
+      router.replace('/profile');
     }
   };
 
@@ -74,8 +79,8 @@ export default function RegistrationScreen({ onBack, onTermsPress, onPrivacyPres
         </TouchableOpacity>
         <View style={styles.termsContainer}>
           <Text style={styles.termsText}>
-            By entering your number, you agree to Crowd's{'\n'}
-            <Text style={styles.link} onPress={onTermsPress}>Terms & Conditions</Text> and <Text style={styles.link} onPress={onPrivacyPress}>Privacy Policy</Text>
+By entering your number, you agree to Crowd's{'\n'}
+            <Text style={styles.link} onPress={() => router.push('/terms')}>Terms & Conditions</Text> and <Text style={styles.link} onPress={() => router.push('/privacy-policy')}>Privacy Policy</Text>
           </Text>
         </View>
       </View>

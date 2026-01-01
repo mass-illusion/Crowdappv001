@@ -7,10 +7,11 @@ import { ActionSheetIOS, Alert, Image, KeyboardAvoidingView, Platform, StyleShee
 // Unisex outline avatar icon
 const EMPTY_AVATAR = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
 
-import { useNavigation } from '@react-navigation/native';
+
+import { useRouter } from 'expo-router';
 
 const UploadScreen: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
-  const navigation = useNavigation();
+  const router = useRouter();
   const [photos, setPhotos] = useState<(string | null)[]>([null, null, null, null, null, null]);
 
   // Placeholder handlers for image picking
@@ -101,7 +102,7 @@ const UploadScreen: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       {/* Forward Arrow Top Right */}
-      <TouchableOpacity style={styles.arrowButton} onPress={() => navigation.navigate('LookingForScreen')}>
+      <TouchableOpacity style={styles.arrowButton} onPress={() => router.push('/LookingForScreen')}>
         <Text style={styles.arrowText}>→</Text>
       </TouchableOpacity>
       <Text style={styles.title}>UPLOAD</Text>

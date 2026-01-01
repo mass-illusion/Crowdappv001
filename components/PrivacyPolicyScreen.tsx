@@ -1,15 +1,13 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-interface PrivacyPolicyScreenProps {
-  onBack: () => void;
-}
-
-export default function PrivacyPolicyScreen({ onBack }: PrivacyPolicyScreenProps) {
+export default function PrivacyPolicyScreen() {
+  const router = useRouter();
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={onBack}>
+        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
           <Text style={styles.backButtonText}>←</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Privacy Policy</Text>

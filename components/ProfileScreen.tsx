@@ -1,18 +1,19 @@
+import { StatusBar } from 'expo-status-bar';
 import React, { useState } from "react";
 import { Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import NextButtonSvg from '../assets/images/nextbutton.svg';
 
-interface ProfileScreenProps {
-  onNext: (fullName: string, userName: string) => void;
-}
+import { useRouter } from 'expo-router';
 
-const ProfileScreen: React.FC<ProfileScreenProps> = ({ onNext }) => {
+const ProfileScreen = () => {
   const [fullName, setFullName] = useState("");
   const [userName, setUserName] = useState("");
+  const router = useRouter();
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
+        <StatusBar style="dark" backgroundColor="#fff" translucent={false} />
         <Text style={styles.title}>PROFILE</Text>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Full Name</Text>
@@ -34,10 +35,10 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ onNext }) => {
         </View>
         <TouchableOpacity
           style={styles.nextButton}
-          onPress={() => onNext(fullName, userName)}
+          onPress={() => router.replace('/')} // Change '/' to your next screen route if needed
           activeOpacity={0.8}
         >
-          <NextButtonSvg width="100%" height={80} style={styles.nextButtonImage} />
+          <NextButtonSvg width="100%" height={80} />
         </TouchableOpacity>
       </View>
     </TouchableWithoutFeedback>
@@ -49,6 +50,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingHorizontal: 24,
+    paddingBottom: 120, // Add padding to prevent overlap with button
     justifyContent: 'flex-start',
     alignItems: 'center',
     marginTop: 140,
@@ -56,10 +58,19 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 60,
     fontWeight: "bold",
-    color: '#E6E9ED',
-    marginBottom: 20,
-    alignSelf: 'center',
-    letterSpacing: 2,
+    marginBottom: 2,
+    alignSelf: "flex-start",
+    marginLeft: 16,
+    width: 'auto',
+    textAlign: 'center',
+    letterSpacing: 0.1,
+  },
+  nextButton: {
+    marginTop: 32,
+    width: '100%',
+    height: 80,
+    alignItems: "center",
+    justifyContent: "center",
   },
   inputContainer: {
     width: '100%',
@@ -68,44 +79,22 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 13,
-    color: "#333",
+    color: "#222",
     marginBottom: 2,
-    alignSelf: "center",
-    width: '90%',
-    textAlign: 'left',
+    alignSelf: "flex-start",
+    marginLeft: 0,
+    width: '100%',
+    textAlign: 'center',
   },
   input: {
     borderWidth: 1,
     borderColor: "#bbb",
-    borderRadius: 6,
-    padding: 10,
-    fontSize: 16,
-    backgroundColor: "#fff",
+    borderRadius: 8,
+    padding: 16,
+    fontSize: 18,
+    marginBottom: 24,
     width: '90%',
-    alignSelf: 'center',
-    minWidth: 0,
-    marginBottom: 16,
-    height: 56,
-  },
-  nextButton: {
-    position: "absolute",
-    bottom: 30,
-    left: 12,
-    right: 12,
-    height: 80,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  nextButtonImage: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-  },
-  nextButtonText: {
-    width: '100%',
-    marginBottom: 32,
-    alignItems: 'stretch',
-    zIndex: 1,
+    backgroundColor: '#fff',
   },
 });
 

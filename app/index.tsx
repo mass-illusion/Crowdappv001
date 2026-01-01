@@ -1,6 +1,2 @@
-
-import AppNavigator from './AppNavigator';
-
-export default function Index() {
-  return <AppNavigator />;
-}
+import OnboardingCarousel from '../components/OnboardingCarousel';
+export default OnboardingCarousel;

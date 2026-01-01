@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Onboarding1 from '../assets/onboarding1.svg';
@@ -6,12 +7,7 @@ import Onboarding3 from '../assets/onboarding3.svg';
 
 const { width, height } = Dimensions.get('window');
 
-interface OnboardingCarouselProps {
-  onComplete: () => void;
-  onBack?: () => void;
-}
-
-export default function OnboardingCarousel({ onComplete, onBack }: OnboardingCarouselProps) {
+export default function OnboardingCarousel() {
   const [currentPage, setCurrentPage] = useState(0);
 
   const onboardingData = [
@@ -32,19 +28,19 @@ export default function OnboardingCarousel({ onComplete, onBack }: OnboardingCar
     },
   ];
 
+  const router = useRouter();
+
   const handleNext = () => {
     if (currentPage < 2) {
       setCurrentPage(currentPage + 1);
     } else {
-      onComplete();
+      router.replace('/registration');
     }
   };
 
   const handleBack = () => {
     if (currentPage > 0) {
       setCurrentPage(currentPage - 1);
-    } else if (onBack) {
-      onBack();
     }
   };
 
