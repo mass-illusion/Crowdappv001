@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Pressable } from "react-native";
+import { useRouter } from 'expo-router';
 import SvgRealfriends from '../assets/images/realfriends.svg';
 import SvgEventbuddies from '../assets/images/eventbuddies.svg';
 import SvgIndustrypeers from '../assets/images/industrypeers.svg';
@@ -9,16 +10,6 @@ import SvgMicrocommunity from '../assets/images/microcommunity.svg';
 import SvgFindMyCrowdWhite from '../assets/images/findmycrowdwhite.svg';
 import SvgPineapple2 from '../assets/images/pineapple2.svg';
 import { useWindowDimensions } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import type { StackNavigationProp } from '@react-navigation/stack';
-
-type RootStackParamList = {
-  LookingFor: undefined;
-  Also: undefined;
-  Age: undefined;
-  Gender: undefined;
-  Upload: undefined;
-};
 
 const PREFERENCES = [
   { key: 'realFriends', label: 'Real Friends', icon: SvgRealfriends },
@@ -30,7 +21,7 @@ const PREFERENCES = [
 ];
 
 const LookingForScreen: React.FC = () => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const router = useRouter();
   const [selected, setSelected] = useState<{ [key: string]: boolean }>({});
 
   const toggle = (key: string) => {
@@ -40,7 +31,7 @@ const LookingForScreen: React.FC = () => {
   const { width } = useWindowDimensions();
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backArrowButton} onPress={() => navigation.replace('Upload')}>
+      <TouchableOpacity style={styles.backArrowButton} onPress={() => router.replace('/Upload')}>
         <Text style={styles.backArrowText}>←</Text>
       </TouchableOpacity>
       <Text style={styles.header}>I'm looking for...</Text>
@@ -105,8 +96,7 @@ const LookingForScreen: React.FC = () => {
       </View>
       <View style={styles.bottomButtonContainer}>
         <SvgPineapple2 width={width * 0.8} height={170} style={styles.bunnyFriends} />
-        <TouchableOpacity style={styles.findMyCrowdButton} onPress={() => navigation.navigate('Also')}>
-          <SvgFindMyCrowdWhite width={width * 0.8} height={80} />
+        <TouchableOpacity style={styles.findMyCrowdButton} onPress={() => router.replace('/also')}>          <SvgFindMyCrowdWhite width={width * 0.8} height={80} />
         </TouchableOpacity>
       </View>
     </View>

@@ -10,7 +10,10 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yourcompany.crowdappv01"
+      "bundleIdentifier": "com.yourcompany.crowdappv01",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This app uses location to help you find friends nearby."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -20,7 +23,8 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
     },
     "web": {
       "output": "static",

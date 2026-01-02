@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import SittingMascot from '../assets/images/sitting.svg';
@@ -8,23 +9,31 @@ const genderOptions = [
   { label: 'Non-binary', value: 'nonbinary' },
 ];
 
-interface GenderScreenProps {
-  onNext: (gender: string) => void;
-  onMascotPress?: () => void;
-  onSwipeRight?: () => void;
-}
-
-const GenderScreen: React.FC<GenderScreenProps> = ({ onNext, onMascotPress, onSwipeRight }) => {
+const GenderScreen: React.FC = () => {
+  const router = useRouter();
   const [selected, setSelected] = useState<string>('female');
   let startX: number | null = null;
+
+  const handleNext = () => {
+    // Navigate to age screen
+    router.replace('/age');
+  };
+
+  const handleMascotPress = () => {
+    // Optional mascot interaction
+  };
+
+  const handleSwipeRight = () => {
+    handleNext();
+  };
 
   return (
     <View
       style={styles.container}
       onTouchStart={e => { startX = e.nativeEvent.pageX; }}
       onTouchEnd={e => {
-        if (startX !== null && e.nativeEvent.pageX - startX > 60 && onSwipeRight) {
-          onSwipeRight();
+        if (startX !== null && e.nativeEvent.pageX - startX > 60) {
+          handleSwipeRight();
         }
         startX = null;
       }}
@@ -36,7 +45,6 @@ const GenderScreen: React.FC<GenderScreenProps> = ({ onNext, onMascotPress, onSw
             style={[
               styles.option,
               selected === option.value && styles.selectedOption,
-              { backgroundColor: '#fafbfc' },
             ]}
             onPress={() => setSelected(option.value)}
             suppressHighlighting={true}
@@ -46,10 +54,10 @@ const GenderScreen: React.FC<GenderScreenProps> = ({ onNext, onMascotPress, onSw
         ))}
         <Text style={styles.header}>Gender</Text>
       </View>
-      <TouchableOpacity onPress={onMascotPress} activeOpacity={0.7}>
+      <TouchableOpacity onPress={handleNext} activeOpacity={0.7}>
         <SittingMascot width={275} height={275} style={mascotStyle} />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.arrowButton} onPress={() => onNext(selected)}>
+      <TouchableOpacity style={styles.arrowButton} onPress={handleNext}>
         <Text style={styles.arrowText}>→</Text>
       </TouchableOpacity>
     </View>
@@ -65,17 +73,12 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '90%',
-    backgroundColor: '#fafbfc',
+    backgroundColor: 'transparent',
     borderRadius: 32,
     alignItems: 'center',
     paddingVertical: 40,
     marginBottom: -20, // Restore previous space between card and mascot
     marginTop: 200, // Even more top margin
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
-    shadowRadius: 12,
-    elevation: 2,
   },
   option: {
     fontSize: 38,

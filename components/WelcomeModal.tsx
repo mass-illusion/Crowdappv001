@@ -52,7 +52,7 @@ const WelcomeModal: React.FC = () => {
         <Text style={styles.subtitle}>
           There's a lot to discover, but let's get your profile set up first.
         </Text>
-        <TouchableOpacity style={styles.goButton} onPress={() => router.replace('/')}>
+        <TouchableOpacity style={styles.goButton} onPress={() => router.replace('/gender')}>
           <Text style={styles.goButtonText}>Let's go</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => router.replace('/profile')}>

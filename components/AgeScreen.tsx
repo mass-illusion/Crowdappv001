@@ -1,24 +1,33 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from "react";
 import { Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import SittingMascot from '../assets/images/sitting.svg';
 
 const { height } = Dimensions.get('window');
 
+const ITEM_HEIGHT = 48;
+
 const AGE_MIN = 18;
 const AGE_MAX = 99;
 const ages = Array.from({ length: AGE_MAX - AGE_MIN + 1 }, (_, i) => AGE_MIN + i);
 
-interface AgeScreenProps {
-  onNext: (age: number) => void;
-  onBack: () => void;
-  onMascotPress?: () => void;
-}
-
-const ITEM_HEIGHT = 48;
-
-const AgeScreen: React.FC<AgeScreenProps> = ({ onNext, onBack, onMascotPress }) => {
+const AgeScreen: React.FC = () => {
+  const router = useRouter();
   const [selectedAge, setSelectedAge] = useState<number>(25);
   const flatListRef = React.useRef<FlatList<number>>(null);
+
+  const handleNext = () => {
+    // Navigate to upload screen
+    router.replace('/Upload');
+  };
+
+  const handleBack = () => {
+    router.replace('/gender');
+  };
+
+  const handleMascotPress = () => {
+    handleNext();
+  };
 
 
 
@@ -36,10 +45,10 @@ const AgeScreen: React.FC<AgeScreenProps> = ({ onNext, onBack, onMascotPress }) 
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backArrowButton} onPress={onBack}>
+      <TouchableOpacity style={styles.backArrowButton} onPress={handleBack}>
         <Text style={styles.backArrowText}>←</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.arrowButton} onPress={() => onNext(selectedAge)}>
+      <TouchableOpacity style={styles.arrowButton} onPress={handleNext}>
         <Text style={styles.arrowText}>→</Text>
       </TouchableOpacity>
       <View style={styles.card}>
@@ -64,12 +73,24 @@ const AgeScreen: React.FC<AgeScreenProps> = ({ onNext, onBack, onMascotPress }) 
               if (index > ages.length - 1) index = ages.length - 1;
               setSelectedAge(ages[index]);
             }}
+            onMomentumScrollEnd={e => {
+              const offsetY = e.nativeEvent.contentOffset.y;
+              let index = Math.round(offsetY / ITEM_HEIGHT);
+              // Clamp index to valid range
+              if (index < 0) index = 0;
+              if (index > ages.length - 1) index = ages.length - 1;
+              setSelectedAge(ages[index]);
+            }}
+            onScrollBeginDrag={() => {
+              // Optional: Could add haptic feedback here
+            }}
+            scrollEventThrottle={1}
             initialScrollIndex={ages.indexOf(selectedAge) - 2}
           />
         </View>
         <Text style={styles.ageLabel}>Age</Text>
       </View>
-      <TouchableOpacity onPress={() => onNext(selectedAge)} activeOpacity={0.7}>
+      <TouchableOpacity onPress={handleMascotPress} activeOpacity={0.7}>
         <SittingMascot width={275} height={275} style={styles.mascot} />
       </TouchableOpacity>
     </View>
@@ -102,21 +123,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     paddingTop: 40,
-    marginBottom: 40,
   },
   card: {
     width: '92%',
-    backgroundColor: '#fafbfc',
+    backgroundColor: 'transparent',
     borderRadius: 32,
     alignItems: 'center',
     paddingTop: 96, // Increased top padding to push content down
     paddingBottom: 24,
     marginTop: 64, // Keep card in place
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
-    shadowRadius: 12,
-    elevation: 2,
   },
   pickerContainer: {
     height: ITEM_HEIGHT * 5,
@@ -169,7 +184,7 @@ const styles = StyleSheet.create({
   },
   mascot: {
     marginTop: -24, // Move SVG even closer to Age text
-    marginBottom: 80, // Further increased bottom margin for more spacing
+    marginBottom: 40, // Reduced bottom margin to bring mascot closer to card
     alignSelf: 'center',
     width: 275,
     height: 275,

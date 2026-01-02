@@ -102,7 +102,7 @@ const UploadScreen: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       {/* Forward Arrow Top Right */}
-      <TouchableOpacity style={styles.arrowButton} onPress={() => router.push('/LookingForScreen')}>
+      <TouchableOpacity style={styles.arrowButton} onPress={() => router.replace('/LookingForScreen')}>
         <Text style={styles.arrowText}>→</Text>
       </TouchableOpacity>
       <Text style={styles.title}>UPLOAD</Text>
@@ -164,15 +164,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingTop: 100,
+    paddingTop: 60,
     paddingHorizontal: 0,
-    marginBottom: 40,
   },
   title: {
     fontSize: 56,
     fontWeight: 'bold',
     color: '#E6E9ED',
-    marginBottom: 16,
+    marginBottom: 8,
     alignSelf: 'center',
     letterSpacing: 2,
     textShadowColor: '#bbb',
