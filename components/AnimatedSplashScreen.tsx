@@ -29,7 +29,7 @@ export default function AnimatedSplashScreen({ onNext }: AnimatedSplashScreenPro
         <TouchableOpacity onPress={onNext} style={styles.buttonWrapper}>
           <SvgUri
             uri="https://raw.githubusercontent.com/mass-illusion/Crowdappv001/refs/heads/main/create%20account.svg"
-            width={1500}
+            width={1200}
             height={60}
           />
         </TouchableOpacity>

@@ -1,5 +1,6 @@
 
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import React, { useState } from "react";
@@ -28,6 +29,13 @@ const UploadScreen: React.FC = () => {
         const updated = [...prev];
         if (index >= 0 && index < updated.length) {
           updated[index] = uri;
+          if (index === 0) {
+            try {
+              AsyncStorage.setItem('profilePhoto', uri);
+            } catch (e) {
+              console.warn('Failed saving profile photo', e);
+            }
+          }
         } else {
           const emptyIdx = updated.findIndex(p => !p);
           if (emptyIdx !== -1) updated[emptyIdx] = uri;
@@ -53,6 +61,13 @@ const UploadScreen: React.FC = () => {
         const updated = [...prev];
         if (index >= 0 && index < updated.length) {
           updated[index] = uri;
+          if (index === 0) {
+            try {
+              AsyncStorage.setItem('profilePhoto', uri);
+            } catch (e) {
+              console.warn('Failed saving profile photo', e);
+            }
+          }
         } else {
           const emptyIdx = updated.findIndex(p => !p);
           if (emptyIdx !== -1) updated[emptyIdx] = uri;

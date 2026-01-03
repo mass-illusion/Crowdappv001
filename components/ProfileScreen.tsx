@@ -37,7 +37,13 @@ const ProfileScreen = () => {
           style={styles.nextButton}
           onPress={() => {
             const firstName = fullName.split(' ')[0] || fullName;
-            router.replace(`/welcome?name=${encodeURIComponent(firstName)}`);
+            // Store first name in AsyncStorage
+            import('react-native').then(() => {
+              import('@react-native-async-storage/async-storage').then((AsyncStorageModule) => {
+                AsyncStorageModule.default.setItem('firstName', firstName);
+                router.replace(`/welcome?name=${encodeURIComponent(firstName)}`);
+              });
+            });
           }}
           activeOpacity={0.8}
         >

@@ -96,7 +96,8 @@ const LookingForScreen: React.FC = () => {
       </View>
       <View style={styles.bottomButtonContainer}>
         <SvgPineapple2 width={width * 0.8} height={170} style={styles.bunnyFriends} />
-        <TouchableOpacity style={styles.findMyCrowdButton} onPress={() => router.replace('/also')}>          <SvgFindMyCrowdWhite width={width * 0.8} height={80} />
+        <TouchableOpacity style={styles.findMyCrowdButton} onPress={() => router.replace('/also')}>
+          <SvgFindMyCrowdWhite width={width * 0.8} height={80} />
         </TouchableOpacity>
       </View>
     </View>

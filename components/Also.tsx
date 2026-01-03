@@ -1,15 +1,27 @@
 import * as Location from 'expo-location';
-import React, { useState } from 'react';
-import { Alert, Keyboard, Modal, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, useWindowDimensions, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import React, { useRef, useState } from 'react';
+import { Alert, FlatList, Keyboard, Modal, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, useWindowDimensions, View } from 'react-native';
 import SvgFindMyCrowdWhite from '../assets/images/findmycrowdwhite.svg';
 
 const Also: React.FC = () => {
   const { width } = useWindowDimensions();
+  const router = useRouter();
   const [selectedTab, setSelectedTab] = useState('Girl Friends');
   const [location, setLocation] = useState('Select or enable location');
   const [distance, setDistance] = useState(50);
   const [ageRange, setAgeRange] = useState([28, 38]);
   const [showLocationModal, setShowLocationModal] = useState(false);
+  const [isManualEntry, setIsManualEntry] = useState(false);
+  type CitySuggestion = {
+    id: number;
+    name: string;
+    fullName: string;
+    displayName: string;
+  };
+  
+  const [citySuggestions, setCitySuggestions] = useState<CitySuggestion[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const requestLocation = async () => {
     try {
@@ -45,9 +57,185 @@ const Also: React.FC = () => {
     }
   };
 
+  const enableManualEntry = () => {
+    setIsManualEntry(true);
+    setLocation('');
+    setShowLocationModal(false);
+  };
+
+  const searchCities = async (query: string) => {
+    if (query.length < 2) {
+      setCitySuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&addressdetails=1&limit=10&featuretype=city&countrycodes=us`,
+        { 
+          signal: controller.signal,
+          headers: {
+            'User-Agent': 'CrowdApp/1.0'
+          }
+        }
+      );
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      const cities = (data as Array<{
+        place_id: number;
+        display_name: string;
+        address: {
+          city?: string;
+          town?: string;
+          village?: string;
+          state?: string;
+          country?: string;
+        };
+      }>)
+        .filter((item) => 
+          item.address && 
+          (item.address.city || item.address.town || item.address.village) &&
+          item.address.country === 'United States'
+        )
+        .map((item) => {
+          const city = item.address.city || item.address.town || item.address.village || '';
+          const state = item.address.state;
+          return {
+            id: item.place_id,
+            name: city,
+            fullName: state ? `${city}, ${state}` : city,
+            displayName: item.display_name
+          };
+        })
+        .slice(0, 5);
+
+      setCitySuggestions(cities);
+      setShowSuggestions(cities.length > 0);
+    } catch (error) {
+      console.error('Error fetching cities:', error);
+      // Don't show suggestions on error, but don't alert the user
+      setCitySuggestions([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  const handleLocationChange = (text: string) => {
+    setLocation(text);
+    searchCities(text);
+  };
+
+  const selectCity = (city: { id: number; name: string; fullName: string; displayName: string }) => {
+    setLocation(city.fullName);
+    setCitySuggestions([]);
+    setShowSuggestions(false);
+  };
+
+  const sliderRef = useRef<View>(null);
+  const ageSliderRef = useRef<View>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isDraggingAge, setIsDraggingAge] = useState(false);
+  const [activeAgeThumb, setActiveAgeThumb] = useState<'min' | 'max' | null>(null);
+  
+  const handleDistanceSliderTouch = (event: any) => {
+    if (sliderRef.current) {
+      sliderRef.current.measure((x, y, width, height, pageX, pageY) => {
+        const touchX = event.nativeEvent.pageX - pageX;
+        const percentage = Math.max(0, Math.min(1, touchX / width));
+        const newDistance = Math.round(percentage * 100);
+        
+        if (Math.abs(newDistance - distance) >= 1) {
+          setDistance(newDistance);
+        }
+      });
+    }
+  };
+
+  const handleSliderStart = (event: any) => {
+    setIsDragging(true);
+    handleDistanceSliderTouch(event);
+  };
+
+  const handleSliderEnd = () => {
+    setIsDragging(false);
+  };
+
+  const handleAgeSliderTouch = (event: any) => {
+    if (ageSliderRef.current) {
+      ageSliderRef.current.measure((x, y, width, height, pageX, pageY) => {
+        const touchX = event.nativeEvent.pageX - pageX;
+        const percentage = Math.max(0, Math.min(1, touchX / width));
+        const newAge = Math.round(18 + percentage * (65 - 18)); // 18-65 age range
+        
+        // Determine which thumb to move based on proximity or active thumb
+        const [minAge, maxAge] = ageRange;
+        const minDistance = Math.abs(newAge - minAge);
+        const maxDistance = Math.abs(newAge - maxAge);
+        
+        let targetThumb = activeAgeThumb;
+        if (!targetThumb) {
+          targetThumb = minDistance < maxDistance ? 'min' : 'max';
+        }
+        
+        if (targetThumb === 'min' && newAge < maxAge) {
+          setAgeRange([newAge, maxAge]);
+        } else if (targetThumb === 'max' && newAge > minAge) {
+          setAgeRange([minAge, newAge]);
+        }
+      });
+    }
+  };
+
+  const handleAgeSliderStart = (event: any) => {
+    setIsDraggingAge(true);
+    
+    // Determine which thumb is closer to the touch point
+    if (ageSliderRef.current) {
+      ageSliderRef.current.measure((x, y, width, height, pageX, pageY) => {
+        const touchX = event.nativeEvent.pageX - pageX;
+        const percentage = touchX / width;
+        const touchAge = 18 + percentage * (65 - 18);
+        
+        const [minAge, maxAge] = ageRange;
+        const minDistance = Math.abs(touchAge - minAge);
+        const maxDistance = Math.abs(touchAge - maxAge);
+        
+        setActiveAgeThumb(minDistance < maxDistance ? 'min' : 'max');
+      });
+    }
+    
+    handleAgeSliderTouch(event);
+  };
+
+  const handleAgeSliderEnd = () => {
+    setIsDraggingAge(false);
+    setActiveAgeThumb(null);
+  };
+
+  const distancePercentage = distance / 100;
+  const minAgePercentage = (ageRange[0] - 18) / (65 - 18);
+  const maxAgePercentage = (ageRange[1] - 18) / (65 - 18);
+  const ageProgressWidth = (maxAgePercentage - minAgePercentage) * 100;
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
+      <TouchableOpacity 
+        style={styles.backArrow} 
+        onPress={() => router.replace('/LookingForScreen')}
+      >
+        <Text style={styles.backArrowText}>←</Text>
+      </TouchableOpacity>
       <Text style={styles.header}>I'm looking for...</Text>
       <Text style={styles.subtext}>Get specific! You can always change this later.</Text>
       <View style={styles.tabContainer}>
@@ -63,32 +251,99 @@ const Also: React.FC = () => {
       </View>
       <View style={styles.locationContainer}>
         <Text style={styles.locationLabel}>Location</Text>
-        <TouchableOpacity style={styles.locationInputRow} onPress={() => setShowLocationModal(true)}>
-          <Text style={styles.locationInput}>{location}</Text>
-          <View style={styles.dropdownIcon} />
-        </TouchableOpacity>
+        {isManualEntry ? (
+          <View style={styles.locationInputContainer}>
+            <TextInput
+              style={styles.locationTextInput}
+              value={location}
+              onChangeText={handleLocationChange}
+              placeholder="Enter your city"
+              placeholderTextColor="#C7C7CC"
+              onFocus={() => setShowSuggestions(citySuggestions.length > 0)}
+            />
+            {showSuggestions && (
+              <View style={styles.suggestionsContainer}>
+                <FlatList
+                  data={citySuggestions}
+                  keyExtractor={(item) => item.id.toString()}
+                  renderItem={({ item }) => (
+                    <TouchableOpacity
+                      style={styles.suggestionItem}
+                      onPress={() => selectCity(item)}
+                    >
+                      <Text style={styles.suggestionText}>{item.fullName}</Text>
+                    </TouchableOpacity>
+                  )}
+                  style={styles.suggestionsList}
+                />
+              </View>
+            )}
+          </View>
+        ) : (
+          <TouchableOpacity style={styles.locationInputRow} onPress={() => setShowLocationModal(true)}>
+            <Text style={styles.locationInput}>{location}</Text>
+            <View style={styles.dropdownIcon} />
+          </TouchableOpacity>
+        )}
       </View>
       <View style={styles.sliderSection}>
         <Text style={styles.sliderLabel}>Distance</Text>
         <Text style={styles.sliderValue}>{distance} ml</Text>
-        <View style={styles.sliderContainer}>
+        <View 
+          style={styles.sliderContainer}
+          ref={sliderRef}
+          onStartShouldSetResponder={() => true}
+          onResponderGrant={handleSliderStart}
+          onResponderMove={isDragging ? handleDistanceSliderTouch : undefined}
+          onResponderRelease={handleSliderEnd}
+          onResponderTerminate={handleSliderEnd}
+        >
           <View style={styles.sliderTrack} />
-          <View style={[styles.sliderProgress, { width: '60%' }]} />
-          <View style={[styles.sliderThumb, { left: '58%' }]} />
+          <View 
+            style={[styles.sliderProgress, { width: `${distancePercentage * 100}%` }]}
+            pointerEvents="none"
+          />
+          <View 
+            style={[styles.sliderThumb, { left: `${distancePercentage * 100}%` }]}
+            pointerEvents="none"
+          />
         </View>
       </View>
       <View style={styles.sliderSection}>
         <Text style={styles.sliderLabel}>Age</Text>
         <Text style={styles.sliderValue}>{ageRange[0]}-{ageRange[1]}</Text>
-        <View style={styles.sliderContainer}>
+        <View 
+          style={styles.sliderContainer}
+          ref={ageSliderRef}
+          onStartShouldSetResponder={() => true}
+          onResponderGrant={handleAgeSliderStart}
+          onResponderMove={isDraggingAge ? handleAgeSliderTouch : undefined}
+          onResponderRelease={handleAgeSliderEnd}
+          onResponderTerminate={handleAgeSliderEnd}
+        >
           <View style={styles.sliderTrack} />
-          <View style={[styles.sliderProgress, { left: '20%', width: '40%' }]} />
-          <View style={[styles.sliderThumb, { left: '18%' }]} />
-          <View style={[styles.sliderThumb, { left: '58%' }]} />
+          <View 
+            style={[
+              styles.sliderProgress, 
+              { 
+                left: `${minAgePercentage * 100}%`, 
+                width: `${ageProgressWidth}%` 
+              }
+            ]}
+            pointerEvents="none"
+          />
+          <View 
+            style={[styles.sliderThumb, { left: `${minAgePercentage * 100}%` }]}
+            pointerEvents="none"
+          />
+          <View 
+            style={[styles.sliderThumb, { left: `${maxAgePercentage * 100}%` }]}
+            pointerEvents="none"
+          />
         </View>
       </View>
       <View style={styles.bottomContainer}>
-        <TouchableOpacity style={styles.findButton}>
+        <TouchableOpacity style={styles.findButton} onPress={() => router.replace('/interests')}>
           <SvgFindMyCrowdWhite width={width * 0.85} height={80} />
         </TouchableOpacity>
       </View>
@@ -121,7 +376,7 @@ const Also: React.FC = () => {
             
             <TouchableOpacity 
               style={styles.manualButton}
-              onPress={() => setShowLocationModal(false)}
+              onPress={enableManualEntry}
             >
               <Text style={styles.manualButtonText}>Enter Location Manually</Text>
             </TouchableOpacity>
@@ -139,6 +394,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingTop: 120,
     paddingHorizontal: 20,
+  },
+  backArrow: {
+    position: 'absolute',
+    top: 70,
+    left: 20,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+  },
+  backArrowText: {
+    fontSize: 24,
+    color: '#C7C7CC',
+    fontWeight: '300',
   },
   header: {
     fontSize: 32,
@@ -182,6 +452,10 @@ const styles = StyleSheet.create({
   locationContainer: {
     marginBottom: 32,
   },
+  locationInputContainer: {
+    position: 'relative',
+    zIndex: 1000,
+  },
   locationLabel: {
     color: '#8E8E93',
     fontSize: 13,
@@ -201,6 +475,49 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     color: '#C7C7CC',
+  },
+  locationTextInput: {
+    borderWidth: 1,
+    borderColor: '#E5E5EA',
+    borderRadius: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    fontSize: 16,
+    color: '#000',
+    backgroundColor: '#fff',
+    height: 44,
+  },
+  suggestionsContainer: {
+    position: 'absolute',
+    top: 44,
+    left: 0,
+    right: 0,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#E5E5EA',
+    borderTopWidth: 0,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    maxHeight: 200,
+    zIndex: 1001,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  suggestionsList: {
+    maxHeight: 200,
+  },
+  suggestionItem: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F0F0F0',
+  },
+  suggestionText: {
+    fontSize: 16,
+    color: '#333',
   },
   dropdownIcon: {
     width: 0,
@@ -254,6 +571,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#8CC7FF',
     top: -8,
+    marginLeft: -10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,

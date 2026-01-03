@@ -12,7 +12,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.yourcompany.crowdappv01",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "This app uses location to help you find friends nearby."
+        "NSLocationWhenInUseUsageDescription": "This app uses location to help you find friends nearby.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
@@ -24,7 +25,13 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ],
+      "package": "com.yourcompany.crowdappv01"
     },
     "web": {
       "output": "static",
@@ -48,6 +55,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "b2c9cdea-3185-4a23-84fd-51b8cfeaf9a0"
+      }
+    },
+    "owner": "mass_illusion"
   }
 }
