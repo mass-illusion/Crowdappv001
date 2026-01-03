@@ -29,19 +29,19 @@ const UploadScreen: React.FC = () => {
         const updated = [...prev];
         if (index >= 0 && index < updated.length) {
           updated[index] = uri;
-          if (index === 0) {
-            try {
-              AsyncStorage.setItem('profilePhoto', uri);
-            } catch (e) {
-              console.warn('Failed saving profile photo', e);
-            }
-          }
         } else {
           const emptyIdx = updated.findIndex(p => !p);
           if (emptyIdx !== -1) updated[emptyIdx] = uri;
         }
         return updated;
       });
+      if (index === 0) {
+        try {
+          await AsyncStorage.setItem('profilePhoto', uri);
+        } catch (e) {
+          console.warn('Failed saving profile photo', e);
+        }
+      }
     }
   };
 
@@ -61,13 +61,6 @@ const UploadScreen: React.FC = () => {
         const updated = [...prev];
         if (index >= 0 && index < updated.length) {
           updated[index] = uri;
-          if (index === 0) {
-            try {
-              AsyncStorage.setItem('profilePhoto', uri);
-            } catch (e) {
-              console.warn('Failed saving profile photo', e);
-            }
-          }
         } else {
           const emptyIdx = updated.findIndex(p => !p);
           if (emptyIdx !== -1) updated[emptyIdx] = uri;

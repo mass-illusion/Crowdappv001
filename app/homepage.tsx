@@ -1,28 +1,35 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import { useFocusEffect, useRouter } from 'expo-router';
+import React from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import MicrophoneIcon from '../assets/images/Microphone.svg';
+import HomeIcon from '../assets/images/home.svg';
+import MapIcon from '../assets/images/map.svg';
+import MessageIcon from '../assets/images/message.svg';
+import SearchIcon from '../assets/images/seacrh.svg';
 import Welcome2Button from '../assets/images/welcome2.svg';
 
 const Homepage: React.FC = () => {
   // This would typically come from user context/state
-  const [userName, setUserName] = useState('');
-  const [userProfileImage, setUserProfileImage] = useState<string>('https://via.placeholder.com/50'); // Placeholder - will be replaced by uploaded image
+  const [userName, setUserName] = React.useState('');
+  const [userProfileImage, setUserProfileImage] = React.useState('https://via.placeholder.com/50');
   const router = useRouter();
 
-  useEffect(() => {
-    const loadProfile = async () => {
-      try {
-        const uri = await AsyncStorage.getItem('profilePhoto');
-        if (uri) setUserProfileImage(uri);
-        const firstName = await AsyncStorage.getItem('firstName');
-        if (firstName) setUserName(firstName);
-      } catch (e) {
-        console.warn('Failed to load profile photo or first name', e);
-      }
-    };
-    loadProfile();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      const loadProfilePhotoAndName = async () => {
+        try {
+          const uri = await AsyncStorage.getItem('profilePhoto');
+          if (uri) setUserProfileImage(uri);
+          const firstName = await AsyncStorage.getItem('firstName');
+          if (firstName) setUserName(firstName);
+        } catch (e) {
+          console.warn('Failed to load profile photo or first name', e);
+        }
+      };
+      loadProfilePhotoAndName();
+    }, [])
+  );
 
   return (
     <View style={styles.container}>
@@ -30,7 +37,7 @@ const Homepage: React.FC = () => {
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.headerLeft}>
-            <Text style={styles.greeting}>Hi {userName} 👋</Text>
+            <Text style={styles.greeting}>Hi {userName || 'Sabrina'} 👋</Text>
             <TouchableOpacity style={styles.menuButton}>
               <View style={styles.menuIcon}>
                 <View style={styles.menuLine} />
@@ -110,7 +117,7 @@ const Homepage: React.FC = () => {
         {/* Feature Sections */}
         <TouchableOpacity style={styles.featureSection}>
           <Image
-            source={{ uri: 'https://via.placeholder.com/400x200' }}
+            source={require('../assets/images/musicfestival.png')}
             style={styles.featureImage}
           />
           <View style={styles.featureOverlay}>
@@ -120,7 +127,7 @@ const Homepage: React.FC = () => {
 
         <TouchableOpacity style={styles.featureSection}>
           <Image
-            source={{ uri: 'https://via.placeholder.com/400x200' }}
+            source={require('../assets/images/conventions.png')}
             style={styles.featureImage}
           />
           <View style={styles.featureOverlay}>
@@ -130,36 +137,36 @@ const Homepage: React.FC = () => {
 
         <TouchableOpacity style={styles.featureSection}>
           <Image
-            source={{ uri: 'https://via.placeholder.com/400x200' }}
+            source={require('../assets/images/live.png')}
             style={styles.featureImage}
           />
           <View style={styles.featureOverlay}>
-            <Text style={styles.featureTitle}>Chats</Text>
+            <Text style={styles.featureTitle}>Live</Text>
           </View>
         </TouchableOpacity>
       </ScrollView>
 
       {/* Bottom Navigation */}
-      <View style={styles.bottomNav}>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navIcon}>🏠</Text>
-          <Text style={styles.navLabel}>Home</Text>
+      <View style={styles.bottomNavCustom}>
+        <TouchableOpacity style={styles.navItemCustom}>
+          <HomeIcon width={32} height={32} style={styles.navIconOutline} />
+          <Text style={styles.navLabelOutline}>Home</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navIcon}>🔍</Text>
-          <Text style={styles.navLabel}>Search</Text>
+        <TouchableOpacity style={styles.navItemCustom}>
+          <SearchIcon width={32} height={32} style={styles.navIconOutline} />
+          <Text style={styles.navLabelOutline}>Search</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navIcon}>🎤</Text>
-          <Text style={styles.navLabel}>Speak</Text>
+        <TouchableOpacity style={styles.navItemCustom}>
+          <MicrophoneIcon width={32} height={32} style={styles.navIconOutline} />
+          <Text style={styles.navLabelOutline}>Speak</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navIcon}>📍</Text>
-          <Text style={styles.navLabel}>Map</Text>
+        <TouchableOpacity style={styles.navItemCustom}>
+          <MapIcon width={32} height={32} style={styles.navIconOutline} />
+          <Text style={styles.navLabelOutline}>Map</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navIcon}>💬</Text>
-          <Text style={styles.navLabel}>Chat</Text>
+        <TouchableOpacity style={styles.navItemCustom}>
+          <MessageIcon width={32} height={32} style={styles.navIconOutline} />
+          <Text style={styles.navLabelOutline}>Chat</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -350,8 +357,8 @@ const styles = StyleSheet.create({
   },
   featureSection: {
     marginHorizontal: 16,
-    marginBottom: 16,
-    borderRadius: 12,
+    marginBottom: 8, // decreased space between banners
+    borderRadius: 8, // slightly rounded corners
     overflow: 'hidden',
     height: 150,
   },
@@ -372,26 +379,44 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
   },
-  bottomNav: {
+  bottomNavCustom: {
     flexDirection: 'row',
     backgroundColor: '#fff',
-    borderTopWidth: 1,
-    borderTopColor: '#E5E5EA',
-    paddingVertical: 8,
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
+    paddingTop: 0,
+    paddingBottom: 16,
+    paddingHorizontal: 8,
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 8,
+    marginBottom: 8, // reduced bottom margin
   },
-  navItem: {
+  navItemCustom: {
     flex: 1,
     alignItems: 'center',
-    paddingVertical: 8,
+    justifyContent: 'flex-end',
+    paddingBottom: 4, // reduce space below icons/labels
   },
-  navIcon: {
-    fontSize: 20,
-    marginBottom: 4,
+  navIconOutline: {
+    width: 32,
+    height: 32,
+    marginBottom: 0,
+    resizeMode: 'contain',
+    tintColor: '#222',
   },
-  navLabel: {
-    fontSize: 10,
-    color: '#8E8E93',
+  navLabelOutline: {
+    fontSize: 13,
+    color: '#222',
+    fontWeight: '400',
+    marginTop: 2,
   },
+
+
 });
 
 export default Homepage;

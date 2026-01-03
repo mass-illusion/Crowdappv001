@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import NextButtonSvg from '../assets/images/nextbutton.svg';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 
 const ProfileScreen = () => {
@@ -35,15 +36,14 @@ const ProfileScreen = () => {
         </View>
         <TouchableOpacity
           style={styles.nextButton}
-          onPress={() => {
+          onPress={async () => {
             const firstName = fullName.split(' ')[0] || fullName;
-            // Store first name in AsyncStorage
-            import('react-native').then(() => {
-              import('@react-native-async-storage/async-storage').then((AsyncStorageModule) => {
-                AsyncStorageModule.default.setItem('firstName', firstName);
-                router.replace(`/welcome?name=${encodeURIComponent(firstName)}`);
-              });
-            });
+            try {
+              await AsyncStorage.setItem('firstName', firstName);
+            } catch (e) {
+              console.warn('Failed saving first name', e);
+            }
+            router.replace(`/welcome?name=${encodeURIComponent(firstName)}`);
           }}
           activeOpacity={0.8}
         >
