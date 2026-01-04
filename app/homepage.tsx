@@ -1,19 +1,21 @@
+import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useRouter } from 'expo-router';
 import React from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import MicrophoneIcon from '../assets/images/Microphone.svg';
-import HomeIcon from '../assets/images/home.svg';
-import MapIcon from '../assets/images/map.svg';
-import MessageIcon from '../assets/images/message.svg';
-import SearchIcon from '../assets/images/seacrh.svg';
-import Welcome2Button from '../assets/images/welcome2.svg';
+import Microphone3 from '../assets/images/Microphone3.svg';
 
-const Homepage: React.FC = () => {
+// import MusicFestival1SVG from '../assets/images/musicfestival1.svg';
+import Welcome2SVG from '../assets/images/welcome2.svg';
+
+
+const Homepage = () => {
   // This would typically come from user context/state
   const [userName, setUserName] = React.useState('');
   const [userProfileImage, setUserProfileImage] = React.useState('https://via.placeholder.com/50');
+
   const router = useRouter();
+  // const [activeTab, setActiveTab] = React.useState('home');
 
   useFocusEffect(
     React.useCallback(() => {
@@ -31,27 +33,27 @@ const Homepage: React.FC = () => {
     }, [])
   );
 
+  // Optimize navigation handler for Live Events
+  const handleLiveEventsPress = React.useCallback(() => {
+    router.push('/live-events');
+  }, [router]);
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.headerLeft}>
-            <Text style={styles.greeting}>Hi {userName || 'Sabrina'} 👋</Text>
-            <TouchableOpacity style={styles.menuButton}>
-              <View style={styles.menuIcon}>
-                <View style={styles.menuLine} />
-                <View style={styles.menuLine} />
-                <View style={styles.menuLine} />
-              </View>
-            </TouchableOpacity>
+            <Text style={styles.greeting}>Hi {userName || 'Sabrina'}</Text>
           </View>
           <View style={styles.headerRight}>
-            <TouchableOpacity style={styles.notificationButton}>
+            <TouchableOpacity style={[styles.notificationButton, { marginLeft: 16 }]}> 
               <View style={styles.notificationIcon}>
-                <Text style={styles.bellIcon}>🔔</Text>
-                <View style={styles.notificationDot} />
+                <Ionicons name="notifications" size={32} color="#8E8E93" style={styles.bellIcon} />
               </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuButton}>
+              <Ionicons name="options-outline" size={28} color="#8E8E93" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.profileButton} onPress={() => router.push('/Upload')}>
               <View style={styles.profileWrap}>
@@ -66,9 +68,9 @@ const Homepage: React.FC = () => {
 
         {/* Category Cards */}
         <View style={styles.categoryGrid}>
-          <TouchableOpacity style={[styles.categoryCard, styles.liveEventsCard]}>
+          <TouchableOpacity style={[styles.categoryCard, styles.liveEventsCard]} onPress={handleLiveEventsPress}>
             <Image
-              source={require('../assets/images/liveevent.png')}
+              source={require('../assets/images/liveevent4.webp')}
               style={styles.categoryImage}
             />
             <View style={styles.categoryOverlay}>
@@ -78,7 +80,7 @@ const Homepage: React.FC = () => {
 
           <TouchableOpacity style={[styles.categoryCard, styles.localsCard]}>
             <Image
-              source={require('../assets/images/locals.png')}
+              source={require('../assets/images/locals1.webp')}
               style={[styles.categoryImage, styles.localsImage]}
             />
             <View style={styles.categoryOverlay}>
@@ -88,7 +90,7 @@ const Homepage: React.FC = () => {
 
           <TouchableOpacity style={[styles.categoryCard, styles.circlesCard]}>
             <Image
-              source={require('../assets/images/circles2.png')}
+              source={require('../assets/images/circle4.webp')}
               style={styles.categoryImage}
             />
             <View style={styles.categoryOverlay}>
@@ -98,8 +100,8 @@ const Homepage: React.FC = () => {
 
           <TouchableOpacity style={[styles.categoryCard, styles.gamesCard]}>
             <Image
-              source={require('../assets/images/games.png')}
-              style={styles.categoryImage}
+              source={require('../assets/images/games3.webp')}
+              style={[styles.categoryImage, { top: -12 }]}
             />
             <View style={styles.categoryOverlay}>
               <Text style={styles.categoryTitle}>GAMES</Text>
@@ -110,7 +112,7 @@ const Homepage: React.FC = () => {
         {/* Welcome Card */}
         <TouchableOpacity style={styles.welcomeCard}>
           <View style={styles.buttonContainer}>
-            <Welcome2Button width={360} height={90} />
+            <Welcome2SVG width={360} height={90} />
           </View>
         </TouchableOpacity>
 
@@ -120,8 +122,19 @@ const Homepage: React.FC = () => {
             source={require('../assets/images/musicfestival.png')}
             style={styles.featureImage}
           />
-          <View style={styles.featureOverlay}>
+          <View style={[styles.featureOverlay, { backgroundColor: 'rgba(0,0,0,0.35)' }]}> 
             <Text style={styles.featureTitle}>Music Festivals</Text>
+          </View>
+        </TouchableOpacity>
+
+        {/* Sports Banner */}
+        <TouchableOpacity style={styles.featureSection}>
+          <Image
+            source={require('../assets/images/sports.png')}
+            style={styles.featureImage}
+          />
+          <View style={styles.featureOverlay}>
+            <Text style={styles.featureTitle}>Sports</Text>
           </View>
         </TouchableOpacity>
 
@@ -149,24 +162,16 @@ const Homepage: React.FC = () => {
       {/* Bottom Navigation */}
       <View style={styles.bottomNavCustom}>
         <TouchableOpacity style={styles.navItemCustom}>
-          <HomeIcon width={32} height={32} style={styles.navIconOutline} />
-          <Text style={styles.navLabelOutline}>Home</Text>
+          <Ionicons name="home-outline" size={28} color="#8E8E93" style={styles.navIconOutline} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItemCustom}>
-          <SearchIcon width={32} height={32} style={styles.navIconOutline} />
-          <Text style={styles.navLabelOutline}>Search</Text>
+          <Microphone3 width={28} height={28} style={styles.navIconOutline} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItemCustom}>
-          <MicrophoneIcon width={32} height={32} style={styles.navIconOutline} />
-          <Text style={styles.navLabelOutline}>Speak</Text>
+          <Ionicons name="map-outline" size={28} color="#8E8E93" style={styles.navIconOutline} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItemCustom}>
-          <MapIcon width={32} height={32} style={styles.navIconOutline} />
-          <Text style={styles.navLabelOutline}>Map</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItemCustom}>
-          <MessageIcon width={32} height={32} style={styles.navIconOutline} />
-          <Text style={styles.navLabelOutline}>Chat</Text>
+          <Ionicons name="chatbubble-outline" size={28} color="#8E8E93" style={styles.navIconOutline} />
         </TouchableOpacity>
       </View>
     </View>
@@ -177,6 +182,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  headerLeft: {
+    flex: 1,
+    justifyContent: 'flex-start',
+  },
+  notificationIcon: {
+    position: 'relative',
   },
   menuButton: {
     padding: 8,
@@ -192,19 +204,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingTop: 60,
-    paddingBottom: 20,
+    paddingBottom: 20, // increased space below header
   },
   greeting: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: 'bold',
-    color: '#d3d3d3', // light grey
-    marginRight: 12,
-  },
-  headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-    padding: 8,
+    color: '#C7C7CC',
+    marginBottom: -4,
+    letterSpacing: 0,
   },
   // Removed duplicate notificationButton style
   profileButton: {
@@ -250,9 +257,6 @@ const styles = StyleSheet.create({
   notificationButton: {
     marginRight: 12,
   },
-  notificationIcon: {
-    position: 'relative',
-  },
   bellIcon: {
     fontSize: 24,
   },
@@ -273,6 +277,7 @@ const styles = StyleSheet.create({
   categoryGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'space-between',
     paddingHorizontal: 16,
     marginBottom: 20,
   },
@@ -281,7 +286,6 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 12,
     marginBottom: 12,
-    marginRight: '2%',
     overflow: 'hidden',
     position: 'relative',
   },
@@ -293,8 +297,8 @@ const styles = StyleSheet.create({
   },
   localsImage: {
     top: 0,
-    left: -10,
-    width: '105%',
+    left: 0,
+    width: '100%',
   },
   liveEventsCard: {
     backgroundColor: '#FF6B35',
@@ -307,8 +311,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#4A90E2',
   },
   gamesCard: {
-    backgroundColor: '#F39C12',
-    marginRight: 0,
+    backgroundColor: '#00C853',
   },
   categoryOverlay: {
     flex: 1,
@@ -384,10 +387,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderTopLeftRadius: 32,
     borderTopRightRadius: 32,
-    paddingTop: 0,
-    paddingBottom: 16,
+    paddingTop: 12,
+    paddingBottom: 20,
     paddingHorizontal: 8,
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent: 'space-between',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: -2 },
@@ -396,12 +399,6 @@ const styles = StyleSheet.create({
     elevation: 8,
     marginBottom: 8, // reduced bottom margin
   },
-  navItemCustom: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingBottom: 4, // reduce space below icons/labels
-  },
   navIconOutline: {
     width: 32,
     height: 32,
@@ -409,14 +406,13 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     tintColor: '#222',
   },
-  navLabelOutline: {
-    fontSize: 13,
-    color: '#222',
-    fontWeight: '400',
-    marginTop: 2,
+  navItemCustom: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
-
+  // ...existing code...
 });
 
 export default Homepage;
