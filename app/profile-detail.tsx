@@ -395,16 +395,6 @@ export default function ProfileDetailScreen() {
             </View>
 
             <Text style={styles.interestCount}>{profile.interests.length} interests</Text>
-            
-            {/* Add some extra content to demonstrate scrolling */}
-            <View style={styles.additionalContent}>
-              <Text style={styles.sectionTitle}>More About {profile.name}</Text>
-              <Text style={styles.additionalText}>
-                This profile section is now scrollable, allowing for more detailed information about the user. 
-                You can add more sections here like preferences, experience, or any other relevant details that 
-                might help users connect better.
-              </Text>
-            </View>
           </View>
         </ScrollView>
 
@@ -530,15 +520,15 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   profileName: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: 'bold',
     color: '#333',
+    marginBottom: 0,
   },
   citySection: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
-    paddingVertical: 4,
   },
   cityText: {
     fontSize: 16,
@@ -589,7 +579,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#333',
     marginBottom: 8,
-    textDecorationLine: 'underline',
   },
   lookingForText: {
     fontSize: 16,

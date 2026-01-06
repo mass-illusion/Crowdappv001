@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useRouter } from 'expo-router';
 import React from 'react';
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 // Mock event data - replace with actual API calls to Ticketmaster/other sources
 const mockEvents = [
@@ -46,6 +46,7 @@ export default function MusicEventsScreen() {
     "2": "Interested", 
     "3": "Interested"
   });
+  const [searchQuery, setSearchQuery] = React.useState('');
 
   const toggleEventStatus = (eventId: number) => {
     setEventStatuses(prev => ({
@@ -99,6 +100,25 @@ export default function MusicEventsScreen() {
             </Text>
           </TouchableOpacity>
         ))}
+      </View>
+
+      {/* Search Bar */}
+      <View style={styles.searchContainer}>
+        <View style={styles.searchBar}>
+          <Ionicons name="search" size={20} color="#8E8E93" style={styles.searchIcon} />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search events..."
+            placeholderTextColor="#8E8E93"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+          {searchQuery.length > 0 && (
+            <TouchableOpacity onPress={() => setSearchQuery('')}>
+              <Ionicons name="close-circle" size={20} color="#8E8E93" />
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
 
       {/* Events Feed */}
@@ -167,7 +187,7 @@ export default function MusicEventsScreen() {
         <TouchableOpacity style={styles.navItemCustom}>
           <Ionicons name="map-outline" size={28} color="#8E8E93" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItemCustom}>
+        <TouchableOpacity style={styles.navItemCustom} onPress={() => router.push('/messages')}>
           <Ionicons name="chatbubble-outline" size={28} color="#8E8E93" />
         </TouchableOpacity>
       </View>
@@ -225,6 +245,26 @@ const styles = StyleSheet.create({
   },
   selectedCategoryText: {
     color: '#fff',
+  },
+  searchContainer: {
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+  },
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F2F2F7',
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  },
+  searchIcon: {
+    marginRight: 8,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: '#333',
   },
   eventsContainer: {
     flex: 1,

@@ -216,7 +216,7 @@ export default function CrowdProfilesScreen() {
         <TouchableOpacity style={styles.navItemCustom}>
           <Ionicons name="map-outline" size={28} color="#8E8E93" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItemCustom}>
+        <TouchableOpacity style={styles.navItemCustom} onPress={() => router.push('/messages')}>
           <Ionicons name="chatbubble-outline" size={28} color="#8E8E93" />
         </TouchableOpacity>
       </View>

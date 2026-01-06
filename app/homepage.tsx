@@ -170,7 +170,7 @@ const Homepage = () => {
         <TouchableOpacity style={styles.navItemCustom}>
           <Ionicons name="map-outline" size={28} color="#8E8E93" style={styles.navIconOutline} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItemCustom}>
+        <TouchableOpacity style={styles.navItemCustom} onPress={() => router.push('/messages')}>
           <Ionicons name="chatbubble-outline" size={28} color="#8E8E93" style={styles.navIconOutline} />
         </TouchableOpacity>
       </View>
