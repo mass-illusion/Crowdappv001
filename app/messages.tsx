@@ -18,22 +18,17 @@ const mockProfiles = [
   },
   {
     id: 3,
-    image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300',
+    image: require('../assets/images/profile01.png'),
     name: 'Sarah & Mia',
   },
   {
     id: 4,
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300',
+    image: require('../assets/images/profile2.png'),
     name: 'Alex',
   },
   {
-    id: 5,
-    image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300',
-    name: 'Concert Crew',
-  },
-  {
     id: 6,
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300',
+    image: require('../assets/images/profile01.png'),
     name: 'Maya',
   }
 ];
@@ -53,6 +48,8 @@ export default function MessagesScreen() {
   const router = useRouter();
   const [messages, setMessages] = useState<Message[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showFriendSelection, setShowFriendSelection] = useState(false);
   const [availableFriends, setAvailableFriends] = useState<any[]>([]);
   const [selectedFriends, setSelectedFriends] = useState<number[]>([]);
@@ -68,20 +65,41 @@ export default function MessagesScreen() {
   const loadMessages = async () => {
     try {
       const friends = await AsyncStorage.getItem('friends');
-      const friendsList = friends ? JSON.parse(friends) : [];
+      let friendsList = friends ? JSON.parse(friends) : [];
+      
+      // Remove Concert Crew (id: 5) from friends list
+      friendsList = friendsList.filter((friend: any) => friend.id !== 5);
+      
+      // Update friends list without Concert Crew
+      await AsyncStorage.setItem('friends', JSON.stringify(friendsList));
       
       // Get actual conversation data
       const conversations = await AsyncStorage.getItem('conversations');
-      const conversationData = conversations ? JSON.parse(conversations) : {};
+      let conversationData = conversations ? JSON.parse(conversations) : {};
+      
+      // Remove Concert Crew conversation
+      delete conversationData['conversation_5'];
+      await AsyncStorage.setItem('conversations', JSON.stringify(conversationData));
       
       // Get conversation participants
       const participantsData = await AsyncStorage.getItem('conversationParticipants');
-      const allParticipants = participantsData ? JSON.parse(participantsData) : {};
+      let allParticipants = participantsData ? JSON.parse(participantsData) : {};
+      
+      // Remove Concert Crew participants
+      delete allParticipants['conversation_5'];
+      await AsyncStorage.setItem('conversationParticipants', JSON.stringify(allParticipants));
       
       const messagesList: Message[] = [];
+      const processedConversations = new Set(); // Track processed conversations to avoid duplicates
       
       for (const friend of friendsList) {
         const conversationKey = `conversation_${friend.id}`;
+        
+        // Skip if we've already processed this conversation
+        if (processedConversations.has(conversationKey)) {
+          continue;
+        }
+        
         const conversation = conversationData[conversationKey];
         const participants = allParticipants[conversationKey] || [];
         
@@ -89,16 +107,30 @@ export default function MessagesScreen() {
           const lastMessage = conversation[conversation.length - 1];
           const timestamp = new Date(lastMessage.timestamp);
           
+          // Check for notifications specific to this conversation (group additions)
+          const notifications = await AsyncStorage.getItem('conversationNotifications');
+          const notificationData = notifications ? JSON.parse(notifications) : {};
+          
+          // Check if this specific conversation has an unread group addition notification
+          const specificNotificationKey = `notification_${friend.id}_conversation_${friend.id}`;
+          const hasNotification = notificationData[specificNotificationKey] && !notificationData[specificNotificationKey].read;
+          
+          // Check for regular unread messages
+          const hasUnreadMessage = lastMessage.sender === 'other' && !lastMessage.read;
+          
           messagesList.push({
             id: friend.id,
             name: friend.name,
             image: friend.image,
             lastMessage: lastMessage.text,
             timestamp: formatTimestamp(timestamp),
-            unread: lastMessage.sender === 'other' && !lastMessage.read,
+            unread: hasUnreadMessage || hasNotification,
             isLocalImage: friend.isLocalImage,
             participants: participants
           });
+          
+          // Mark this conversation as processed
+          processedConversations.add(conversationKey);
         }
       }
       
@@ -176,49 +208,121 @@ export default function MessagesScreen() {
     );
   };
 
-  const renderMessage = ({ item }: { item: Message }) => (
-    <TouchableOpacity 
-      style={styles.messageItem}
-      onPress={() => router.push(`/direct-message?profileName=${encodeURIComponent(item.name)}&profileId=${item.id}`)}
-    >
-      <View style={styles.avatarContainer}>
-        {item.isLocalImage ? (
-          <Image source={item.image} style={styles.avatar} />
-        ) : (
-          <Image source={{ uri: item.image }} style={styles.avatar} />
-        )}
-        {item.unread && <View style={styles.unreadBadge} />}
-      </View>
+  // Shared function to delete conversation data
+  const deleteConversationData = async (profileId: string | number, participantsList: any[] = []) => {
+    try {
+      // Remove conversation data
+      const conversations = await AsyncStorage.getItem('conversations');
+      let conversationData = conversations ? JSON.parse(conversations) : {};
+      const conversationKey = `conversation_${profileId}`;
+      delete conversationData[conversationKey];
       
-      <View style={styles.messageContent}>
-        <View style={styles.messageHeader}>
-          <Text style={[styles.name, item.unread && styles.unreadName]}>{item.name}</Text>
-          <Text style={styles.timestamp}>{item.timestamp}</Text>
+      // Also remove conversation data for all participants
+      if (participantsList.length > 0) {
+        for (const participant of participantsList) {
+          const participantKey = `conversation_${participant.id}`;
+          delete conversationData[participantKey];
+        }
+      }
+      await AsyncStorage.setItem('conversations', JSON.stringify(conversationData));
+      
+      // Remove participants data
+      const participantsData = await AsyncStorage.getItem('conversationParticipants');
+      let allParticipants = participantsData ? JSON.parse(participantsData) : {};
+      delete allParticipants[conversationKey];
+      await AsyncStorage.setItem('conversationParticipants', JSON.stringify(allParticipants));
+      
+      // Remove related notifications
+      const notifications = await AsyncStorage.getItem('conversationNotifications');
+      if (notifications) {
+        let notificationData = JSON.parse(notifications);
+        // Remove notifications for this conversation
+        Object.keys(notificationData).forEach(key => {
+          if (key.includes(`_conversation_${profileId}`) || key.includes(`notification_${profileId}_`)) {
+            delete notificationData[key];
+          }
+        });
+        await AsyncStorage.setItem('conversationNotifications', JSON.stringify(notificationData));
+      }
+      
+      return true;
+    } catch (error) {
+      console.log('Error deleting conversation:', error);
+      return false;
+    }
+  };
+
+  const handleDeleteMessage = (message: Message) => {
+    setSelectedMessage(message);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDeleteMessage = async () => {
+    if (!selectedMessage) return;
+    
+    const success = await deleteConversationData(selectedMessage.id, selectedMessage.participants);
+    
+    if (success) {
+      // Reload messages to reflect the changes
+      await loadMessages();
+      setShowDeleteModal(false);
+      setSelectedMessage(null);
+    } else {
+      Alert.alert('Error', 'Could not delete conversation.');
+    }
+  };
+
+  const renderMessageItem = ({ item }: { item: Message }) => {
+    return (
+      <TouchableOpacity 
+        style={styles.messageItem}
+        onPress={() => {
+          router.push(`/direct-message?profileName=${encodeURIComponent(item.name)}&profileId=${item.id}`);
+        }}
+        onLongPress={() => handleDeleteMessage(item)}
+      >
+        <View style={styles.avatarContainer}>
+          {item.isLocalImage ? (
+            <Image source={item.image} style={styles.avatar} />
+          ) : (
+            <Image source={{ uri: item.image }} style={styles.avatar} />
+          )}
+          {item.unread && <View style={styles.unreadBadge} />}
         </View>
-        {item.participants && item.participants.length > 0 && (
-          <View style={styles.participantsContainer}>
-            {item.participants.slice(0, 3).map((participant, index) => (
-              <Image
-                key={participant.id}
-                source={participant.image}
-                style={[styles.participantAvatar, { marginLeft: index > 0 ? -6 : 0 }]}
-              />
-            ))}
-            {item.participants.length > 3 && (
-              <View style={[styles.participantAvatar, styles.moreParticipants]}>
-                <Text style={styles.moreParticipantsText}>+{item.participants.length - 3}</Text>
-              </View>
-            )}
+        
+        <View style={styles.messageContent}>
+          <View style={styles.messageHeader}>
+            <Text style={[styles.name, item.unread && styles.unreadName]}>{item.name}</Text>
+            <Text style={styles.timestamp}>{item.timestamp}</Text>
           </View>
-        )}
-        <Text style={[styles.lastMessage, item.unread && styles.unreadMessage]} numberOfLines={1}>
-          {item.lastMessage}
-        </Text>
-      </View>
-      
-      <Ionicons name="chevron-forward" size={20} color="#C7C7CC" />
-    </TouchableOpacity>
-  );
+          {item.participants && item.participants.length > 0 && (
+            <View style={styles.participantsContainer}>
+              {item.participants.slice(0, 3).map((participant, index) => {
+                const uniqueKey = `msg-${item.id}-participant-${participant.id || participant.name}-${index}`;
+                return (
+                  <Image
+                    key={uniqueKey}
+                    source={participant.image}
+                    style={[styles.participantAvatar, { marginLeft: index > 0 ? -6 : 0 }]}
+                  />
+                );
+              })}
+              {item.participants.length > 3 && (
+                <View key={`msg-${item.id}-more-participants`} style={[styles.participantAvatar, styles.moreParticipants]}>
+                  <Text style={styles.moreParticipantsText}>+{item.participants.length - 3}</Text>
+                </View>
+              )}
+            </View>
+          )}
+          <Text style={[styles.lastMessage, item.unread && styles.unreadMessage]} numberOfLines={1}>
+            {item.lastMessage}
+          </Text>
+        </View>
+        
+        <Ionicons name="chevron-forward" size={20} color="#C7C7CC" />
+      </TouchableOpacity>
+    );
+  };
 
   const renderEmptyState = () => (
     <View style={styles.emptyState}>
@@ -279,7 +383,7 @@ export default function MessagesScreen() {
           {messages.length > 0 ? (
             <FlatList
               data={messages}
-              renderItem={renderMessage}
+              renderItem={renderMessageItem}
               keyExtractor={(item) => item.id.toString()}
               style={styles.messagesList}
               showsVerticalScrollIndicator={false}
@@ -334,6 +438,39 @@ export default function MessagesScreen() {
             }
           />
         </SafeAreaView>
+      </Modal>
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        visible={showDeleteModal}
+        transparent={true}
+        animationType="fade"
+      >
+        <View style={styles.deleteModalOverlay}>
+          <View style={styles.deleteModalContent}>
+            <Text style={styles.deleteModalTitle}>Delete Conversation</Text>
+            <Text style={styles.deleteModalMessage}>
+              Are you sure you want to delete your conversation with {selectedMessage?.name}? This action cannot be undone.
+            </Text>
+            <View style={styles.deleteModalButtons}>
+              <TouchableOpacity 
+                style={[styles.deleteModalButton, styles.cancelButton]}
+                onPress={() => {
+                  setShowDeleteModal(false);
+                  setSelectedMessage(null);
+                }}
+              >
+                <Text style={styles.cancelButtonText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={[styles.deleteModalButton, styles.deleteButton]}
+                onPress={confirmDeleteMessage}
+              >
+                <Text style={styles.deleteButtonText}>Delete</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
       </Modal>
     </SafeAreaView>
   );
@@ -600,6 +737,67 @@ const styles = StyleSheet.create({
   moreParticipantsText: {
     fontSize: 8,
     color: '#666',
+    fontWeight: '500',
+  },
+  deleteModalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  deleteModalContent: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 20,
+    margin: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  deleteModalTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 12,
+  },
+  deleteModalMessage: {
+    fontSize: 16,
+    color: '#666',
+    textAlign: 'center',
+    lineHeight: 22,
+    marginBottom: 20,
+  },
+  deleteModalButtons: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  deleteModalButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+    minWidth: 80,
+    alignItems: 'center',
+  },
+  cancelButton: {
+    backgroundColor: '#F2F2F7',
+  },
+  deleteButton: {
+    backgroundColor: '#ff6b6b',
+  },
+  cancelButtonText: {
+    fontSize: 16,
+    color: '#333',
+    fontWeight: '500',
+  },
+  deleteButtonText: {
+    fontSize: 16,
+    color: '#fff',
     fontWeight: '500',
   },
 });

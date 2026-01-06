@@ -1,10 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 import { Alert, FlatList, Image, KeyboardAvoidingView, Modal, Platform, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 
-// Mock profile data to get correct images
+// Mock profile data for image handling
 const mockProfiles = [
   {
     id: 1,
@@ -18,22 +18,17 @@ const mockProfiles = [
   },
   {
     id: 3,
-    image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300',
+    image: require('../assets/images/profile01.png'),
     name: 'Sarah & Mia',
   },
   {
     id: 4,
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300',
+    image: require('../assets/images/profile2.png'),
     name: 'Alex',
   },
   {
-    id: 5,
-    image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300',
-    name: 'Concert Crew',
-  },
-  {
     id: 6,
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300',
+    image: require('../assets/images/profile01.png'),
     name: 'Maya',
   }
 ];
@@ -41,8 +36,9 @@ const mockProfiles = [
 type Message = {
   id: string;
   text: string;
-  sender: 'user' | 'other';
+  sender: 'user' | 'other' | 'system';
   timestamp: Date;
+  senderName?: string;
 };
 
 export default function DirectMessageScreen() {
@@ -58,11 +54,13 @@ export default function DirectMessageScreen() {
   const [selectedFriends, setSelectedFriends] = React.useState<number[]>([]);
   const [conversationParticipants, setConversationParticipants] = React.useState<any[]>([]);
 
-  // Check if already a friend
-  React.useEffect(() => {
-    checkFriendStatus();
-    loadConversation();
-  }, [profileId]);
+  // Check if already a friend and load conversation data whenever screen gains focus
+  useFocusEffect(
+    React.useCallback(() => {
+      checkFriendStatus();
+      loadConversation();
+    }, [profileId])
+  );
 
   const loadConversation = async () => {
     try {
@@ -74,6 +72,10 @@ export default function DirectMessageScreen() {
       if (conversation && conversation.length > 0) {
         setMessages(conversation);
         setIsFirstMessage(false);
+      } else {
+        // Reset to empty state if no conversation exists
+        setMessages([]);
+        setIsFirstMessage(true);
       }
 
       // Load conversation participants
@@ -81,8 +83,25 @@ export default function DirectMessageScreen() {
       const allParticipants = participantsData ? JSON.parse(participantsData) : {};
       const participants = allParticipants[conversationKey] || [];
       setConversationParticipants(participants);
+      
+      // Mark any notifications as read when entering the conversation
+      const notifications = await AsyncStorage.getItem('conversationNotifications');
+      if (notifications) {
+        const notificationData = JSON.parse(notifications);
+        
+        // Mark the specific conversation notification as read
+        const specificNotificationKey = `notification_${profileId}_conversation_${profileId}`;
+        if (notificationData[specificNotificationKey] && !notificationData[specificNotificationKey].read) {
+          notificationData[specificNotificationKey].read = true;
+          await AsyncStorage.setItem('conversationNotifications', JSON.stringify(notificationData));
+        }
+      }
     } catch (error) {
       console.log('Error loading conversation:', error);
+      // Reset to default state on error
+      setMessages([]);
+      setIsFirstMessage(true);
+      setConversationParticipants([]);
     }
   };
 
@@ -100,7 +119,7 @@ export default function DirectMessageScreen() {
   // Pre-populate with a pleasant intro message only on first visit
   React.useEffect(() => {
     if (isFirstMessage && messages.length === 0) {
-      const introMessage = `Hey ${profileName}! I saw we have some shared interests. Would love to connect at the event! 🎵`;
+      const introMessage = `Hey ${profileName}! I saw we have some shared interests. Would love to connect at the event 🙂`;
       setInputText(introMessage);
     } else if (!isFirstMessage) {
       // Clear the input text after first message is sent
@@ -114,6 +133,7 @@ export default function DirectMessageScreen() {
         id: Date.now().toString(),
         text: inputText.trim(),
         sender: 'user',
+        senderName: 'You',
         timestamp: new Date(),
       };
       
@@ -137,10 +157,61 @@ export default function DirectMessageScreen() {
             conversationData[participantKey] = updatedMessages;
           }
           await AsyncStorage.setItem('conversations', JSON.stringify(conversationData));
+          
+          // Simulate participant replies after a delay (for demo purposes)
+          setTimeout(() => {
+            simulateParticipantReply();
+          }, 2000 + Math.random() * 3000);
         }
       } catch (error) {
         console.log('Error saving conversation:', error);
       }
+    }
+  };
+
+  const simulateParticipantReply = async () => {
+    if (conversationParticipants.length === 0) return;
+    
+    const replies = [
+      "That sounds great! Count me in 🎉",
+      "I'm interested! What time?",
+      "Love this idea! When are we meeting?",
+      "Perfect! I'll be there 👍",
+      "Awesome! Can't wait to join you all",
+      "This is going to be fun! 🎵"
+    ];
+    
+    const randomParticipant = conversationParticipants[Math.floor(Math.random() * conversationParticipants.length)];
+    const randomReply = replies[Math.floor(Math.random() * replies.length)];
+    
+    const participantMessage: Message = {
+      id: Date.now().toString(),
+      text: randomReply,
+      sender: 'other',
+      senderName: randomParticipant.name,
+      timestamp: new Date(),
+    };
+    
+    try {
+      const conversations = await AsyncStorage.getItem('conversations');
+      const conversationData = conversations ? JSON.parse(conversations) : {};
+      const conversationKey = `conversation_${profileId}`;
+      const currentMessages = conversationData[conversationKey] || [];
+      const updatedMessages = [...currentMessages, participantMessage];
+      
+      // Update messages for all participants
+      conversationData[conversationKey] = updatedMessages;
+      for (const participant of conversationParticipants) {
+        const participantKey = `conversation_${participant.id}`;
+        conversationData[participantKey] = updatedMessages;
+      }
+      
+      await AsyncStorage.setItem('conversations', JSON.stringify(conversationData));
+      
+      // Update local state if still on this screen
+      setMessages(updatedMessages);
+    } catch (error) {
+      console.log('Error adding participant reply:', error);
     }
   };
 
@@ -186,8 +257,20 @@ export default function DirectMessageScreen() {
     try {
       const friends = await AsyncStorage.getItem('friends');
       const friendsList = friends ? JSON.parse(friends) : [];
-      // Filter out the current conversation participant
-      const available = friendsList.filter((friend: any) => friend.id.toString() !== profileId);
+      
+      // Get current participant IDs to filter them out
+      const participantIds = conversationParticipants.map(p => p.id.toString());
+      
+      // Filter out the current conversation participant and already added participants
+      const available = friendsList.filter((friend: any) => 
+        friend.id.toString() !== profileId && !participantIds.includes(friend.id.toString())
+      );
+      
+      if (available.length === 0) {
+        Alert.alert('No Available Friends', 'All your friends are already in this conversation or you have no friends to add.');
+        return;
+      }
+      
       setAvailableFriends(available);
       setSelectedFriends([]);
       setShowFriendSelection(true);
@@ -214,16 +297,63 @@ export default function DirectMessageScreen() {
 
   const handleUnfriend = async () => {
     setShowDropdown(false);
-    try {
-      const friends = await AsyncStorage.getItem('friends');
-      const friendsList = friends ? JSON.parse(friends) : [];
-      const updatedFriends = friendsList.filter((friend: any) => friend.id.toString() !== profileId);
-      await AsyncStorage.setItem('friends', JSON.stringify(updatedFriends));
-      setIsFriend(false);
-      Alert.alert('Unfriended', `You have unfriended ${profileName}`);
-    } catch (error) {
-      console.log('Error unfriending:', error);
-    }
+    Alert.alert(
+      'Delete Message',
+      `Are you sure you want to delete this conversation with ${profileName}?`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { 
+          text: 'Delete', 
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              // Remove conversation data
+              const conversations = await AsyncStorage.getItem('conversations');
+              let conversationData = conversations ? JSON.parse(conversations) : {};
+              const conversationKey = `conversation_${profileId}`;
+              delete conversationData[conversationKey];
+              
+              // Also remove conversation data for all participants
+              if (conversationParticipants.length > 0) {
+                for (const participant of conversationParticipants) {
+                  const participantKey = `conversation_${participant.id}`;
+                  delete conversationData[participantKey];
+                }
+              }
+              await AsyncStorage.setItem('conversations', JSON.stringify(conversationData));
+              
+              // Remove participants data
+              const participantsData = await AsyncStorage.getItem('conversationParticipants');
+              let allParticipants = participantsData ? JSON.parse(participantsData) : {};
+              delete allParticipants[conversationKey];
+              await AsyncStorage.setItem('conversationParticipants', JSON.stringify(allParticipants));
+              
+              // Remove related notifications
+              const notifications = await AsyncStorage.getItem('conversationNotifications');
+              if (notifications) {
+                let notificationData = JSON.parse(notifications);
+                Object.keys(notificationData).forEach(key => {
+                  if (key.includes(`_conversation_${profileId}`) || key.includes(`notification_${profileId}_`)) {
+                    delete notificationData[key];
+                  }
+                });
+                await AsyncStorage.setItem('conversationNotifications', JSON.stringify(notificationData));
+              }
+              
+              // Clear local state
+              setMessages([]);
+              setConversationParticipants([]);
+              setIsFirstMessage(true);
+              
+              // Navigate back to messages list
+              router.back();
+            } catch (error) {
+              console.log('Error deleting message:', error);
+            }
+          }
+        }
+      ]
+    );
   };
 
   const handleBlock = () => {
@@ -260,7 +390,18 @@ export default function DirectMessageScreen() {
     }
     
     try {
-      const newParticipants = availableFriends.filter(friend => selectedFriends.includes(friend.id));
+      // Double-check to ensure no duplicates (additional safety measure)
+      const participantIds = conversationParticipants.map(p => p.id);
+      const newParticipants = availableFriends.filter(friend => 
+        selectedFriends.includes(friend.id) && !participantIds.includes(friend.id)
+      );
+      
+      if (newParticipants.length === 0) {
+        Alert.alert('Already Added', 'The selected friends are already in this conversation.');
+        setShowFriendSelection(false);
+        return;
+      }
+      
       const updatedParticipants = [...conversationParticipants, ...newParticipants];
       setConversationParticipants(updatedParticipants);
       
@@ -283,12 +424,43 @@ export default function DirectMessageScreen() {
         await AsyncStorage.setItem('conversations', JSON.stringify(conversationData));
       }
       
+      // Add system message to conversation (only in the current conversation)
       const selectedNames = newParticipants.map(friend => friend.name).join(', ');
+      const systemMessage: Message = {
+        id: Date.now().toString(),
+        text: `${selectedNames} ${newParticipants.length === 1 ? 'has' : 'have'} been added to the conversation`,
+        sender: 'system',
+        senderName: 'System',
+        timestamp: new Date(),
+      };
+      
+      const updatedMessages = [...messages, systemMessage];
+      setMessages(updatedMessages);
+      
+      // Save updated messages with system message (only to current conversation)
+      const conversations2 = await AsyncStorage.getItem('conversations');
+      const conversationData2 = conversations2 ? JSON.parse(conversations2) : {};
+      conversationData2[conversationKey] = updatedMessages;
+      await AsyncStorage.setItem('conversations', JSON.stringify(conversationData2));
+      
+      // Create notification indicators for new participants
+      const notifications = await AsyncStorage.getItem('conversationNotifications');
+      const notificationData = notifications ? JSON.parse(notifications) : {};
+      
+      for (const participant of newParticipants) {
+        // Create a specific notification for this conversation only
+        const participantNotificationKey = `notification_${participant.id}_conversation_${profileId}`;
+        notificationData[participantNotificationKey] = {
+          type: 'group_added',
+          conversationId: profileId,
+          conversationName: profileName,
+          timestamp: new Date().toISOString(),
+          read: false
+        };
+      }
+      await AsyncStorage.setItem('conversationNotifications', JSON.stringify(notificationData));
+      
       setShowFriendSelection(false);
-      Alert.alert(
-        'Friends Added', 
-        `${selectedNames} have been added to the conversation! They can now see and reply to messages.`
-      );
     } catch (error) {
       console.log('Error adding participants:', error);
       Alert.alert('Error', 'Could not add friends to conversation.');
@@ -306,25 +478,39 @@ export default function DirectMessageScreen() {
     }
   };
 
-  const renderMessage = ({ item }: { item: Message }) => (
-    <View style={[
-      styles.messageContainer,
-      item.sender === 'user' ? styles.userMessage : styles.otherMessage
-    ]}>
-      <Text style={[
-        styles.messageText,
-        item.sender === 'user' ? styles.userMessageText : styles.otherMessageText
+  const renderMessage = ({ item }: { item: Message }) => {
+    if (item.sender === 'system') {
+      return (
+        <View style={styles.systemMessageContainer}>
+          <Text style={styles.systemMessageText}>{item.text}</Text>
+          <Text style={styles.systemMessageTime}>{formatTime(item.timestamp)}</Text>
+        </View>
+      );
+    }
+    
+    return (
+      <View style={[
+        styles.messageContainer,
+        item.sender === 'user' ? styles.userMessage : styles.otherMessage
       ]}>
-        {item.text}
-      </Text>
-      <Text style={[
-        styles.timestamp,
-        item.sender === 'user' ? styles.userTimestamp : styles.otherTimestamp
-      ]}>
-        {formatTime(item.timestamp)}
-      </Text>
-    </View>
-  );
+        {conversationParticipants.length > 0 && item.sender !== 'user' && item.senderName && (
+          <Text style={styles.senderName}>{item.senderName}</Text>
+        )}
+        <Text style={[
+          styles.messageText,
+          item.sender === 'user' ? styles.userMessageText : styles.otherMessageText
+        ]}>
+          {item.text}
+        </Text>
+        <Text style={[
+          styles.timestamp,
+          item.sender === 'user' ? styles.userTimestamp : styles.otherTimestamp
+        ]}>
+          {formatTime(item.timestamp)}
+        </Text>
+      </View>
+    );
+  };
 
   return (
     <TouchableWithoutFeedback onPress={() => setShowDropdown(false)}>
@@ -338,22 +524,23 @@ export default function DirectMessageScreen() {
           <Text style={styles.headerName}>{profileName || 'Unknown'}</Text>
           {conversationParticipants.length > 0 && (
             <View style={styles.participantsContainer}>
-              {conversationParticipants.slice(0, 3).map((participant, index) => (
-                <Image
-                  key={participant.id}
-                  source={participant.image}
-                  style={[styles.participantAvatar, { marginLeft: index > 0 ? -8 : 0 }]}
-                />
-              ))}
+              {conversationParticipants.slice(0, 3).map((participant, index) => {
+                // Create a stable unique key without timestamp
+                const uniqueKey = `conv-${profileId}-participant-${participant.id || participant.name}-${index}`;
+                return (
+                  <Image
+                    key={uniqueKey}
+                    source={participant.image}
+                    style={[styles.participantAvatar, { marginLeft: index > 0 ? -8 : 0 }]}
+                  />
+                );
+              })}
               {conversationParticipants.length > 3 && (
-                <View style={[styles.participantAvatar, styles.moreParticipants]}>
+                <View key={`conv-${profileId}-more-participants`} style={[styles.participantAvatar, styles.moreParticipants]}>
                   <Text style={styles.moreParticipantsText}>+{conversationParticipants.length - 3}</Text>
                 </View>
               )}
             </View>
-          )}
-          {isFirstMessage && messages.length === 0 && conversationParticipants.length === 0 && (
-            <Text style={styles.headerStatus}>Start a conversation</Text>
           )}
         </View>
         <TouchableOpacity style={styles.friendButton} onPress={addFriend}>
@@ -382,16 +569,10 @@ export default function DirectMessageScreen() {
               <Ionicons name="game-controller" size={18} color="#333" />
               <Text style={styles.dropdownText}>Start a game</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.dropdownItem} onPress={handleRenameMessage}>
-              <Ionicons name="pencil" size={18} color="#333" />
-              <Text style={styles.dropdownText}>Rename message</Text>
+            <TouchableOpacity style={styles.dropdownItem} onPress={handleUnfriend}>
+              <Ionicons name="trash" size={18} color="#ff6b6b" />
+              <Text style={[styles.dropdownText, { color: '#ff6b6b' }]}>Delete message</Text>
             </TouchableOpacity>
-            {isFriend && (
-              <TouchableOpacity style={styles.dropdownItem} onPress={handleUnfriend}>
-                <Ionicons name="person-remove" size={18} color="#ff6b6b" />
-                <Text style={[styles.dropdownText, { color: '#ff6b6b' }]}>Unfriend</Text>
-              </TouchableOpacity>
-            )}
             <TouchableOpacity style={styles.dropdownItem} onPress={handleBlock}>
               <Ionicons name="ban" size={18} color="#ff4444" />
               <Text style={[styles.dropdownText, { color: '#ff4444' }]}>Block</Text>
@@ -780,5 +961,31 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: '#666',
     fontWeight: '500',
+  },
+  senderName: {
+    fontSize: 12,
+    color: '#666',
+    fontWeight: '500',
+    marginBottom: 4,
+  },
+  systemMessageContainer: {
+    alignItems: 'center',
+    marginVertical: 8,
+    paddingHorizontal: 16,
+  },
+  systemMessageText: {
+    fontSize: 14,
+    color: '#8E8E93',
+    fontStyle: 'italic',
+    textAlign: 'center',
+    backgroundColor: '#F0F0F0',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+  },
+  systemMessageTime: {
+    fontSize: 11,
+    color: '#8E8E93',
+    marginTop: 4,
   },
 });

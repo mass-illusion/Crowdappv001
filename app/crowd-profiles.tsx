@@ -178,7 +178,7 @@ export default function CrowdProfilesScreen() {
       {/* Bottom Profile Selector - Friends */}
       <View style={styles.bottomSelector}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.bottomScrollView}>
-          {friends.length > 0 ? (
+          {friends.length > 0 && (
             friends.map((friend) => (
               <TouchableOpacity 
                 key={friend.id} 
@@ -190,12 +190,6 @@ export default function CrowdProfilesScreen() {
                   style={styles.bottomProfileImage} 
                 />
                 <Text style={styles.friendName} numberOfLines={1}>{friend.name}</Text>
-              </TouchableOpacity>
-            ))
-          ) : (
-            bottomProfiles.map((profile, index) => (
-              <TouchableOpacity key={profile.id} style={[styles.bottomProfile, styles.activeBottomProfile]}>
-                <Image source={typeof profile.image === 'string' ? { uri: profile.image } : profile.image} style={styles.bottomProfileImage} />
               </TouchableOpacity>
             ))
           )}
