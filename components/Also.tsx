@@ -71,20 +71,14 @@ const Also: React.FC = () => {
     }
 
     try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
-
       const response = await fetch(
         `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&addressdetails=1&limit=10&featuretype=city&countrycodes=us`,
         { 
-          signal: controller.signal,
           headers: {
             'User-Agent': 'CrowdApp/1.0'
           }
         }
       );
-
-      clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

@@ -1,8 +1,10 @@
 
 
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import { Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect, useRouter } from 'expo-router';
+import React from 'react';
+import { Image, Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import ArtSVG from '../assets/images/art.svg';
 import ConventionsSVG from '../assets/images/conventions.svg';
 import LionsSVG from '../assets/images/lions.svg';
@@ -16,15 +18,39 @@ const eventCategories = [
 ];
 export default function LiveEventsScreen() {
   const router = useRouter();
+  const [userProfileImage, setUserProfileImage] = React.useState('https://via.placeholder.com/50');
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const loadProfilePhoto = async () => {
+        try {
+          const uri = await AsyncStorage.getItem('profilePhoto');
+          if (uri) setUserProfileImage(uri);
+        } catch (e) {
+          console.warn('Failed to load profile photo', e);
+        }
+      };
+      loadProfilePhoto();
+    }, [])
+  );
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
-        {/* Header */}
+        {/* Top Navigation Bar */}
+        <View style={styles.topNavBar}>
+          <View style={{ flex: 1 }} />
+          <Ionicons name="notifications" size={28} color="#8E8E93" />
+          <Ionicons name="options" size={28} color="#8E8E93" style={styles.settingsIcon} />
+          <TouchableOpacity style={styles.profileCircle}>
+            <Image
+              source={{ uri: userProfileImage }}
+              style={styles.profileImage}
+            />
+          </TouchableOpacity>
+        </View>
         <Text style={styles.headerText}>EVENTS</Text>
-        <Text style={styles.subtitle}>Browse event category or search specific event.</Text>
-        {/* Search Bar */}
-        <View style={[styles.searchBar, { marginTop: 8 }]}> {/* Slight top margin for spacing */}
+        <View style={[styles.searchBar, { marginTop: 12 }]}>
           <Ionicons name="search" size={24} color="#8E8E93" style={styles.searchIcon} />
           <TextInput
             style={styles.searchInput}
@@ -35,7 +61,15 @@ export default function LiveEventsScreen() {
         {/* Event Categories */}
         <View style={styles.grid}>
           {eventCategories.map((cat, idx) => (
-            <TouchableOpacity key={cat.title} style={styles.card}>
+            <TouchableOpacity 
+              key={cat.title} 
+              style={styles.card}
+              onPress={() => {
+                if (cat.title === 'Music') {
+                  router.push('/music-events');
+                }
+              }}
+            >
               <View style={[styles.cardImage, {justifyContent: 'center', alignItems: 'center'}]}>
                 {cat.title === 'Sports' ? (
                   <LionsSVG
@@ -133,8 +167,33 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: 80,
+    paddingTop: 60,
     paddingHorizontal: 16,
+  },
+  topNavBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    marginBottom: 12,
+    paddingHorizontal: 0,
+    gap: 12,
+  },
+  settingsIcon: {
+    marginLeft: 0,
+  },
+  profileCircle: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f0f0f0',
+  },
+  profileImage: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
   },
   topBar: {
     flexDirection: 'row',
@@ -157,13 +216,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     marginLeft: 8,
   },
-  profileImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-  },
   headerText: {
-    fontSize: 48,
+    fontSize: 62,
     fontWeight: 'bold',
     color: '#E5E5EA',
     letterSpacing: 2,
@@ -171,6 +225,7 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 4,
     marginBottom: 8,
+    marginTop: -18,
   },
   subtitle: {
     fontSize: 15,
