@@ -14,6 +14,7 @@ const mockProfiles = [
     starred: false,
     name: 'Emma',
     age: 24,
+    city: 'San Francisco, CA',
     description: 'Software engineer that loves house music and traveling.',
     lookingFor: 'Girlfriends to carpool and share a room at EDC!',
     interests: ['League of Legends', 'Weight Training', 'Tech House', 'Art Exhibits', 'Raving'],
@@ -30,6 +31,7 @@ const mockProfiles = [
     starred: false,
     name: 'Group',
     age: null,
+    city: 'Los Angeles, CA',
     description: 'Party crew looking for more amazing people to join us.',
     lookingFor: 'New friends to party and explore festivals together!',
     interests: ['Raving', 'Tech House', 'Art Exhibits', 'Weight Training'],
@@ -45,6 +47,7 @@ const mockProfiles = [
     starred: false,
     name: 'Sarah & Mia',
     age: null,
+    city: 'Austin, TX',
     description: 'Best friends who love dancing and meeting new people at festivals.',
     lookingFor: 'Looking for a group to explore different music genres with!',
     interests: ['Dancing', 'Tech House', 'Photography', 'Travel'],
@@ -60,6 +63,7 @@ const mockProfiles = [
     starred: false,
     name: 'Alex',
     age: 26,
+    city: 'Miami, FL',
     description: 'Music producer and DJ who enjoys discovering new artists.',
     lookingFor: 'Fellow music enthusiasts to attend underground shows with.',
     interests: ['Music Production', 'DJing', 'Tech House', 'Art Exhibits'],
@@ -75,6 +79,7 @@ const mockProfiles = [
     starred: false,
     name: 'Concert Crew',
     age: null,
+    city: 'Denver, CO',
     description: 'Group of friends who attend every major music event in the city.',
     lookingFor: 'More people to join our concert adventures!',
     interests: ['Live Music', 'Raving', 'Photography', 'Travel'],
@@ -90,6 +95,7 @@ const mockProfiles = [
     starred: false,
     name: 'Maya',
     age: 23,
+    city: 'Seattle, WA',
     description: 'Art student with a passion for electronic music and creativity.',
     lookingFor: 'Creative souls to share artistic experiences and raves with.',
     interests: ['Art Exhibits', 'Electronic Music', 'Dancing', 'Photography'],
@@ -362,6 +368,12 @@ export default function ProfileDetailScreen() {
               </TouchableOpacity>
             </View>
             
+            {/* City Section */}
+            <View style={styles.citySection}>
+              <Ionicons name="location-outline" size={16} color="#666" />
+              <Text style={styles.cityText}>{profile.city || 'City not specified'}</Text>
+            </View>
+            
             <Text style={styles.description}>{profile.description}</Text>
 
             <Text style={styles.lookingForTitle}>Looking for:</Text>
@@ -521,6 +533,18 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     color: '#333',
+  },
+  citySection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+    paddingVertical: 4,
+  },
+  cityText: {
+    fontSize: 16,
+    color: '#666',
+    marginLeft: 6,
+    fontWeight: '500',
   },
   userTypeIconBottomRight: {
     position: 'absolute',
