@@ -9,14 +9,14 @@ const mockProfiles = [
   {
     id: 1,
     image: require('../assets/images/profile01.png'),
-    starred: true,
+    starred: false,
     name: 'Emma',
     age: 24
   },
   {
     id: 2,
     image: require('../assets/images/profile2.png'),
-    starred: true,
+    starred: false,
     name: 'Group',
     age: null
   },
@@ -50,6 +50,17 @@ const mockProfiles = [
   }
 ];
 
+// Helper function to get correct image source
+const getImageSource = (friend: any) => {
+  // If it's a local image (Emma or Group), find it from mock data
+  if (friend.id === 1 || friend.id === 2) {
+    const profile = mockProfiles.find(p => p.id === friend.id);
+    return profile ? profile.image : { uri: 'https://via.placeholder.com/50' };
+  }
+  // Otherwise it's a URL
+  return { uri: friend.image || 'https://via.placeholder.com/50' };
+};
+
 const bottomProfiles = [
   { id: 7, image: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=100' },
   { id: 8, image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100' },
@@ -60,7 +71,8 @@ const bottomProfiles = [
 export default function CrowdProfilesScreen() {
   const router = useRouter();
   const [userProfileImage, setUserProfileImage] = React.useState('https://via.placeholder.com/50');
-  const [starredProfiles, setStarredProfiles] = React.useState(new Set([1, 2]));
+  const [starredProfiles, setStarredProfiles] = React.useState(new Set());
+  const [friends, setFriends] = React.useState<any[]>([]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -72,11 +84,34 @@ export default function CrowdProfilesScreen() {
           console.warn('Failed to load profile photo', e);
         }
       };
+      
+      const loadFriends = async () => {
+        try {
+          const friendsData = await AsyncStorage.getItem('friends');
+          const friendsList = friendsData ? JSON.parse(friendsData) : [];
+          setFriends(friendsList);
+        } catch (e) {
+          console.warn('Failed to load friends', e);
+        }
+      };
+      
+      const loadStarredProfiles = async () => {
+        try {
+          const starredData = await AsyncStorage.getItem('starredProfiles');
+          const starredList = starredData ? JSON.parse(starredData) : [];
+          setStarredProfiles(new Set(starredList));
+        } catch (e) {
+          console.warn('Failed to load starred profiles', e);
+        }
+      };
+      
       loadProfilePhoto();
+      loadFriends();
+      loadStarredProfiles();
     }, [])
   );
 
-  const toggleStar = (profileId: number) => {
+  const toggleStar = async (profileId: number) => {
     setStarredProfiles(prev => {
       const newSet = new Set(prev);
       if (newSet.has(profileId)) {
@@ -84,6 +119,10 @@ export default function CrowdProfilesScreen() {
       } else {
         newSet.add(profileId);
       }
+      
+      // Save to AsyncStorage
+      AsyncStorage.setItem('starredProfiles', JSON.stringify(Array.from(newSet)));
+      
       return newSet;
     });
   };
@@ -136,14 +175,30 @@ export default function CrowdProfilesScreen() {
         </View>
       </ScrollView>
 
-      {/* Bottom Profile Selector */}
+      {/* Bottom Profile Selector - Friends */}
       <View style={styles.bottomSelector}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.bottomScrollView}>
-          {bottomProfiles.map((profile, index) => (
-            <TouchableOpacity key={profile.id} style={[styles.bottomProfile, styles.activeBottomProfile]}>
-              <Image source={typeof profile.image === 'string' ? { uri: profile.image } : profile.image} style={styles.bottomProfileImage} />
-            </TouchableOpacity>
-          ))}
+          {friends.length > 0 ? (
+            friends.map((friend) => (
+              <TouchableOpacity 
+                key={friend.id} 
+                style={[styles.bottomProfile, styles.activeBottomProfile]}
+                onPress={() => router.push(`/profile-detail?profileId=${friend.id}`)}
+              >
+                <Image 
+                  source={getImageSource(friend)} 
+                  style={styles.bottomProfileImage} 
+                />
+                <Text style={styles.friendName} numberOfLines={1}>{friend.name}</Text>
+              </TouchableOpacity>
+            ))
+          ) : (
+            bottomProfiles.map((profile, index) => (
+              <TouchableOpacity key={profile.id} style={[styles.bottomProfile, styles.activeBottomProfile]}>
+                <Image source={typeof profile.image === 'string' ? { uri: profile.image } : profile.image} style={styles.bottomProfileImage} />
+              </TouchableOpacity>
+            ))
+          )}
           <TouchableOpacity style={styles.addButton}>
             <Ionicons name="add" size={24} color="#8E8E93" />
           </TouchableOpacity>
@@ -267,6 +322,17 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     borderRadius: 30,
+  },
+  friendName: {
+    fontSize: 10,
+    color: '#333',
+    marginTop: 2,
+    textAlign: 'center',
+    maxWidth: 50,
+    position: 'absolute',
+    bottom: -15,
+    left: 0,
+    right: 0,
   },
   addButton: {
     width: 60,
