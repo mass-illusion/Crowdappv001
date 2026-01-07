@@ -2,26 +2,27 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-    Image,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Switch,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import BeerSVG from '../assets/images/beer.svg'; // Mock data for spots with users who love them
 import BobaSVG from '../assets/images/boba.svg';
 import PlateSVG from '../assets/images/plate.svg';
+import CoffeeSVG from '../Map/Coffee.svg';
 const mockSpots = [
   {
     id: 1,
     name: "Whittier Street",
     type: "bubble_tea",
     icon: "🧋",
-    coordinates: { x: 135, y: 380 },
+    coordinates: { x: 40, y: 620 },
     users: [
       { id: 1, avatar: require('../assets/images/profile01.png') },
       { id: 2, avatar: require('../assets/images/profile2.png') },
@@ -30,34 +31,11 @@ const mockSpots = [
     ]
   },
   {
-    id: 2,
-    name: "Chesapeake Avenue",
-    type: "bubble_tea", 
-    icon: "🧋",
-    coordinates: { x: 200, y: 310 },
-    users: [
-      { id: 5, avatar: require('../assets/images/profile01.png') },
-      { id: 6, avatar: require('../assets/images/profile2.png') },
-      { id: 7, avatar: require('../assets/images/profile01.png') },
-      { id: 8, avatar: require('../assets/images/profile2.png') },
-    ]
-  },
-  {
-    id: 3,
-    name: "Dresden Street", 
-    type: "beer",
-    icon: "beer",
-    coordinates: { x: 60, y: 580 },
-    users: [
-      { id: 9, avatar: require('../assets/images/profile01.png') },
-    ]
-  },
-  {
     id: 4,
-    name: "South End",
+    name: "Your Favorite Restaurant",
     type: "restaurant",
     icon: "plate", 
-    coordinates: { x: 300, y: 500 },
+    coordinates: { x: 220, y: 500 },
     users: [
       { id: 10, avatar: require('../assets/images/profile2.png') },
       { id: 11, avatar: require('../assets/images/profile01.png') },
@@ -103,7 +81,7 @@ const mockSpots = [
     name: "Boba Paradise",
     type: "boba",
     icon: "boba",
-    coordinates: { x: 180, y: 220 },
+    coordinates: { x: 120, y: 220 },
     users: [
       { id: 20, avatar: require('../assets/images/profile01.png') },
       { id: 21, avatar: require('../assets/images/profile2.png') },
@@ -113,25 +91,14 @@ const mockSpots = [
   {
     id: 9,
     name: "Tea Time Corner",
-    type: "boba",
-    icon: "boba",
-    coordinates: { x: 90, y: 450 },
+    type: "coffee",
+    icon: "coffee",
+    coordinates: { x: 20, y: 450 },
     users: [
       { id: 23, avatar: require('../assets/images/profile2.png') },
       { id: 24, avatar: require('../assets/images/profile01.png') },
       { id: 25, avatar: require('../assets/images/profile2.png') },
       { id: 26, avatar: require('../assets/images/profile01.png') },
-    ]
-  },
-  {
-    id: 10,
-    name: "Bubble Bliss",
-    type: "boba",
-    icon: "boba",
-    coordinates: { x: 250, y: 520 },
-    users: [
-      { id: 27, avatar: require('../assets/images/profile01.png') },
-      { id: 28, avatar: require('../assets/images/profile2.png') },
     ]
   }
 ];
@@ -150,13 +117,15 @@ export default function MapScreen() {
     return (
       <View key={spot.id} style={[styles.mapSpot, { left: spot.coordinates.x, top: spot.coordinates.y }]}>
         {/* Spot icon */}
-        <View style={spot.icon === "plate" || spot.icon === "beer" || spot.icon === "boba" ? styles.spotIconNoCircle : styles.spotIcon}>
+        <View style={spot.icon === "plate" || spot.icon === "beer" || spot.icon === "boba" || spot.icon === "coffee" ? styles.spotIconNoCircle : styles.spotIcon}>
           {spot.icon === "plate" ? (
             <PlateSVG width={68} height={68} />
           ) : spot.icon === "beer" ? (
             <BeerSVG width={68} height={68} />
           ) : spot.icon === "boba" ? (
-            <BobaSVG width={68} height={68} />
+            <BobaSVG width={80} height={80} />
+          ) : spot.icon === "coffee" ? (
+            <CoffeeSVG width={68} height={68} />
           ) : (
             <Text style={styles.spotIconText}>{spot.icon}</Text>
           )}
@@ -277,7 +246,9 @@ export default function MapScreen() {
                 ) : spot.icon === "beer" ? (
                   <BeerSVG width={62} height={62} />
                 ) : spot.icon === "boba" ? (
-                  <BobaSVG width={62} height={62} />
+                  <BobaSVG width={72} height={72} />
+                ) : spot.icon === "coffee" ? (
+                  <CoffeeSVG width={62} height={62} />
                 ) : (
                   <Text style={styles.listIconText}>{spot.icon}</Text>
                 )}
@@ -460,6 +431,7 @@ const styles = StyleSheet.create({
     height: 70,
     backgroundColor: '#fff',
     borderRadius: 35,
+
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
