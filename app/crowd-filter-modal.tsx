@@ -168,7 +168,7 @@ export default function CrowdFilterModal() {
         {/* Custom Input */}
         <TextInput
           style={styles.customInput}
-          placeholder="Type what you're looking for..."
+          placeholder="Let us know what you're looking for..."
           value={customInput}
           onChangeText={setCustomInput}
           onSubmitEditing={Keyboard.dismiss}

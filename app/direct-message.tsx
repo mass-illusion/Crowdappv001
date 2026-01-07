@@ -119,7 +119,7 @@ export default function DirectMessageScreen() {
   // Pre-populate with a pleasant intro message only on first visit
   React.useEffect(() => {
     if (isFirstMessage && messages.length === 0) {
-      const introMessage = `Hey ${profileName}! I saw we have some shared interests. Would love to connect at the event 🙂`;
+      const introMessage = `Hey! I saw we have some shared interests. Would love to connect at the event 🙂`;
       setInputText(introMessage);
     } else if (!isFirstMessage) {
       // Clear the input text after first message is sent
