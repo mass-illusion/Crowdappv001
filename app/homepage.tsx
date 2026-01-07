@@ -3,7 +3,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useRouter } from 'expo-router';
 import React from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Microphone3 from '../assets/images/Microphone3.svg';
 
 // import MusicFestival1SVG from '../assets/images/musicfestival1.svg';
 import Welcome2SVG from '../assets/images/welcome2.svg';
@@ -78,7 +77,10 @@ const Homepage = () => {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.categoryCard, styles.localsCard]}>
+          <TouchableOpacity 
+            style={[styles.categoryCard, styles.localsCard]}
+            onPress={() => router.push('/map')}
+          >
             <Image
               source={require('../assets/images/locals1.webp')}
               style={[styles.categoryImage, styles.localsImage]}
@@ -162,16 +164,16 @@ const Homepage = () => {
       {/* Bottom Navigation */}
       <View style={styles.bottomNavCustom}>
         <TouchableOpacity style={styles.navItemCustom}>
-          <Ionicons name="home-outline" size={28} color="#8E8E93" style={styles.navIconOutline} />
+          <Ionicons name="home" size={24} color="#999" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItemCustom}>
-          <Microphone3 width={28} height={28} style={styles.navIconOutline} />
+          <Ionicons name="mic" size={24} color="#999" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItemCustom}>
-          <Ionicons name="map-outline" size={28} color="#8E8E93" style={styles.navIconOutline} />
+        <TouchableOpacity style={styles.navItemCustom} onPress={() => router.push('/map')}>
+          <Ionicons name="map" size={24} color="#999" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItemCustom} onPress={() => router.push('/messages')}>
-          <Ionicons name="chatbubble-outline" size={28} color="#8E8E93" style={styles.navIconOutline} />
+          <Ionicons name="chatbubble" size={24} color="#999" />
         </TouchableOpacity>
       </View>
     </View>

@@ -145,17 +145,17 @@ export default function LiveEventsScreen() {
         </View>
         {/* Bottom Navigation (matches homepage) */}
         <View style={styles.bottomNavCustom}>
-          <TouchableOpacity style={styles.navItemCustom} onPress={() => {router.push('/homepage')}}>
-            <Ionicons name="home-outline" size={28} color="#8E8E93" style={styles.navIconOutline} />
+          <TouchableOpacity style={styles.navItemCustom} onPress={() => {router.replace('/homepage')}}>
+            <Ionicons name="home" size={24} color="#999" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.navItemCustom}>
-            <Ionicons name="mic-outline" size={28} color="#8E8E93" style={styles.navIconOutline} />
+            <Ionicons name="mic" size={24} color="#999" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.navItemCustom}>
-            <Ionicons name="map-outline" size={28} color="#8E8E93" style={styles.navIconOutline} />
+            <Ionicons name="map" size={24} color="#999" />
           </TouchableOpacity>
-        <TouchableOpacity style={styles.navItemCustom} onPress={() => router.push('/messages')}>
-          <Ionicons name="chatbubble-outline" size={28} color="#8E8E93" style={styles.navIconOutline} />
+        <TouchableOpacity style={styles.navItemCustom} onPress={() => router.replace('/messages')}>
+          <Ionicons name="chatbubble" size={24} color="#999" />
         </TouchableOpacity>
         </View>
       </View>

@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as ImagePicker from 'expo-image-picker';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 import { Alert, FlatList, Image, KeyboardAvoidingView, Modal, Platform, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
@@ -39,11 +40,26 @@ type Message = {
   sender: 'user' | 'other' | 'system';
   timestamp: Date;
   senderName?: string;
+  imageUri?: string;
+  eventData?: {
+    title: string;
+    date: string;
+    time: string;
+    location: string;
+    description?: string;
+    invitedCount: number;
+    approvals: number;
+    userApproved?: boolean;
+    organizer?: string;
+  };
 };
 
 export default function DirectMessageScreen() {
   const router = useRouter();
   const { profileName, profileId } = useLocalSearchParams();
+  // Ensure profileId and profileName are always strings
+  const safeProfileId = Array.isArray(profileId) ? profileId[0] : profileId;
+  const safeProfileName = Array.isArray(profileName) ? profileName[0] : profileName;
   const [messages, setMessages] = React.useState<Message[]>([]);
   const [inputText, setInputText] = React.useState('');
   const [isFirstMessage, setIsFirstMessage] = React.useState(true);
@@ -53,6 +69,9 @@ export default function DirectMessageScreen() {
   const [availableFriends, setAvailableFriends] = React.useState<any[]>([]);
   const [selectedFriends, setSelectedFriends] = React.useState<number[]>([]);
   const [conversationParticipants, setConversationParticipants] = React.useState<any[]>([]);
+  
+  // Add ref for FlatList to control scrolling
+  const flatListRef = React.useRef<FlatList>(null);
 
   // Check if already a friend and load conversation data whenever screen gains focus
   useFocusEffect(
@@ -66,11 +85,23 @@ export default function DirectMessageScreen() {
     try {
       const conversations = await AsyncStorage.getItem('conversations');
       const conversationData = conversations ? JSON.parse(conversations) : {};
-      const conversationKey = `conversation_${profileId}`;
-      const conversation = conversationData[conversationKey];
+      const conversationKey = `conversation_${safeProfileId}`;
+      const groupConversationKey = 'group_main'; // Check for group conversations
+      
+      let conversation = conversationData[conversationKey];
+      
+      // If it's a group chat or no direct conversation exists, check for group conversation
+      if ((!conversation || conversation.length === 0) && profileName === 'Group') {
+        conversation = conversationData[groupConversationKey];
+      }
       
       if (conversation && conversation.length > 0) {
-        setMessages(conversation);
+        // Parse timestamps back to Date objects
+        const parsedMessages = conversation.map((msg: any) => ({
+          ...msg,
+          timestamp: new Date(msg.timestamp)
+        }));
+        setMessages(parsedMessages);
         setIsFirstMessage(false);
       } else {
         // Reset to empty state if no conversation exists
@@ -116,6 +147,39 @@ export default function DirectMessageScreen() {
     }
   };
 
+  const handleEventApproval = React.useCallback((messageId: string, approved: boolean) => {
+    setMessages(prevMessages => 
+      prevMessages.map(message => {
+        if (message.id === messageId && message.eventData) {
+          const updatedEventData = {
+            ...message.eventData,
+            userApproved: approved,
+            approvals: approved && !message.eventData.userApproved 
+              ? message.eventData.approvals + 1 
+              : !approved && message.eventData.userApproved 
+                ? message.eventData.approvals - 1 
+                : message.eventData.approvals
+          };
+          return {
+            ...message,
+            eventData: updatedEventData
+          };
+        }
+        return message;
+      })
+    );
+  }, []);
+
+  // Track if this is the initial load of messages
+  const [isInitialLoad, setIsInitialLoad] = React.useState(true);
+
+  // Mark initial load as complete after messages are loaded
+  React.useEffect(() => {
+    if (messages.length > 0 && isInitialLoad) {
+      setIsInitialLoad(false);
+    }
+  }, [messages.length, isInitialLoad]);
+
   // Pre-populate with a pleasant intro message only on first visit
   React.useEffect(() => {
     if (isFirstMessage && messages.length === 0) {
@@ -126,6 +190,47 @@ export default function DirectMessageScreen() {
       setInputText('');
     }
   }, [profileName, isFirstMessage, messages.length]);
+
+  const pickImage = async () => {
+    try {
+      // Request permission to access media library
+      const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      
+      if (permissionResult.granted === false) {
+        Alert.alert('Permission required', 'Please allow access to your photo library to share images.');
+        return;
+      }
+
+      // Launch image picker
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.8,
+      });
+
+      if (!result.canceled && result.assets[0]) {
+        // Send image as message
+        const newMessage = {
+          id: Date.now().toString(),
+          text: '',
+          sender: 'user' as const,
+          timestamp: new Date(),
+          imageUri: result.assets[0].uri,
+        };
+
+        const updatedMessages = [...messages, newMessage];
+        setMessages(updatedMessages);
+
+        // Save to AsyncStorage
+        const conversationKey = `conversation_${profileId}`;
+        await AsyncStorage.setItem(conversationKey, JSON.stringify(updatedMessages));
+      }
+    } catch (error) {
+      console.error('Error picking image:', error);
+      Alert.alert('Error', 'Failed to select image. Please try again.');
+    }
+  };
 
   const sendMessage = async () => {
     if (inputText.trim()) {
@@ -282,7 +387,8 @@ export default function DirectMessageScreen() {
 
   const handleCreateEvent = () => {
     setShowDropdown(false);
-    Alert.alert('Create Event', 'Create event feature coming soon!');
+    // Pass current chat context to create-event screen
+    router.push(`/create-event?fromChatId=${safeProfileId}&fromChatName=${encodeURIComponent(safeProfileName || '')}&participants=${encodeURIComponent(JSON.stringify(conversationParticipants))}`);
   };
 
   const handleStartGame = () => {
@@ -467,7 +573,7 @@ export default function DirectMessageScreen() {
     }
   };
 
-  const formatTime = (date: Date) => {
+  const formatTime = React.useCallback((date: Date) => {
     try {
       if (!(date instanceof Date)) {
         date = new Date(date);
@@ -476,7 +582,7 @@ export default function DirectMessageScreen() {
     } catch (error) {
       return 'now';
     }
-  };
+  }, []);
 
   const renderMessage = ({ item }: { item: Message }) => {
     if (item.sender === 'system') {
@@ -484,6 +590,88 @@ export default function DirectMessageScreen() {
         <View style={styles.systemMessageContainer}>
           <Text style={styles.systemMessageText}>{item.text}</Text>
           <Text style={styles.systemMessageTime}>{formatTime(item.timestamp)}</Text>
+        </View>
+      );
+    }
+
+    // Render event message if message has event data
+    if (item.eventData) {
+      const eventText = `📅 ${item.eventData.date}\n⏰ ${item.eventData.time}\n📍 ${item.eventData.location}${item.eventData.description ? `\n${item.eventData.description}` : ''}`;
+      
+      // Mock attending friends for display (in real app, this would come from event data)
+      const attendingFriends = [
+        { id: 1, image: require('../assets/images/profile01.png') },
+        { id: 2, image: require('../assets/images/profile2.png') },
+        { id: 3, image: require('../assets/images/profile01.png') },
+      ].slice(0, item.eventData.approvals);
+      
+      return (
+        <View style={[
+          styles.messageContainer,
+          styles.eventMessage
+        ]}>
+          <Text style={styles.eventSenderName}>{item.eventData.organizer || item.senderName || 'Someone'} proposed a meetup</Text>
+          <Text style={styles.eventTitleBold}>🎉 {item.eventData.title}</Text>
+          <Text style={styles.eventMessageText}>
+            {eventText}
+          </Text>
+          
+          {/* Attendee avatars */}
+          <View style={styles.attendeeSection}>
+            <View style={styles.attendeeAvatars}>
+              {attendingFriends.map((friend, index) => (
+                <Image 
+                  key={friend.id}
+                  source={friend.image}
+                  style={[styles.attendeeAvatar, { marginLeft: index > 0 ? -8 : 0, zIndex: attendingFriends.length - index }]}
+                />
+              ))}
+              {item.eventData.approvals > 3 && (
+                <View style={[styles.attendeeAvatar, styles.moreAttendeesAvatar, { marginLeft: -8, zIndex: 1 }]}>
+                  <Text style={styles.moreAttendeesText}>+{item.eventData.approvals - 3}</Text>
+                </View>
+              )}
+            </View>
+            <Text style={styles.attendeeCount}>{item.eventData.approvals} attending • {item.eventData.invitedCount} invited</Text>
+          </View>
+          <View style={styles.eventActions}>
+            <TouchableOpacity 
+              style={styles.eventActionButton}
+              onPress={() => handleEventApproval(item.id, true)}
+            >
+              <Text style={styles.eventActionText}>✓ Going</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={[styles.eventActionButton, styles.eventDeclineAction]}
+              onPress={() => handleEventApproval(item.id, false)}
+            >
+              <Text style={[styles.eventActionText, styles.eventDeclineText]}>✗ No</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.timestamp}>
+            {formatTime(item.timestamp)}
+          </Text>
+        </View>
+      );
+    }
+    
+    // Render image message if message has imageUri
+    if (item.imageUri) {
+      return (
+        <View style={[
+          styles.messageContainer,
+          item.sender === 'user' ? styles.userMessage : styles.otherMessage
+        ]}>
+          {conversationParticipants.length > 0 && item.sender !== 'user' && item.senderName && (
+            <Text style={styles.senderName}>{item.senderName}</Text>
+          )}
+          <Image source={{ uri: item.imageUri }} style={styles.messageImage} />
+          <Text style={[
+            styles.timestamp,
+            item.sender === 'user' ? styles.userTimestamp : styles.otherTimestamp
+          ]}>
+            {formatTime(item.timestamp)}
+          </Text>
         </View>
       );
     }
@@ -513,8 +701,9 @@ export default function DirectMessageScreen() {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => setShowDropdown(false)}>
-      <SafeAreaView style={styles.container}>
+    <>
+      <TouchableWithoutFeedback onPress={() => setShowDropdown(false)}>
+        <SafeAreaView style={styles.container}>
         {/* Header */}
         <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
@@ -584,12 +773,20 @@ export default function DirectMessageScreen() {
       {/* Messages */}
       {messages.length > 0 ? (
         <FlatList
+          ref={flatListRef}
           data={messages}
           renderItem={renderMessage}
           keyExtractor={(item) => item.id}
           style={styles.messagesList}
-          contentContainerStyle={styles.messagesContent}
+          contentContainerStyle={[styles.messagesContent, { paddingBottom: 80 }]}
           showsVerticalScrollIndicator={false}
+          removeClippedSubviews={true}
+          maxToRenderPerBatch={1}
+          updateCellsBatchingPeriod={500}
+          initialNumToRender={3}
+          windowSize={1}
+          scrollEventThrottle={64}
+          decelerationRate="fast"
         />
       ) : (
         <View style={styles.emptyState}>
@@ -607,7 +804,7 @@ export default function DirectMessageScreen() {
         style={styles.inputContainer}
       >
         <View style={styles.inputRow}>
-          <TouchableOpacity style={styles.attachButton}>
+          <TouchableOpacity style={styles.attachButton} onPress={pickImage}>
             <Ionicons name="add" size={24} color="#666" />
           </TouchableOpacity>
           <TextInput
@@ -632,6 +829,8 @@ export default function DirectMessageScreen() {
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
       
       {/* Friend Selection Modal */}
       <Modal
@@ -670,6 +869,11 @@ export default function DirectMessageScreen() {
                 </View>
               </TouchableOpacity>
             )}
+            removeClippedSubviews={true}
+            maxToRenderPerBatch={8}
+            updateCellsBatchingPeriod={50}
+            initialNumToRender={10}
+            windowSize={8}
             ListEmptyComponent={
               <View style={styles.emptyFriends}>
                 <Text style={styles.emptyFriendsText}>No friends available to add</Text>
@@ -678,8 +882,7 @@ export default function DirectMessageScreen() {
           />
         </SafeAreaView>
       </Modal>
-    </SafeAreaView>
-    </TouchableWithoutFeedback>
+    </>
   );
 }
 
@@ -770,11 +973,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#007AFF',
   },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#333',
-  },
+  // Removed duplicate modalTitle style (fontSize: 18)
   modalDoneButton: {
     fontSize: 16,
     color: '#007AFF',
@@ -940,6 +1139,13 @@ const styles = StyleSheet.create({
   sendButtonActive: {
     backgroundColor: '#007AFF',
   },
+  // Image message styles
+  messageImage: {
+    width: 200,
+    height: 200,
+    borderRadius: 12,
+    marginBottom: 8,
+  },
   participantsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -987,5 +1193,101 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: '#8E8E93',
     marginTop: 4,
+  },
+  // Lightweight Event Message Styles
+  eventMessage: {
+    backgroundColor: '#F0F8FF',
+    alignSelf: 'flex-start',
+    maxWidth: '85%',
+    borderRadius: 18,
+    borderBottomLeftRadius: 4,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  eventSenderName: {
+    fontSize: 12,
+    color: '#666',
+    fontWeight: '500',
+    marginBottom: 6,
+  },
+  eventTitleBold: {
+    fontSize: 16,
+    color: '#333',
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  eventMessageText: {
+    fontSize: 14,
+    color: '#333',
+    lineHeight: 20,
+  },
+  eventActions: {
+    flexDirection: 'row',
+    gap: 6,
+    marginTop: 8,
+  },
+  eventActionButton: {
+    backgroundColor: '#4A9EFF',
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 12,
+    flex: 1,
+    alignItems: 'center',
+  },
+  eventDeclineAction: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: '#DDD',
+  },
+  eventActionText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  eventDeclineText: {
+    color: '#666',
+  },
+  attendeeSection: {
+    marginTop: 8,
+  },
+  attendeeAvatars: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  attendeeAvatar: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#fff',
+  },
+  moreAttendeesAvatar: {
+    backgroundColor: '#E5E5EA',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  moreAttendeesText: {
+    fontSize: 8,
+    color: '#666',
+    fontWeight: '500',
+  },
+  attendeeCount: {
+    fontSize: 11,
+    color: '#999',
+  },
+// Modal styles
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#333',
   },
 });

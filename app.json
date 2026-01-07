@@ -13,7 +13,8 @@
       "bundleIdentifier": "com.yourcompany.crowdappv01",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "This app uses location to help you find friends nearby.",
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSContactsUsageDescription": "We need access to your contacts to help you invite friends to events."
       }
     },
     "android": {
@@ -28,8 +29,8 @@
       "permissions": [
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION",
-        "ACCESS_FINE_LOCATION",
-        "ACCESS_COARSE_LOCATION"
+        "READ_CONTACTS",
+        "SEND_SMS"
       ],
       "package": "com.yourcompany.crowdappv01"
     },
@@ -50,7 +51,8 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true,
