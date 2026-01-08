@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     width: 30,
   },
   inactiveDot: {
-    backgroundColor: '#D3D3D3',
+    backgroundColor: '#808080',
   },
   nextButton: {
     width: 50,

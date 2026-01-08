@@ -3,19 +3,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-    Image,
-    KeyboardAvoidingView,
-    Modal,
-    Platform,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Switch,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  Image,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
+import { useStarredProfiles } from '../contexts/StarredProfilesContext';
 
 // Interest pills data
 const INTERESTS = [
@@ -136,11 +137,13 @@ const INTEREST_DISCOVERY = [
 
 export default function InterestMapScreen() {
   const router = useRouter();
+  const { starredProfiles, addStarredProfile, removeStarredProfile } = useStarredProfiles();
   const [selectedInterest, setSelectedInterest] = useState('Techno');
   const [isMapMode, setIsMapMode] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [sortDescending, setSortDescending] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showStarredModal, setShowStarredModal] = useState(false);
   const [customInterest, setCustomInterest] = useState('');
   const [selectedCity, setSelectedCity] = useState('Los Angeles');
   const [citySearchInput, setCitySearchInput] = useState('Los Angeles');
@@ -212,6 +215,16 @@ export default function InterestMapScreen() {
       <TouchableOpacity 
         key={user.id} 
         style={[styles.mapUser, { left: user.coordinates.x, top: user.coordinates.y }]}
+        onPress={() => {
+          const starredProfile = {
+            id: user.id,
+            name: user.name,
+            image: user.avatar,
+            spotName: selectedCity,
+            sharedInterests: Math.floor(Math.random() * 5) + 1
+          };
+          addStarredProfile(starredProfile);
+        }}
       >
         <Image source={user.avatar} style={styles.userAvatar} />
       </TouchableOpacity>
@@ -259,8 +272,11 @@ export default function InterestMapScreen() {
             <TouchableOpacity style={styles.dropdownItem} onPress={() => setShowDropdown(false)}>
               <Text style={styles.dropdownText}>Edit Profile Card</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.dropdownItem} onPress={() => setShowDropdown(false)}>
-              <Text style={styles.dropdownText}>Starred</Text>
+            <TouchableOpacity style={styles.dropdownItem} onPress={() => {
+              setShowDropdown(false);
+              setShowStarredModal(true);
+            }}>
+              <Text style={styles.dropdownText}>Starred {starredProfiles.length > 0 && `(${starredProfiles.length})`}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.dropdownItem} onPress={() => setShowDropdown(false)}>
               <Text style={styles.dropdownText}>Favorited</Text>
@@ -486,11 +502,12 @@ export default function InterestMapScreen() {
       <Modal
         visible={showAddModal}
         animationType="slide"
-        transparent={false}
+        transparent={true}
         onRequestClose={() => setShowAddModal(false)}
       >
         <KeyboardAvoidingView 
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
           style={styles.modalContainer}
         >
           <View style={styles.addModalContent}>
@@ -552,6 +569,56 @@ export default function InterestMapScreen() {
               </ScrollView>
           </View>
         </KeyboardAvoidingView>
+      </Modal>
+
+      {/* Starred Profiles Modal */}
+      <Modal
+        visible={showStarredModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowStarredModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitleSmall}>Starred Profiles</Text>
+              <TouchableOpacity onPress={() => setShowStarredModal(false)}>
+                <Ionicons name="close" size={28} color="#333" />
+              </TouchableOpacity>
+            </View>
+            
+            <ScrollView style={styles.modalList} showsVerticalScrollIndicator={false}>
+              {starredProfiles.length > 0 ? (
+                starredProfiles.map((profile) => (
+                  <View key={profile.id} style={styles.modalItem}>
+                    <View style={styles.modalItemInfo}>
+                      <Image source={profile.image} style={styles.starredProfileAvatar} />
+                      <View style={styles.starredProfileInfo}>
+                        <Text style={styles.modalItemName}>{profile.name}</Text>
+                        <Text style={styles.starredProfileLocation}>
+                          {profile.spotName} • {profile.sharedInterests} shared interests
+                        </Text>
+                      </View>
+                    </View>
+                    <TouchableOpacity 
+                      onPress={() => {
+                        removeStarredProfile(profile.id);
+                      }}
+                      style={styles.modalRemoveButton}
+                    >
+                      <Ionicons name="trash-outline" size={24} color="#FF3B30" />
+                    </TouchableOpacity>
+                  </View>
+                ))
+              ) : (
+                <View style={styles.emptyState}>
+                  <Ionicons name="star-outline" size={48} color="#999" />
+                  <Text style={styles.emptyStateText}>No starred profiles yet</Text>
+                </View>
+              )}
+            </ScrollView>
+          </View>
+        </View>
       </Modal>
     </SafeAreaView>
   );
@@ -963,13 +1030,15 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'transparent',
+    justifyContent: 'flex-end',
   },
   addModalContent: {
     backgroundColor: '#fff',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     width: '100%',
+    minHeight: '40%',
     paddingBottom: 40,
   },
   addModalHeader: {
@@ -1079,5 +1148,82 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#fff',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: '50%',
+    width: '100%',
+    paddingBottom: 40,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E5E5',
+  },
+  modalTitleSmall: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#333',
+  },
+  modalList: {
+    paddingHorizontal: 20,
+  },
+  modalItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F5F5F5',
+  },
+  modalItemInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  modalItemName: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#333',
+    flex: 1,
+  },
+  modalRemoveButton: {
+    padding: 8,
+  },
+  emptyState: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 60,
+  },
+  emptyStateText: {
+    fontSize: 16,
+    color: '#999',
+    marginTop: 16,
+  },
+  starredProfileAvatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 12,
+  },
+  starredProfileInfo: {
+    flex: 1,
+  },
+  starredProfileLocation: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 4,
   },
 });

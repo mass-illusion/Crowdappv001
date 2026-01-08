@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface StarredProfile {
   id: number;
@@ -20,17 +21,47 @@ const StarredProfilesContext = createContext<StarredProfilesContextType | undefi
 export const StarredProfilesProvider = ({ children }: { children: ReactNode }) => {
   const [starredProfiles, setStarredProfiles] = useState<StarredProfile[]>([]);
 
+  // Load starred profiles from AsyncStorage on component mount
+  useEffect(() => {
+    loadStarredProfiles();
+  }, []);
+
+  const loadStarredProfiles = async () => {
+    try {
+      const stored = await AsyncStorage.getItem('starredProfiles');
+      if (stored) {
+        setStarredProfiles(JSON.parse(stored));
+      }
+    } catch (error) {
+      console.log('Error loading starred profiles:', error);
+    }
+  };
+
+  const saveStarredProfiles = async (profiles: StarredProfile[]) => {
+    try {
+      await AsyncStorage.setItem('starredProfiles', JSON.stringify(profiles));
+    } catch (error) {
+      console.log('Error saving starred profiles:', error);
+    }
+  };
+
   const addStarredProfile = (profile: StarredProfile) => {
     setStarredProfiles(prev => {
       if (prev.find(p => p.id === profile.id)) {
         return prev;
       }
-      return [...prev, profile];
+      const newProfiles = [...prev, profile];
+      saveStarredProfiles(newProfiles);
+      return newProfiles;
     });
   };
 
   const removeStarredProfile = (profileId: number) => {
-    setStarredProfiles(prev => prev.filter(p => p.id !== profileId));
+    setStarredProfiles(prev => {
+      const newProfiles = prev.filter(p => p.id !== profileId);
+      saveStarredProfiles(newProfiles);
+      return newProfiles;
+    });
   };
 
   const isProfileStarred = (profileId: number) => {

@@ -52,7 +52,7 @@ const Homepage = () => {
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.menuButton}>
-              <Ionicons name="options-outline" size={28} color="#8E8E93" />
+              <Ionicons name="options" size={28} color="#8E8E93" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.profileButton} onPress={() => router.push('/Upload')}>
               <View style={styles.profileWrap}>
@@ -90,7 +90,10 @@ const Homepage = () => {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.categoryCard, styles.circlesCard]}>
+          <TouchableOpacity 
+            style={[styles.categoryCard, styles.circlesCard]}
+            onPress={() => router.push('/circles')}
+          >
             <Image
               source={require('../assets/images/circle4.webp')}
               style={styles.categoryImage}
@@ -142,7 +145,7 @@ const Homepage = () => {
 
         <TouchableOpacity style={styles.featureSection}>
           <Image
-            source={require('../assets/images/conventions.png')}
+            source={require('../assets/images/conventions.webp')}
             style={styles.featureImage}
           />
           <View style={styles.featureOverlay}>

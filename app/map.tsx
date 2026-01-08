@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   Modal,
@@ -128,16 +129,45 @@ export default function MapScreen() {
   const [showFavoritedModal, setShowFavoritedModal] = useState(false);
   const [showStarredModal, setShowStarredModal] = useState(false);
 
+  // Load favorited spots from AsyncStorage on component mount
+  useEffect(() => {
+    loadFavoritedSpots();
+  }, []);
+
+  const loadFavoritedSpots = async () => {
+    try {
+      const stored = await AsyncStorage.getItem('favoritedSpots');
+      if (stored) {
+        setFavoritedSpots(JSON.parse(stored));
+      }
+    } catch (error) {
+      console.log('Error loading favorited spots:', error);
+    }
+  };
+
+  const saveFavoritedSpots = async (spots: number[]) => {
+    try {
+      await AsyncStorage.setItem('favoritedSpots', JSON.stringify(spots));
+    } catch (error) {
+      console.log('Error saving favorited spots:', error);
+    }
+  };
+
   const filteredSpots = mockSpots.filter(spot => 
     spot.name.toLowerCase().includes(searchText.toLowerCase())
   );
 
   const toggleFavorite = (spotId: number) => {
-    setFavoritedSpots(prev => 
-      prev.includes(spotId) 
+    setFavoritedSpots(prev => {
+      const newFavorites = prev.includes(spotId) 
         ? prev.filter(id => id !== spotId)
-        : [...prev, spotId]
-    );
+        : [...prev, spotId];
+      
+      // Save to AsyncStorage
+      saveFavoritedSpots(newFavorites);
+      
+      return newFavorites;
+    });
   };
 
   const getFavoritedSpotsList = () => {
@@ -307,7 +337,7 @@ export default function MapScreen() {
             <View style={styles.mapGrid} />
             
             {/* Render spots on map */}
-            {filteredSpots.map(renderSpotOnMap)}
+            {filteredSpots.map((spot) => renderSpotOnMap(spot))}
           </View>
         </ScrollView>
       ) : (
@@ -777,15 +807,15 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    justifyContent: 'flex-end',
     alignItems: 'center',
   },
   modalContent: {
     backgroundColor: '#fff',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    maxHeight: '80%',
+    maxHeight: '50%',
     width: '100%',
     paddingBottom: 40,
   },
