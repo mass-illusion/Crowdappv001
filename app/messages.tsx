@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useRouter } from 'expo-router';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, FlatList, Image, Modal, SafeAreaView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 
 // Mock profile data to get correct images
@@ -39,6 +39,7 @@ type Message = {
   image: any;
   lastMessage: string;
   timestamp: string;
+  rawTimestamp?: Date;
   unread: boolean;
   isLocalImage?: boolean;
   participants?: any[];
@@ -61,6 +62,33 @@ export default function MessagesScreen() {
       loadMessages();
     }, [])
   );
+
+  // Add real-time polling for messages when screen is focused
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval>;
+    let lastTrigger = '';
+    
+    const checkForUpdates = async () => {
+      try {
+        const trigger = await AsyncStorage.getItem('messageUpdateTrigger');
+        if (trigger && trigger !== lastTrigger) {
+          lastTrigger = trigger;
+          loadMessages();
+        }
+      } catch (error) {
+        console.log('Error checking message updates:', error);
+      }
+    };
+    
+    // Check for updates every 1 second for better real-time feel
+    interval = setInterval(checkForUpdates, 1000);
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, []);
 
   const loadMessages = async () => {
     try {
@@ -92,6 +120,7 @@ export default function MessagesScreen() {
       const messagesList: Message[] = [];
       const processedConversations = new Set(); // Track processed conversations to avoid duplicates
       
+      // First, process conversations from friends list
       for (const friend of friendsList) {
         const conversationKey = `conversation_${friend.id}`;
         
@@ -124,6 +153,7 @@ export default function MessagesScreen() {
             image: friend.image,
             lastMessage: lastMessage.text,
             timestamp: formatTimestamp(timestamp),
+            rawTimestamp: timestamp, // Keep raw timestamp for sorting
             unread: hasUnreadMessage || hasNotification,
             isLocalImage: friend.isLocalImage,
             participants: participants
@@ -134,11 +164,46 @@ export default function MessagesScreen() {
         }
       }
       
-      // Sort by most recent message
+      // Also check for any conversations that might exist without corresponding friends
+      // This handles cases where conversations were created from interest-map or map
+      Object.keys(conversationData).forEach(conversationKey => {
+        if (conversationKey.startsWith('conversation_') && !processedConversations.has(conversationKey)) {
+          const conversation = conversationData[conversationKey];
+          if (conversation && conversation.length > 0) {
+            const profileId = parseInt(conversationKey.replace('conversation_', ''));
+            const lastMessage = conversation[conversation.length - 1];
+            const timestamp = new Date(lastMessage.timestamp);
+            
+            // Try to find friend info, or create a placeholder
+            const friendInfo = friendsList.find((f: any) => f.id === profileId);
+            const participants = allParticipants[conversationKey] || [];
+            
+            if (friendInfo) {
+              const hasUnreadMessage = lastMessage.sender === 'other' && !lastMessage.read;
+              
+              messagesList.push({
+                id: friendInfo.id,
+                name: friendInfo.name,
+                image: friendInfo.image,
+                lastMessage: lastMessage.text,
+                timestamp: formatTimestamp(timestamp),
+                rawTimestamp: timestamp, // Keep raw timestamp for sorting
+                unread: hasUnreadMessage,
+                isLocalImage: friendInfo.isLocalImage,
+                participants: participants
+              });
+            }
+          }
+        }
+      });
+      
+      // Sort by most recent message timestamp
       messagesList.sort((a, b) => {
-        // Since timestamps are now strings, we need to convert them back to dates for sorting
-        // For now, just sort by order added (most recent conversations first)
-        return b.id - a.id;
+        const timeA = a.rawTimestamp ? new Date(a.rawTimestamp).getTime() : 0;
+        const timeB = b.rawTimestamp ? new Date(b.rawTimestamp).getTime() : 0;
+        
+        // Sort by descending order (most recent first)
+        return timeB - timeA;
       });
 
       setMessages(messagesList);

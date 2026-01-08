@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
   Image,
+  Modal,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -15,6 +16,7 @@ import {
 import BeerSVG from '../assets/images/beer.svg'; // Mock data for spots with users who love them
 import BobaSVG from '../assets/images/boba.svg';
 import PlateSVG from '../assets/images/plate.svg';
+import { useStarredProfiles } from '../contexts/StarredProfilesContext';
 import CoffeeSVG from '../Map/Coffee.svg';
 const mockSpots = [
   {
@@ -28,6 +30,18 @@ const mockSpots = [
       { id: 2, avatar: require('../assets/images/profile2.png') },
       { id: 3, avatar: require('../assets/images/profile01.png') },
       { id: 4, avatar: require('../assets/images/profile2.png') },
+    ]
+  },
+  {
+    id: 10,
+    name: "Corner Bistro",
+    type: "restaurant",
+    icon: "plate",
+    coordinates: { x: 20, y: 80 },
+    users: [
+      { id: 27, avatar: require('../assets/images/profile01.png') },
+      { id: 28, avatar: require('../assets/images/profile2.png') },
+      { id: 29, avatar: require('../assets/images/profile01.png') },
     ]
   },
   {
@@ -105,19 +119,41 @@ const mockSpots = [
 
 export default function MapScreen() {
   const router = useRouter();
+  const { starredProfiles, removeStarredProfile } = useStarredProfiles();
   const [searchText, setSearchText] = useState('');
   const [isMapMode, setIsMapMode] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [favoritedSpots, setFavoritedSpots] = useState<number[]>([]);
+  const [showFavoritedList, setShowFavoritedList] = useState(false);
+  const [showFavoritedModal, setShowFavoritedModal] = useState(false);
+  const [showStarredModal, setShowStarredModal] = useState(false);
 
   const filteredSpots = mockSpots.filter(spot => 
     spot.name.toLowerCase().includes(searchText.toLowerCase())
   );
 
+  const toggleFavorite = (spotId: number) => {
+    setFavoritedSpots(prev => 
+      prev.includes(spotId) 
+        ? prev.filter(id => id !== spotId)
+        : [...prev, spotId]
+    );
+  };
+
+  const getFavoritedSpotsList = () => {
+    return mockSpots.filter(spot => favoritedSpots.includes(spot.id));
+  };
+
   const renderSpotOnMap = (spot: typeof mockSpots[0]) => {
+    const isFavorited = favoritedSpots.includes(spot.id);
     return (
       <View key={spot.id} style={[styles.mapSpot, { left: spot.coordinates.x, top: spot.coordinates.y }]}>
         {/* Spot icon */}
-        <View style={spot.icon === "plate" || spot.icon === "beer" || spot.icon === "boba" || spot.icon === "coffee" ? styles.spotIconNoCircle : styles.spotIcon}>
+        <TouchableOpacity 
+          style={spot.icon === "plate" || spot.icon === "beer" || spot.icon === "boba" || spot.icon === "coffee" ? styles.spotIconNoCircle : styles.spotIcon}
+          onPress={() => toggleFavorite(spot.id)}
+          activeOpacity={0.7}
+        >
           {spot.icon === "plate" ? (
             <PlateSVG width={68} height={68} />
           ) : spot.icon === "beer" ? (
@@ -129,10 +165,21 @@ export default function MapScreen() {
           ) : (
             <Text style={styles.spotIconText}>{spot.icon}</Text>
           )}
-        </View>
+          {isFavorited && (
+            <View style={styles.favoriteIndicator}>
+              <Ionicons name="heart" size={16} color="#FF3B30" />
+            </View>
+          )}
+        </TouchableOpacity>
         
         {/* Users who love this spot */}
-        <View style={styles.spotUsers}>
+        <TouchableOpacity 
+          style={styles.spotUsers}
+          onPress={() => router.push({
+            pathname: '/spot-matches',
+            params: { spotId: spot.id, spotName: spot.name }
+          })}
+        >
           {spot.users.slice(0, 4).map((user, index) => (
             <Image
               key={user.id}
@@ -151,10 +198,17 @@ export default function MapScreen() {
               <Text style={styles.moreUsersText}>+{spot.users.length - 4}</Text>
             </View>
           )}
-        </View>
+        </TouchableOpacity>
         
         {/* Spot name */}
-        <Text style={styles.spotName}>{spot.name}</Text>
+        <TouchableOpacity
+          onPress={() => router.push({
+            pathname: '/spot-matches',
+            params: { spotId: spot.id, spotName: spot.name }
+          })}
+        >
+          <Text style={styles.spotName}>{spot.name}</Text>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -164,15 +218,69 @@ export default function MapScreen() {
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>MAPS</Text>
-        <Switch
-          trackColor={{ false: '#E5E5E5', true: '#A2CCF2' }}
-          thumbColor={isMapMode ? '#fff' : '#fff'}
-          ios_backgroundColor="#E5E5E5"
-          onValueChange={() => setIsMapMode(!isMapMode)}
-          value={isMapMode}
-          style={styles.toggleSwitch}
-        />
+        <View style={styles.headerRight}>
+          <TouchableOpacity 
+            style={styles.menuButton}
+            onPress={() => setShowDropdown(!showDropdown)}
+          >
+            <View style={styles.menuIconCircle}>
+              <Ionicons name="options" size={22} color="#666" />
+            </View>
+          </TouchableOpacity>
+          <Switch
+            trackColor={{ false: '#E5E5E5', true: '#A2CCF2' }}
+            thumbColor={isMapMode ? '#fff' : '#fff'}
+            ios_backgroundColor="#E5E5E5"
+            onValueChange={() => setIsMapMode(!isMapMode)}
+            value={isMapMode}
+            style={styles.toggleSwitch}
+          />
+        </View>
       </View>
+
+      {/* Dropdown Menu */}
+      {showDropdown && (
+        <>
+          <TouchableOpacity 
+            style={styles.dropdownOverlay}
+            onPress={() => setShowDropdown(false)}
+            activeOpacity={1}
+          />
+          <View style={styles.dropdown}>
+            <TouchableOpacity style={styles.dropdownItem} onPress={() => { setShowDropdown(false); router.push('/interest-map'); }}>
+              <Text style={styles.dropdownText}>Switch to Interest Map</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.dropdownItem} onPress={() => setShowDropdown(false)}>
+              <Text style={styles.dropdownText}>Update Location</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.dropdownItem} onPress={() => setShowDropdown(false)}>
+              <Text style={styles.dropdownText}>Edit Profile Card</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={styles.dropdownItem} 
+              onPress={() => {
+                setShowDropdown(false);
+                setShowStarredModal(true);
+              }}
+            >
+              <Text style={styles.dropdownText}>
+                Starred {starredProfiles.length > 0 && `(${starredProfiles.length})`}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={styles.dropdownItem} 
+              onPress={() => {
+                setShowDropdown(false);
+                setShowFavoritedModal(true);
+              }}
+            >
+              <Text style={styles.dropdownText}>
+                Favorited {favoritedSpots.length > 0 && `(${favoritedSpots.length})`}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
 
       {/* Local Spots Section */}
       <View style={styles.localSpotsSection}>
@@ -188,41 +296,7 @@ export default function MapScreen() {
               onChangeText={setSearchText}
             />
           </View>
-          <TouchableOpacity 
-            style={styles.filterButton}
-            onPress={() => setShowDropdown(!showDropdown)}
-          >
-            <Ionicons name="options" size={20} color="#666" />
-          </TouchableOpacity>
         </View>
-        
-        {/* Dropdown Menu */}
-        {showDropdown && (
-          <>
-            <TouchableOpacity 
-              style={styles.dropdownOverlay}
-              onPress={() => setShowDropdown(false)}
-              activeOpacity={1}
-            />
-            <View style={styles.dropdown}>
-              <TouchableOpacity style={styles.dropdownItem} onPress={() => setShowDropdown(false)}>
-                <Text style={styles.dropdownText}>Switch to Interest Map</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.dropdownItem} onPress={() => setShowDropdown(false)}>
-                <Text style={styles.dropdownText}>Update Location</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.dropdownItem} onPress={() => setShowDropdown(false)}>
-                <Text style={styles.dropdownText}>Edit Profile Card</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.dropdownItem} onPress={() => setShowDropdown(false)}>
-                <Text style={styles.dropdownText}>Starred</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.dropdownItem} onPress={() => setShowDropdown(false)}>
-                <Text style={styles.dropdownText}>Favorited</Text>
-              </TouchableOpacity>
-            </View>
-          </>
-        )}
       </View>
 
       {/* Map Area */}
@@ -249,9 +323,7 @@ export default function MapScreen() {
                   <BobaSVG width={72} height={72} />
                 ) : spot.icon === "coffee" ? (
                   <CoffeeSVG width={62} height={62} />
-                ) : (
-                  <Text style={styles.listIconText}>{spot.icon}</Text>
-                )}
+                ) : null}
               </View>
               <View style={styles.listItemContent}>
                 <Text style={styles.listItemName}>{spot.name}</Text>
@@ -272,6 +344,108 @@ export default function MapScreen() {
           ))}
         </ScrollView>
       )}
+
+      {/* Favorited Modal */}
+      <Modal
+        visible={showFavoritedModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowFavoritedModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitleSmall}>Favorited</Text>
+              <TouchableOpacity onPress={() => setShowFavoritedModal(false)}>
+                <Ionicons name="close" size={28} color="#333" />
+              </TouchableOpacity>
+            </View>
+            
+            <ScrollView style={styles.modalList} showsVerticalScrollIndicator={false}>
+              {getFavoritedSpotsList().length > 0 ? (
+                getFavoritedSpotsList().map((spot) => (
+                  <View key={spot.id} style={styles.modalItem}>
+                    <View style={styles.modalItemLeft}>
+                      <View style={styles.modalItemIcon}>
+                        {spot.icon === "plate" ? (
+                          <PlateSVG width={40} height={40} />
+                        ) : spot.icon === "beer" ? (
+                          <BeerSVG width={40} height={40} />
+                        ) : spot.icon === "boba" ? (
+                          <BobaSVG width={46} height={46} />
+                        ) : spot.icon === "coffee" ? (
+                          <CoffeeSVG width={40} height={40} />
+                        ) : null}
+                      </View>
+                      <Text style={styles.modalItemName}>{spot.name}</Text>
+                    </View>
+                    <TouchableOpacity 
+                      onPress={() => toggleFavorite(spot.id)}
+                      style={styles.modalRemoveButton}
+                    >
+                      <Ionicons name="trash-outline" size={24} color="#FF3B30" />
+                    </TouchableOpacity>
+                  </View>
+                ))
+              ) : (
+                <View style={styles.emptyState}>
+                  <Ionicons name="heart-outline" size={64} color="#CCC" />
+                  <Text style={styles.emptyStateText}>No favorited establishments yet</Text>
+                </View>
+              )}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Starred Profiles Modal */}
+      <Modal
+        visible={showStarredModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowStarredModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitleSmall}>Starred Profiles</Text>
+              <TouchableOpacity onPress={() => setShowStarredModal(false)}>
+                <Ionicons name="close" size={28} color="#333" />
+              </TouchableOpacity>
+            </View>
+            <ScrollView style={styles.modalList}>
+              {starredProfiles.length > 0 ? (
+                starredProfiles.map((profile) => (
+                  <View key={profile.id} style={styles.modalItem}>
+                    <View style={styles.modalItemInfo}>
+                      <Image source={profile.image} style={styles.starredProfileAvatar} />
+                      <View style={styles.starredProfileInfo}>
+                        <Text style={styles.modalItemName}>{profile.name}</Text>
+                        <Text style={styles.starredProfileLocation}>
+                          {profile.spotName} • {profile.sharedInterests} shared interests
+                        </Text>
+                      </View>
+                    </View>
+                    <TouchableOpacity 
+                      onPress={() => {
+                        removeStarredProfile(profile.id);
+                      }}
+                      style={styles.modalRemoveButton}
+                    >
+                      <Ionicons name="trash-outline" size={24} color="#FF3B30" />
+                    </TouchableOpacity>
+                  </View>
+                ))
+              ) : (
+                <View style={styles.emptyState}>
+                  <Ionicons name="star-outline" size={64} color="#CCC" />
+                  <Text style={styles.emptyStateText}>No starred profiles yet</Text>
+                </View>
+              )}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
 
       {/* Bottom Navigation */}
       <View style={styles.bottomNav}>
@@ -318,11 +492,27 @@ const styles = StyleSheet.create({
     marginBottom: -5,
     marginTop: 5,
   },
-  toggleSwitch: {
-    transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }],
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
     position: 'absolute',
     right: 20,
     bottom: 45,
+    gap: 15,
+  },
+  menuButton: {
+    padding: 0,
+  },
+  menuIconCircle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#F5F5F5',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  toggleSwitch: {
+    transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }],
   },
   localSpotsSection: {
     backgroundColor: '#fff',
@@ -375,7 +565,7 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     position: 'absolute',
-    top: 60,
+    top: 135,
     right: 20,
     backgroundColor: '#fff',
     borderRadius: 12,
@@ -399,11 +589,47 @@ const styles = StyleSheet.create({
   dropdownItem: {
     paddingHorizontal: 16,
     paddingVertical: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   dropdownText: {
     fontSize: 16,
     color: '#333',
     fontWeight: '500',
+  },
+  favoritedItem: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    backgroundColor: '#F9F9F9',
+    marginHorizontal: 8,
+    marginVertical: 2,
+    borderRadius: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  favoritedItemText: {
+    fontSize: 14,
+    color: '#666',
+    flex: 1,
+    marginRight: 8,
+  },
+  removeButton: {
+    padding: 4,
+  },
+  favoriteIndicator: {
+    position: 'absolute',
+    top: -8,
+    right: -8,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 3,
   },
   mapContainer: {
     flex: 1,
@@ -450,6 +676,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 8,
+    borderWidth: 0,
   },
   spotIconText: {
     fontSize: 24,
@@ -547,5 +774,94 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingVertical: 8,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: '80%',
+    width: '100%',
+    paddingBottom: 40,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E5E5',
+  },
+  modalTitleSmall: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#333',
+  },
+  modalList: {
+    paddingHorizontal: 20,
+  },
+  modalItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F5F5F5',
+  },
+  modalItemLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  modalItemInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  modalItemIcon: {
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  modalItemName: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#333',
+    flex: 1,
+  },
+  modalRemoveButton: {
+    padding: 8,
+  },
+  emptyState: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 60,
+  },
+  emptyStateText: {
+    fontSize: 16,
+    color: '#999',
+    marginTop: 16,
+  },
+  starredProfileAvatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 12,
+  },
+  starredProfileInfo: {
+    flex: 1,
+  },
+  starredProfileLocation: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 4,
   },
 });

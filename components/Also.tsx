@@ -1,4 +1,5 @@
 import * as Location from 'expo-location';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import React, { useRef, useState } from 'react';
 import { Alert, FlatList, Keyboard, Modal, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, useWindowDimensions, View } from 'react-native';
@@ -46,8 +47,21 @@ const Also: React.FC = () => {
         const { city, region } = address[0];
         const locationString = city && region ? `${city}, ${region}` : 'Current Location';
         setLocation(locationString);
+        // Save to AsyncStorage for use in other screens
+        try {
+          await AsyncStorage.setItem('userLocation', locationString);
+        } catch (error) {
+          console.error('Error saving user location:', error);
+        }
       } else {
-        setLocation('Current Location');
+        const fallbackLocation = 'Current Location';
+        setLocation(fallbackLocation);
+        // Save fallback to AsyncStorage
+        try {
+          await AsyncStorage.setItem('userLocation', fallbackLocation);
+        } catch (error) {
+          console.error('Error saving user location:', error);
+        }
       }
       
       setShowLocationModal(false);
@@ -124,13 +138,27 @@ const Also: React.FC = () => {
     }
   };
 
-  const handleLocationChange = (text: string) => {
+  const handleLocationChange = async (text: string) => {
     setLocation(text);
+    // Save manually entered location to AsyncStorage
+    if (text && text !== 'Select or enable location') {
+      try {
+        await AsyncStorage.setItem('userLocation', text);
+      } catch (error) {
+        console.error('Error saving user location:', error);
+      }
+    }
     searchCities(text);
   };
 
-  const selectCity = (city: { id: number; name: string; fullName: string; displayName: string }) => {
+  const selectCity = async (city: { id: number; name: string; fullName: string; displayName: string }) => {
     setLocation(city.fullName);
+    // Save selected city to AsyncStorage
+    try {
+      await AsyncStorage.setItem('userLocation', city.fullName);
+    } catch (error) {
+      console.error('Error saving user location:', error);
+    }
     setCitySuggestions([]);
     setShowSuggestions(false);
   };

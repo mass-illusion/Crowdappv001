@@ -4,6 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 import { Alert, FlatList, Image, KeyboardAvoidingView, Modal, Platform, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { CUSTOM_MESSAGES } from '../constants/messages';
 
 // Mock profile data for image handling
 const mockProfiles = [
@@ -183,7 +184,7 @@ export default function DirectMessageScreen() {
   // Pre-populate with a pleasant intro message only on first visit
   React.useEffect(() => {
     if (isFirstMessage && messages.length === 0) {
-      const introMessage = `Hey! I saw we have some shared interests. Would love to connect at the event 🙂`;
+      const introMessage = CUSTOM_MESSAGES.UNIVERSAL_INTRO;
       setInputText(introMessage);
     } else if (!isFirstMessage) {
       // Clear the input text after first message is sent
@@ -254,6 +255,9 @@ export default function DirectMessageScreen() {
         const conversationKey = `conversation_${profileId}`;
         conversationData[conversationKey] = updatedMessages;
         await AsyncStorage.setItem('conversations', JSON.stringify(conversationData));
+        
+        // Trigger message list update for real-time updates
+        await AsyncStorage.setItem('messageUpdateTrigger', Date.now().toString());
 
         // Also save to group conversations for all participants
         if (conversationParticipants.length > 0) {
@@ -262,6 +266,9 @@ export default function DirectMessageScreen() {
             conversationData[participantKey] = updatedMessages;
           }
           await AsyncStorage.setItem('conversations', JSON.stringify(conversationData));
+          
+          // Trigger message list update for group conversations too
+          await AsyncStorage.setItem('messageUpdateTrigger', Date.now().toString());
           
           // Simulate participant replies after a delay (for demo purposes)
           setTimeout(() => {
@@ -313,6 +320,7 @@ export default function DirectMessageScreen() {
       
       await AsyncStorage.setItem('conversations', JSON.stringify(conversationData));
       
+      // Trigger message list update for participant replies\n      await AsyncStorage.setItem('messageUpdateTrigger', Date.now().toString());\n      
       // Update local state if still on this screen
       setMessages(updatedMessages);
     } catch (error) {
