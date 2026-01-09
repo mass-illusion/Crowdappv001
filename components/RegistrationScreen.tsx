@@ -80,7 +80,7 @@ export default function RegistrationScreen({ onBack, onTermsPress, onPrivacyPres
         <View style={styles.termsContainer}>
           <Text style={styles.termsText}>
 By entering your number, you agree to Crowd's{'\n'}
-            <Text style={styles.link} onPress={() => router.push('/Terms')}>Terms & Conditions</Text> and <Text style={styles.link} onPress={() => router.push('/PrivacyPolicy')}>Privacy Policy</Text>
+            <Text style={styles.link} onPress={() => router.push('/terms')}>Terms & Conditions</Text> and <Text style={styles.link} onPress={() => router.push('/privacy-policy')}>Privacy Policy</Text>
           </Text>
         </View>
       </View>
