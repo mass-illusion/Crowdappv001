@@ -60,7 +60,7 @@ const CirclesScreen = () => {
     {
       id: '3',
       title: 'Outdoor Adventures',
-      image: require('../assets/images/circle4.webp'),
+      image: require('../assets/images/outdoors.webp'),
       buttonText: 'Join Now'
     }
   ];
@@ -84,7 +84,8 @@ const CirclesScreen = () => {
     {
       id: 'holidays',
       title: 'HOLIDAYS',
-      image: require('../assets/images/holidays4.webp')
+      image: require('../assets/images/holidays4.webp'),
+      route: '/holidays'
     },
     {
       id: 'business',
@@ -104,7 +105,7 @@ const CirclesScreen = () => {
     {
       id: 'hobbies',
       title: 'HOBBIES',
-      image: require('../assets/images/circle4.webp')
+      image: require('../assets/images/hobbies2.webp')
     },
     {
       id: 'lastminute',
@@ -114,7 +115,7 @@ const CirclesScreen = () => {
     {
       id: 'career',
       title: 'CAREER',
-      image: require('../assets/images/circle4.webp')
+      image: require('../assets/images/business3.webp')
     },
     {
       id: 'skills',
@@ -224,7 +225,15 @@ const CirclesScreen = () => {
             </View>
             <View style={styles.categoriesGrid}>
               {categories.map((category) => (
-                <TouchableOpacity key={category.id} style={styles.categoryCard}>
+                <TouchableOpacity 
+                  key={category.id} 
+                  style={styles.categoryCard}
+                  onPress={() => {
+                    if (category.route) {
+                      router.push(category.route as any);
+                    }
+                  }}
+                >
                   <Image source={category.image} style={styles.categoryImage} />
                   <View style={styles.categoryOverlay}>
                     <Text style={styles.categoryTitle}>{category.title}</Text>
