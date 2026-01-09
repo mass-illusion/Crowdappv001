@@ -3,9 +3,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useRouter } from 'expo-router';
 import React from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Svg, { Rect, Text as SvgText } from 'react-native-svg';
 
-// import MusicFestival1SVG from '../assets/images/musicfestival1.svg';
-import Welcome2SVG from '../assets/images/welcome2.svg';
+// For now, let's create a simple SVG component to replace the import
+const Welcome2SVG = ({ width = 360, height = 90 }) => (
+  <Svg width={width} height={height} viewBox="0 0 360 90">
+    <Rect width="360" height="90" fill="#f0f0f0" rx="12" />
+    <SvgText x="180" y="45" fontSize="18" fill="#333" textAnchor="middle" alignmentBaseline="middle">
+      Welcome to CrowdApp
+    </SvgText>
+  </Svg>
+);
 
 
 const Homepage = () => {

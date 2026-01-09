@@ -253,10 +253,10 @@ const CirclesScreen = () => {
         <TouchableOpacity style={styles.navItem}>
           <Ionicons name="mic" size={24} color="#999" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem} onPress={() => router.push('/map')}>
+        <TouchableOpacity style={styles.navItem} onPress={() => router.push('/map' as any)}>
           <Ionicons name="map" size={24} color="#999" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem} onPress={() => router.push('/messages')}>
+        <TouchableOpacity style={styles.navItem} onPress={() => router.push('/messages' as any)}>
           <Ionicons name="chatbubble" size={24} color="#999" />
         </TouchableOpacity>
       </View>
