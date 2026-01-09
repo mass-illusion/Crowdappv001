@@ -1,0 +1,4 @@
+// This is a placeholder for the festival image
+// The actual image file needs to be saved as live-events-bg.jpg in the assets/images folder
+// You'll need to manually save the festival fireworks image you provided to:
+// /Users/sabrinatran/Desktop/Crowdappv01/assets/images/live-events-bg.jpg
