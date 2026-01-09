@@ -2,14 +2,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import {
-    Dimensions,
-    Image,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 
 const { width } = Dimensions.get('window');
@@ -24,12 +24,30 @@ interface Circle {
 
 const CirclesScreen = () => {
   const router = useRouter();
+  const [loadActiveCircles, setLoadActiveCircles] = React.useState(false);
+  const [loadCategories, setLoadCategories] = React.useState(false);
+
+  // Lazy load below-the-fold content
+  React.useEffect(() => {
+    const timer1 = setTimeout(() => {
+      setLoadActiveCircles(true);
+    }, 300);
+    
+    const timer2 = setTimeout(() => {
+      setLoadCategories(true);
+    }, 600);
+    
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, []);
 
   const topCircles: Circle[] = [
     {
       id: '1',
       title: 'Adult Disney Lovers',
-      image: require('../assets/images/disney.webp'),
+      image: require('../assets/images/disneyless.png'),
       buttonText: 'Join Now'
     },
     {
@@ -51,13 +69,13 @@ const CirclesScreen = () => {
     {
       id: '4',
       title: 'Halloween 2026',
-      image: require('../assets/images/circle4.webp'),
+      image: require('../assets/images/halloween2s.webp'),
       buttonText: 'Join Now'
     },
     {
       id: '5',
       title: 'New Moms',
-      image: require('../assets/images/circle4.webp'),
+      image: require('../assets/images/newmom.webp'),
       buttonText: 'Join Now'
     }
   ];
@@ -66,11 +84,61 @@ const CirclesScreen = () => {
     {
       id: 'holidays',
       title: 'HOLIDAYS',
-      image: require('../assets/images/circle4.webp')
+      image: require('../assets/images/holidays4.webp')
     },
     {
       id: 'business',
       title: 'BUSINESS',
+      image: require('../assets/images/business131.webp')
+    },
+    {
+      id: 'fanatics',
+      title: 'FANDOM',
+      image: require('../assets/images/fandom9.webp')
+    },
+    {
+      id: 'lifephases',
+      title: 'LIFE PHASES',
+      image: require('../assets/images/lifephase22.webp')
+    },
+    {
+      id: 'hobbies',
+      title: 'HOBBIES',
+      image: require('../assets/images/circle4.webp')
+    },
+    {
+      id: 'lastminute',
+      title: 'LAST MINUTE',
+      image: require('../assets/images/circle4.webp')
+    },
+    {
+      id: 'career',
+      title: 'CAREER',
+      image: require('../assets/images/circle4.webp')
+    },
+    {
+      id: 'skills',
+      title: 'SKILLS',
+      image: require('../assets/images/circle4.webp')
+    },
+    {
+      id: 'memes',
+      title: 'MEMES',
+      image: require('../assets/images/circle4.webp')
+    },
+    {
+      id: 'jammin',
+      title: 'JAMMIN',
+      image: require('../assets/images/circle4.webp')
+    },
+    {
+      id: 'sports',
+      title: 'SPORTS',
+      image: require('../assets/images/circle4.webp')
+    },
+    {
+      id: 'trips',
+      title: 'TRIPS',
       image: require('../assets/images/circle4.webp')
     }
   ];
@@ -123,48 +191,49 @@ const CirclesScreen = () => {
           </ScrollView>
         </View>
 
-        {/* This Week's Most Active */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>This week's most active</Text>
-            <TouchableOpacity>
-              <Text style={styles.seeAllText}>See all ›</Text>
-            </TouchableOpacity>
-          </View>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-            {activeCircles.map((circle) => (
-              <View key={circle.id} style={styles.activeCircleCard}>
-                <Image source={circle.image} style={styles.circleImage} />
-                <View style={styles.circleOverlay}>
-                  <Text style={styles.circleTitle}>{circle.title}</Text>
-                  <TouchableOpacity style={styles.joinButton}>
-                    <Text style={styles.joinButtonText}>{circle.buttonText}</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            ))}
-          </ScrollView>
-        </View>
-
-        {/* Explore All Categories */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Explore all categories</Text>
-            <TouchableOpacity>
-              <Text style={styles.seeAllText}>See all ›</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.categoriesGrid}>
-            {categories.map((category) => (
-              <TouchableOpacity key={category.id} style={styles.categoryCard}>
-                <Image source={category.image} style={styles.categoryImage} />
-                <View style={styles.categoryOverlay}>
-                  <Text style={styles.categoryTitle}>{category.title}</Text>
-                </View>
+        {/* This Week's Most Active - Lazy Loaded */}
+        {loadActiveCircles && (
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>This week's most active</Text>
+              <TouchableOpacity>
+                <Text style={styles.seeAllText}>See all ›</Text>
               </TouchableOpacity>
-            ))}
+            </View>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
+              {activeCircles.map((circle) => (
+                <View key={circle.id} style={styles.activeCircleCard}>
+                  <Image source={circle.image} style={styles.circleImage} />
+                  <View style={styles.circleOverlay}>
+                    <Text style={styles.circleTitle}>{circle.title}</Text>
+                    <TouchableOpacity style={styles.joinButton}>
+                      <Text style={styles.joinButtonText}>{circle.buttonText}</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ))}
+            </ScrollView>
           </View>
-        </View>
+        )}
+
+        {/* Explore All Categories - Lazy Loaded */}
+        {loadCategories && (
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Explore all categories</Text>
+            </View>
+            <View style={styles.categoriesGrid}>
+              {categories.map((category) => (
+                <TouchableOpacity key={category.id} style={styles.categoryCard}>
+                  <Image source={category.image} style={styles.categoryImage} />
+                  <View style={styles.categoryOverlay}>
+                    <Text style={styles.categoryTitle}>{category.title}</Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+        )}
       </ScrollView>
 
       {/* Bottom Navigation */}
@@ -263,7 +332,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   activeCircleCard: {
-    width: width * 0.45,
+    width: width * 0.55,
     height: 110,
     marginRight: 15,
     borderRadius: 15,
@@ -310,15 +379,17 @@ const styles = StyleSheet.create({
   },
   categoriesGrid: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'space-between',
-    gap: 15,
+    paddingHorizontal: 10,
   },
   categoryCard: {
-    width: width * 0.45,
+    width: '47%',
     height: 220,
     borderRadius: 15,
     overflow: 'hidden',
     position: 'relative',
+    marginBottom: 15,
   },
   categoryImage: {
     width: '100%',

@@ -12,6 +12,7 @@ const Homepage = () => {
   // This would typically come from user context/state
   const [userName, setUserName] = React.useState('');
   const [userProfileImage, setUserProfileImage] = React.useState('https://via.placeholder.com/50');
+  const [loadFeatureImages, setLoadFeatureImages] = React.useState(false);
 
   const router = useRouter();
   // const [activeTab, setActiveTab] = React.useState('home');
@@ -29,6 +30,13 @@ const Homepage = () => {
         }
       };
       loadProfilePhotoAndName();
+      
+      // Lazy load feature images after a short delay
+      const timer = setTimeout(() => {
+        setLoadFeatureImages(true);
+      }, 500);
+      
+      return () => clearTimeout(timer);
     }, [])
   );
 
@@ -121,47 +129,51 @@ const Homepage = () => {
           </View>
         </TouchableOpacity>
 
-        {/* Feature Sections */}
-        <TouchableOpacity style={styles.featureSection}>
-          <Image
-            source={require('../assets/images/musicfestival.png')}
-            style={styles.featureImage}
-          />
-          <View style={[styles.featureOverlay, { backgroundColor: 'rgba(0,0,0,0.35)' }]}> 
-            <Text style={styles.featureTitle}>Music Festivals</Text>
-          </View>
-        </TouchableOpacity>
+        {/* Feature Sections - Lazy Loaded */}
+        {loadFeatureImages && (
+          <>
+            <TouchableOpacity style={styles.featureSection}>
+              <Image
+                source={require('../assets/images/musicfestival2.webp')}
+                style={styles.featureImage}
+              />
+              <View style={[styles.featureOverlay, { backgroundColor: 'rgba(0,0,0,0.35)' }]}> 
+                <Text style={styles.featureTitle}>Music Festivals</Text>
+              </View>
+            </TouchableOpacity>
 
-        {/* Sports Banner */}
-        <TouchableOpacity style={styles.featureSection}>
-          <Image
-            source={require('../assets/images/sports.png')}
-            style={styles.featureImage}
-          />
-          <View style={styles.featureOverlay}>
-            <Text style={styles.featureTitle}>Sports</Text>
-          </View>
-        </TouchableOpacity>
+            {/* Sports Banner */}
+            <TouchableOpacity style={styles.featureSection}>
+              <Image
+                source={require('../assets/images/sports3.webp')}
+                style={styles.featureImage}
+              />
+              <View style={styles.featureOverlay}>
+                <Text style={styles.featureTitle}>Sports</Text>
+              </View>
+            </TouchableOpacity>
 
-        <TouchableOpacity style={styles.featureSection}>
-          <Image
-            source={require('../assets/images/conventions.webp')}
-            style={styles.featureImage}
-          />
-          <View style={styles.featureOverlay}>
-            <Text style={styles.featureTitle}>Conventions</Text>
-          </View>
-        </TouchableOpacity>
+            <TouchableOpacity style={styles.featureSection}>
+              <Image
+                source={require('../assets/images/conventions.webp')}
+                style={styles.featureImage}
+              />
+              <View style={styles.featureOverlay}>
+                <Text style={styles.featureTitle}>Conventions</Text>
+              </View>
+            </TouchableOpacity>
 
-        <TouchableOpacity style={styles.featureSection}>
-          <Image
-            source={require('../assets/images/live.png')}
-            style={styles.featureImage}
-          />
-          <View style={styles.featureOverlay}>
-            <Text style={styles.featureTitle}>Live</Text>
-          </View>
-        </TouchableOpacity>
+            <TouchableOpacity style={styles.featureSection}>
+              <Image
+                source={require('../assets/images/live3.webp')}
+                style={styles.featureImage}
+              />
+              <View style={styles.featureOverlay}>
+                <Text style={styles.featureTitle}>Live</Text>
+              </View>
+            </TouchableOpacity>
+          </>
+        )}
       </ScrollView>
 
       {/* Bottom Navigation */}
