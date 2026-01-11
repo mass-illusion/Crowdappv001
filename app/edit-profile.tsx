@@ -15,6 +15,19 @@ export default function EditProfile() {
   const [location, setLocation] = useState('');
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
+  const [showGenderDropdown, setShowGenderDropdown] = useState(false);
+  const genderOptions = [
+    'Woman',
+    'Man',
+    'Non-binary',
+    'Genderfluid',
+    'Transgender',
+    'Agender',
+    'Demigender',
+    'Two-Spirit',
+    'Other',
+    'Prefer not to say'
+  ];
   const [ethnicity, setEthnicity] = useState('');
   const [showEthnicityDropdown, setShowEthnicityDropdown] = useState(false);
   const [importantCulture, setImportantCulture] = useState(false);
@@ -160,19 +173,19 @@ export default function EditProfile() {
         </Text>
       </View>
 
-      <View style={styles.fieldGroup}>
-        <Text style={styles.fieldLabel}>Full Name</Text>
+      <View style={[styles.fieldGroup, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedField]}>
+        <Text style={[styles.fieldLabel, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedText]}>Full Name</Text>
         <TextInput
-          style={styles.textInput}
+          style={[styles.textInput, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedInput]}
           value={firstName}
           onChangeText={setFirstName}
           placeholder="Full Name"
         />
       </View>
 
-      <View style={styles.fieldGroup}>
-        <Text style={styles.fieldLabel}>User Name</Text>
-        <View style={styles.usernameContainer}>
+      <View style={[styles.fieldGroup, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedField]}>
+        <Text style={[styles.fieldLabel, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedText]}>User Name</Text>
+        <View style={[styles.usernameContainer, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedInput]}>
           <Text style={styles.atSymbol}>@</Text>
           <TextInput
             style={[styles.textInput, styles.usernameInput]}
@@ -183,10 +196,10 @@ export default function EditProfile() {
         </View>
       </View>
 
-      <View style={styles.fieldGroup}>
-        <Text style={styles.fieldLabel}>About Me</Text>
+      <View style={[styles.fieldGroup, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedField]}>
+        <Text style={[styles.fieldLabel, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedText]}>About Me</Text>
         <TextInput
-          style={[styles.textInput, styles.textArea]}
+          style={[styles.textInput, styles.textArea, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedInput]}
           value={aboutMe}
           onChangeText={setAboutMe}
           placeholder="Describe yourself in a way your friends would."
@@ -195,31 +208,31 @@ export default function EditProfile() {
         />
       </View>
 
-      <View style={styles.fieldGroup}>
-        <Text style={styles.fieldLabel}>My dream is...</Text>
+      <View style={[styles.fieldGroup, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedField]}>
+        <Text style={[styles.fieldLabel, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedText]}>My dream is...</Text>
         <TextInput
-          style={styles.textInput}
+          style={[styles.textInput, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedInput]}
           value={dreamIs}
           onChangeText={setDreamIs}
           placeholder=""
         />
       </View>
 
-      <View style={styles.fieldGroup}>
-        <Text style={styles.fieldLabel}>Location</Text>
+      <View style={[styles.fieldGroup, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedField]}>
+        <Text style={[styles.fieldLabel, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedText]}>Location</Text>
         <TextInput
-          style={styles.textInput}
+          style={[styles.textInput, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedInput]}
           value={location}
           onChangeText={setLocation}
           placeholder="Enter your location"
         />
       </View>
 
-      <View style={styles.row}>
+      <View style={[styles.row, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedField]}>
         <View style={[styles.fieldGroup, styles.halfWidth]}>
-          <Text style={styles.fieldLabel}>Age</Text>
+          <Text style={[styles.fieldLabel, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedText]}>Age</Text>
           <TextInput
-            style={styles.textInput}
+            style={[styles.textInput, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedInput]}
             value={age}
             onChangeText={setAge}
             placeholder="Age"
@@ -233,21 +246,49 @@ export default function EditProfile() {
               <View style={styles.checkbox}>
                 {!showOnProfile && <Ionicons name="checkmark" size={12} color="#007AFF" />}
               </View>
-              <Text style={styles.checkboxLabel}>Don't show on profile</Text>
+              <Text style={[styles.checkboxLabel, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedText]}>Don't show on profile</Text>
             </TouchableOpacity>
           </View>
         </View>
         <View style={[styles.fieldGroup, styles.halfWidth]}>
-          <Text style={styles.fieldLabel}>Gender</Text>
-          <TouchableOpacity style={styles.dropdownButton}>
-            <Text style={styles.dropdownText}>{gender || 'Gender'}</Text>
-            <Ionicons name="chevron-down" size={20} color="#666" />
-          </TouchableOpacity>
+          <Text style={[styles.fieldLabel, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown) && styles.dimmedText]}>Gender</Text>
+          <View style={styles.dropdownContainer}>
+            <TouchableOpacity 
+              style={[styles.dropdownButton, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown) && styles.dimmedInput]}
+              onPress={() => setShowGenderDropdown(!showGenderDropdown)}
+            >
+              <Text style={[styles.dropdownText, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown) && styles.dimmedText]}>{gender || 'Select gender'}</Text>
+              <Ionicons name={showGenderDropdown ? "chevron-up" : "chevron-down"} size={20} color={(showEthnicityDropdown || showIndustryDropdown || showReligionDropdown) ? "#ccc" : "#666"} />
+            </TouchableOpacity>
+            {showGenderDropdown && (
+              <>
+                <TouchableWithoutFeedback onPress={() => setShowGenderDropdown(false)}>
+                  <View style={styles.dropdownBackdrop} />
+                </TouchableWithoutFeedback>
+                <View style={styles.dropdownOverlay}>
+                  <ScrollView style={styles.dropdownList} nestedScrollEnabled={true}>
+                    {genderOptions.map((option, index) => (
+                      <TouchableOpacity
+                        key={index}
+                        style={[styles.dropdownItem, index === genderOptions.length - 1 && styles.lastDropdownItem]}
+                        onPress={() => {
+                          setGender(option);
+                          setShowGenderDropdown(false);
+                        }}
+                      >
+                        <Text style={styles.dropdownItemText}>{option}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
+              </>
+            )}
+          </View>
         </View>
       </View>
 
-      <View style={styles.fieldGroup}>
-        <Text style={styles.fieldLabel}>Ethnicity</Text>
+      <View style={[styles.fieldGroup, (showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedField]}>
+        <Text style={[styles.fieldLabel, (showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedText]}>Ethnicity</Text>
         <View style={styles.dropdownContainer}>
           <TouchableOpacity 
             style={styles.dropdownButton}
@@ -257,22 +298,27 @@ export default function EditProfile() {
             <Ionicons name={showEthnicityDropdown ? "chevron-up" : "chevron-down"} size={20} color="#666" />
           </TouchableOpacity>
           {showEthnicityDropdown && (
-            <View style={styles.dropdownOverlay}>
-              <ScrollView style={styles.dropdownList} nestedScrollEnabled={true}>
-                {ethnicityOptions.map((option, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={[styles.dropdownItem, index === ethnicityOptions.length - 1 && styles.lastDropdownItem]}
-                    onPress={() => {
-                      setEthnicity(option);
-                      setShowEthnicityDropdown(false);
-                    }}
-                  >
-                    <Text style={styles.dropdownItemText}>{option}</Text>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
-            </View>
+            <>
+              <TouchableWithoutFeedback onPress={() => setShowEthnicityDropdown(false)}>
+                <View style={styles.dropdownBackdrop} />
+              </TouchableWithoutFeedback>
+              <View style={styles.dropdownOverlay}>
+                <ScrollView style={styles.dropdownList} nestedScrollEnabled={true}>
+                  {ethnicityOptions.map((option, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      style={[styles.dropdownItem, index === ethnicityOptions.length - 1 && styles.lastDropdownItem]}
+                      onPress={() => {
+                        setEthnicity(option);
+                        setShowEthnicityDropdown(false);
+                      }}
+                    >
+                      <Text style={styles.dropdownItemText}>{option}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            </>
           )}
         </View>
         <View style={styles.checkboxRow}>
@@ -288,56 +334,61 @@ export default function EditProfile() {
         </View>
       </View>
 
-      <View style={styles.fieldGroup}>
-        <Text style={styles.fieldLabel}>Occupation</Text>
+      <View style={[styles.fieldGroup, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedField]}>
+        <Text style={[styles.fieldLabel, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedText]}>Occupation</Text>
         <TextInput
-          style={styles.textInput}
+          style={[styles.textInput, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedInput]}
           value={occupation}
           onChangeText={setOccupation}
           placeholder="Your occupation"
         />
       </View>
 
-      <View style={styles.fieldGroup}>
-        <Text style={styles.fieldLabel}>Industry</Text>
+      <View style={[styles.fieldGroup, (showEthnicityDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedField]}>
+        <Text style={[styles.fieldLabel, (showEthnicityDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedText]}>Industry</Text>
         <View style={styles.dropdownContainer}>
           <TouchableOpacity 
-            style={styles.dropdownButton}
+            style={[styles.dropdownButton, (showEthnicityDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedInput]}
             onPress={() => setShowIndustryDropdown(!showIndustryDropdown)}
           >
-            <Text style={styles.dropdownText}>{industry || 'Select industry'}</Text>
-            <Ionicons name={showIndustryDropdown ? "chevron-up" : "chevron-down"} size={20} color="#666" />
+            <Text style={[styles.dropdownText, (showEthnicityDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedText]}>{industry || 'Select industry'}</Text>
+            <Ionicons name={showIndustryDropdown ? "chevron-up" : "chevron-down"} size={20} color={(showEthnicityDropdown || showReligionDropdown || showGenderDropdown) ? "#ccc" : "#666"} />
           </TouchableOpacity>
           {showIndustryDropdown && (
-            <View style={styles.dropdownOverlay}>
-              <ScrollView style={styles.dropdownList} nestedScrollEnabled={true}>
-                {industryOptions.map((option, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={[styles.dropdownItem, index === industryOptions.length - 1 && styles.lastDropdownItem]}
-                    onPress={() => {
-                      setIndustry(option);
-                      setShowIndustryDropdown(false);
-                    }}
-                  >
-                    <Text style={styles.dropdownItemText}>{option}</Text>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
-            </View>
+            <>
+              <TouchableWithoutFeedback onPress={() => setShowIndustryDropdown(false)}>
+                <View style={styles.dropdownBackdrop} />
+              </TouchableWithoutFeedback>
+              <View style={styles.dropdownOverlay}>
+                <ScrollView style={styles.dropdownList} nestedScrollEnabled={true}>
+                  {industryOptions.map((option, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      style={[styles.dropdownItem, index === industryOptions.length - 1 && styles.lastDropdownItem]}
+                      onPress={() => {
+                        setIndustry(option);
+                        setShowIndustryDropdown(false);
+                      }}
+                    >
+                      <Text style={styles.dropdownItemText}>{option}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            </>
           )}
         </View>
       </View>
 
-      <View style={styles.fieldGroup}>
-        <Text style={styles.fieldLabel}>Religion</Text>
+      <View style={[styles.fieldGroup, (showEthnicityDropdown || showIndustryDropdown || showGenderDropdown) && styles.dimmedField]}>
+        <Text style={[styles.fieldLabel, (showEthnicityDropdown || showIndustryDropdown || showGenderDropdown) && styles.dimmedText]}>Religion</Text>
         <View style={styles.dropdownContainer}>
           <TouchableOpacity 
-            style={styles.dropdownButton}
+            style={[styles.dropdownButton, (showEthnicityDropdown || showIndustryDropdown || showGenderDropdown) && styles.dimmedInput]}
             onPress={() => setShowReligionDropdown(!showReligionDropdown)}
           >
-            <Text style={styles.dropdownText}>{religion || 'Select religion'}</Text>
-            <Ionicons name={showReligionDropdown ? "chevron-up" : "chevron-down"} size={20} color="#666" />
+            <Text style={[styles.dropdownText, (showEthnicityDropdown || showIndustryDropdown || showGenderDropdown) && styles.dimmedText]}>{religion || 'Select religion'}</Text>
+            <Ionicons name={showReligionDropdown ? "chevron-up" : "chevron-down"} size={20} color={(showEthnicityDropdown || showIndustryDropdown || showGenderDropdown) ? "#ccc" : "#666"} />
           </TouchableOpacity>
           {showReligionDropdown && (
             <>
@@ -365,15 +416,15 @@ export default function EditProfile() {
         </View>
       </View>
 
-      <View style={styles.fieldGroup}>
-        <Text style={styles.fieldLabel}>Relationship Status</Text>
+      <View style={[styles.fieldGroup, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedField]}>
+        <Text style={[styles.fieldLabel, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedText]}>Relationship Status</Text>
         <View style={styles.dropdownContainer}>
           <TouchableOpacity 
-            style={styles.dropdownButton}
+            style={[styles.dropdownButton, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedInput]}
             onPress={() => setShowRelationshipDropdown(!showRelationshipDropdown)}
           >
-            <Text style={styles.dropdownText}>{relationshipStatus || 'Select status'}</Text>
-            <Ionicons name={showRelationshipDropdown ? "chevron-up" : "chevron-down"} size={20} color="#666" />
+            <Text style={[styles.dropdownText, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedText]}>{relationshipStatus || 'Select status'}</Text>
+            <Ionicons name={showRelationshipDropdown ? "chevron-up" : "chevron-down"} size={20} color={(showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) ? "#ccc" : "#666"} />
           </TouchableOpacity>
           {showRelationshipDropdown && (
             <>
@@ -852,23 +903,23 @@ const styles = StyleSheet.create({
   },
   dropdownContainer: {
     position: 'relative',
-    zIndex: 1000,
+    zIndex: 2000,
   },
   dropdownBackdrop: {
     position: 'absolute',
-    top: -1000,
-    left: -1000,
-    right: -1000,
-    bottom: -1000,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    zIndex: 999,
+    top: -2000,
+    left: -2000,
+    width: 4000,
+    height: 4000,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 1999,
   },
   dropdownOverlay: {
     position: 'absolute',
     top: '100%',
     left: 0,
     right: 0,
-    zIndex: 1001,
+    zIndex: 2001,
   },
   dropdownOverlayUp: {
     position: 'absolute',
@@ -878,28 +929,32 @@ const styles = StyleSheet.create({
     zIndex: 1001,
   },
   dropdownList: {
-    borderWidth: 1,
-    borderColor: '#E5E5EA',
+    borderWidth: 2,
+    borderColor: '#D1D1D6',
     borderRadius: 8,
-    backgroundColor: 'white',
+    backgroundColor: '#FFFFFF',
     maxHeight: 200,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 5,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 12,
+    elevation: 20,
+    opacity: 1,
+    zIndex: 2002,
   },
   dropdownItem: {
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
+    borderBottomColor: '#E5E5EA',
+    backgroundColor: '#FFFFFF',
   },
   lastDropdownItem: {
     borderBottomWidth: 0,
   },
   dropdownItemText: {
     fontSize: 16,
-    color: '#000',
+    color: '#000000',
+    fontWeight: '400',
   },
   row: {
     flexDirection: 'row',
@@ -1076,5 +1131,15 @@ const styles = StyleSheet.create({
   interestTagText: {
     color: '#007AFF',
     fontSize: 14,
+  },
+  dimmedField: {
+    opacity: 0.4,
+  },
+  dimmedText: {
+    color: '#999',
+  },
+  dimmedInput: {
+    borderColor: 'transparent',
+    backgroundColor: 'rgba(245, 245, 247, 0.5)',
   },
 });
