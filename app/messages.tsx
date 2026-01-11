@@ -67,13 +67,22 @@ export default function MessagesScreen() {
   useEffect(() => {
     let interval: ReturnType<typeof setInterval>;
     let lastTrigger = '';
+    let lastDeleteTrigger = '';
     
     const checkForUpdates = async () => {
       try {
         const trigger = await AsyncStorage.getItem('messageUpdateTrigger');
+        const deleteTrigger = await AsyncStorage.getItem('conversationDeletedTrigger');
+        
         if (trigger && trigger !== lastTrigger) {
           lastTrigger = trigger;
           loadMessages();
+        }
+        
+        // Handle conversation deletion trigger
+        if (deleteTrigger && deleteTrigger !== lastDeleteTrigger) {
+          lastDeleteTrigger = deleteTrigger;
+          loadMessages(); // Reload the entire message list
         }
       } catch (error) {
         console.log('Error checking message updates:', error);

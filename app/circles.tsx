@@ -118,8 +118,8 @@ const CirclesScreen = () => {
       image: require('../assets/images/business3.webp')
     },
     {
-      id: 'skills',
-      title: 'SKILLS',
+      id: 'collectables',
+      title: 'COLLECTABLES',
       image: require('../assets/images/circle4.webp')
     },
     {

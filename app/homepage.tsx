@@ -4,6 +4,7 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import React from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Svg, { Rect, Text as SvgText } from 'react-native-svg';
+import WelcomeButtonSVG from '../assets/images/welcomebutton.svg';
 
 // For now, let's create a simple SVG component to replace the import
 const Welcome2SVG = ({ width = 360, height = 90 }) => (
@@ -70,7 +71,7 @@ const Homepage = () => {
             <TouchableOpacity style={styles.menuButton}>
               <Ionicons name="options" size={28} color="#8E8E93" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.profileButton} onPress={() => router.push('/Upload')}>
+            <TouchableOpacity style={styles.profileButton} onPress={() => router.push('/edit-profile')}>
               <View style={styles.profileWrap}>
                 <Image
                   source={{ uri: userProfileImage }}
@@ -131,10 +132,11 @@ const Homepage = () => {
         </View>
 
         {/* Welcome Card */}
-        <TouchableOpacity style={styles.welcomeCard}>
-          <View style={styles.buttonContainer}>
-            <Welcome2SVG width={360} height={90} />
-          </View>
+        <TouchableOpacity 
+          style={styles.welcomeCard}
+          onPress={() => router.push('/welcome')}
+        >
+          <WelcomeButtonSVG width={360} height={90} />
         </TouchableOpacity>
 
         {/* Feature Sections - Lazy Loaded */}

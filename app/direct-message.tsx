@@ -104,17 +104,19 @@ export default function DirectMessageScreen() {
         }));
         setMessages(parsedMessages);
         setIsFirstMessage(false);
+        
+        // Only load participants if there's an actual conversation
+        const participantsData = await AsyncStorage.getItem('conversationParticipants');
+        const allParticipants = participantsData ? JSON.parse(participantsData) : {};
+        const participants = allParticipants[conversationKey] || [];
+        setConversationParticipants(participants);
       } else {
         // Reset to empty state if no conversation exists
         setMessages([]);
         setIsFirstMessage(true);
+        // Clear participants when there's no conversation
+        setConversationParticipants([]);
       }
-
-      // Load conversation participants
-      const participantsData = await AsyncStorage.getItem('conversationParticipants');
-      const allParticipants = participantsData ? JSON.parse(participantsData) : {};
-      const participants = allParticipants[conversationKey] || [];
-      setConversationParticipants(participants);
       
       // Mark any notifications as read when entering the conversation
       const notifications = await AsyncStorage.getItem('conversationNotifications');
@@ -425,21 +427,24 @@ export default function DirectMessageScreen() {
               const conversations = await AsyncStorage.getItem('conversations');
               let conversationData = conversations ? JSON.parse(conversations) : {};
               const conversationKey = `conversation_${profileId}`;
+              
+              // Only delete the specific conversation
               delete conversationData[conversationKey];
               
-              // Also remove conversation data for all participants
-              if (conversationParticipants.length > 0) {
-                for (const participant of conversationParticipants) {
-                  const participantKey = `conversation_${participant.id}`;
-                  delete conversationData[participantKey];
-                }
+              // If this is a group conversation, also clean up group data
+              if (conversationParticipants.length > 1) {
+                delete conversationData['group_main'];
               }
+              
               await AsyncStorage.setItem('conversations', JSON.stringify(conversationData));
               
               // Remove participants data
               const participantsData = await AsyncStorage.getItem('conversationParticipants');
               let allParticipants = participantsData ? JSON.parse(participantsData) : {};
               delete allParticipants[conversationKey];
+              if (conversationParticipants.length > 1) {
+                delete allParticipants['group_main'];
+              }
               await AsyncStorage.setItem('conversationParticipants', JSON.stringify(allParticipants));
               
               // Remove related notifications
@@ -447,12 +452,56 @@ export default function DirectMessageScreen() {
               if (notifications) {
                 let notificationData = JSON.parse(notifications);
                 Object.keys(notificationData).forEach(key => {
-                  if (key.includes(`_conversation_${profileId}`) || key.includes(`notification_${profileId}_`)) {
+                  if (key.includes(`_conversation_${profileId}`) || 
+                      key.includes(`notification_${profileId}_`) ||
+                      key.includes('group_main') ||
+                      key.includes('Group')) {
                     delete notificationData[key];
                   }
                 });
                 await AsyncStorage.setItem('conversationNotifications', JSON.stringify(notificationData));
               }
+              
+              // Remove event messages related to this conversation - more comprehensive cleanup
+              const events = await AsyncStorage.getItem('eventMessages');
+              if (events) {
+                let eventData = JSON.parse(events);
+                Object.keys(eventData).forEach(key => {
+                  if (key.includes(`_${profileId}_`) || 
+                      key.includes(`_conversation_${profileId}`) ||
+                      key.includes('group_main') ||
+                      key.includes('Group')) {
+                    delete eventData[key];
+                  }
+                });
+                await AsyncStorage.setItem('eventMessages', JSON.stringify(eventData));
+              }
+              
+              // Also clean up any events stored in the messages themselves
+              const allConversations = await AsyncStorage.getItem('conversations');
+              if (allConversations) {
+                let allConversationData = JSON.parse(allConversations);
+                Object.keys(allConversationData).forEach(convKey => {
+                  if (allConversationData[convKey]) {
+                    // Filter out messages with eventData related to this profile/group
+                    allConversationData[convKey] = allConversationData[convKey].filter((msg: any) => {
+                      if (msg.eventData && (
+                          msg.senderName === profileName ||
+                          msg.text?.includes(profileName) ||
+                          convKey.includes(Array.isArray(profileId) ? profileId[0] : profileId)
+                      )) {
+                        return false;
+                      }
+                      return true;
+                    });
+                  }
+                });
+                await AsyncStorage.setItem('conversations', JSON.stringify(allConversationData));
+              }
+              
+              // Trigger message list update for messages.tsx
+              await AsyncStorage.setItem('messageUpdateTrigger', Date.now().toString());
+              await AsyncStorage.setItem('conversationDeletedTrigger', `${profileId}_${Date.now()}`);
               
               // Clear local state
               setMessages([]);
