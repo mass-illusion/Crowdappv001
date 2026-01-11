@@ -16,18 +16,7 @@ export default function EditProfile() {
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
   const [showGenderDropdown, setShowGenderDropdown] = useState(false);
-  const genderOptions = [
-    'Woman',
-    'Man',
-    'Non-binary',
-    'Genderfluid',
-    'Transgender',
-    'Agender',
-    'Demigender',
-    'Two-Spirit',
-    'Other',
-    'Prefer not to say'
-  ];
+  const genderOptions = ['Male', 'Female', 'Non-binary'];
   const [ethnicity, setEthnicity] = useState('');
   const [showEthnicityDropdown, setShowEthnicityDropdown] = useState(false);
   const [importantCulture, setImportantCulture] = useState(false);
@@ -36,9 +25,8 @@ export default function EditProfile() {
     'Hispanic/Latino',
     'Black/African American',
     'Asian',
-    'Native American/Alaska Native',
-    'Native Hawaiian/Pacific Islander',
-    'Middle Eastern/North African',
+    'Native American',
+    'Middle Eastern',
     'Mixed/Multiracial',
     'Other',
     'Prefer not to say'
@@ -78,22 +66,15 @@ export default function EditProfile() {
   const [showReligionDropdown, setShowReligionDropdown] = useState(false);
   const religionOptions = [
     'Christianity',
-    'Protestant',
     'Catholic',
     'Baptist',
-    'Methodist',
-    'Presbyterian',
-    'Lutheran',
     'Pentecostal',
-    'Episcopal/Anglican',
     'Judaism',
     'Islam',
     'Buddhism',
     'Hinduism',
     'Mormon/LDS',
     'Jehovah\'s Witness',
-    'Orthodox Christian',
-    'Unitarian Universalist',
     'Agnostic',
     'Atheist',
     'Spiritual but not religious',
@@ -252,7 +233,7 @@ export default function EditProfile() {
         </View>
         <View style={[styles.fieldGroup, styles.halfWidth]}>
           <Text style={[styles.fieldLabel, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown) && styles.dimmedText]}>Gender</Text>
-          <View style={styles.dropdownContainer}>
+          <View style={[styles.dropdownContainer, showGenderDropdown && styles.activeDropdownContainer]}>
             <TouchableOpacity 
               style={[styles.dropdownButton, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown) && styles.dimmedInput]}
               onPress={() => setShowGenderDropdown(!showGenderDropdown)}
@@ -263,9 +244,9 @@ export default function EditProfile() {
             {showGenderDropdown && (
               <>
                 <TouchableWithoutFeedback onPress={() => setShowGenderDropdown(false)}>
-                  <View style={styles.dropdownBackdrop} />
+                  <View style={styles.genderDropdownBackdrop} />
                 </TouchableWithoutFeedback>
-                <View style={styles.dropdownOverlay}>
+                <View style={styles.dropdownOverlayUp}>
                   <ScrollView style={styles.dropdownList} nestedScrollEnabled={true}>
                     {genderOptions.map((option, index) => (
                       <TouchableOpacity
@@ -905,6 +886,9 @@ const styles = StyleSheet.create({
     position: 'relative',
     zIndex: 2000,
   },
+  activeDropdownContainer: {
+    zIndex: 3000,
+  },
   dropdownBackdrop: {
     position: 'absolute',
     top: -2000,
@@ -913,6 +897,15 @@ const styles = StyleSheet.create({
     height: 4000,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     zIndex: 1999,
+  },
+  genderDropdownBackdrop: {
+    position: 'absolute',
+    top: -2000,
+    left: -2000,
+    width: 4000,
+    height: 4000,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    zIndex: 2999,
   },
   dropdownOverlay: {
     position: 'absolute',
@@ -926,7 +919,7 @@ const styles = StyleSheet.create({
     bottom: '100%',
     left: 0,
     right: 0,
-    zIndex: 1001,
+    zIndex: 3001,
   },
   dropdownList: {
     borderWidth: 2,
