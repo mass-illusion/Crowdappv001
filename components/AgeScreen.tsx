@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import React, { useState } from "react";
 import { Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -16,7 +17,12 @@ const AgeScreen: React.FC = () => {
   const [selectedAge, setSelectedAge] = useState<number>(25);
   const flatListRef = React.useRef<FlatList<number>>(null);
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    try {
+      await AsyncStorage.setItem('age', selectedAge.toString());
+    } catch (e) {
+      console.warn('Failed to save age:', e);
+    }
     // Navigate to upload screen
     router.replace('/Upload');
   };

@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -14,7 +15,12 @@ const GenderScreen: React.FC = () => {
   const [selected, setSelected] = useState<string>('female');
   let startX: number | null = null;
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    try {
+      await AsyncStorage.setItem('gender', selected);
+    } catch (e) {
+      console.warn('Failed to save gender:', e);
+    }
     // Navigate to age screen
     router.replace('/age');
   };

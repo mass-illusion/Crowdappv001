@@ -1,5 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Keyboard, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, useWindowDimensions, View } from 'react-native';
 import SvgFindMyCrowdWhite from '../assets/images/findmycrowdwhite.svg';
 
@@ -89,6 +90,45 @@ const InterestsScreen: React.FC = () => {
   const [showEDMModal, setShowEDMModal] = useState(false);
   const [selectedEDMGenres, setSelectedEDMGenres] = useState<string[]>([]);
 
+  // Load saved selections on component mount
+  useEffect(() => {
+    const loadSavedSelections = async () => {
+      try {
+        const savedMusicCategories = await AsyncStorage.getItem('selectedMusicCategories');
+        const savedEDMGenres = await AsyncStorage.getItem('selectedEDMGenres');
+        const savedInterests = await AsyncStorage.getItem('selectedInterests');
+        
+        if (savedMusicCategories) {
+          const musicCategories = JSON.parse(savedMusicCategories);
+          setSelectedMusicCategories(musicCategories);
+          // Auto-select music pill if user has music categories
+          if (musicCategories.length > 0) {
+            setSelectedInterests(prev => 
+              prev.includes('music') ? prev : [...prev, 'music']
+            );
+          }
+        }
+        if (savedEDMGenres) {
+          const edmGenres = JSON.parse(savedEDMGenres);
+          setSelectedEDMGenres(edmGenres);
+          // Auto-select raving pill if user has EDM genres
+          if (edmGenres.length > 0) {
+            setSelectedInterests(prev => 
+              prev.includes('raves') ? prev : [...prev, 'raves']
+            );
+          }
+        }
+        if (savedInterests) {
+          setSelectedInterests(JSON.parse(savedInterests));
+        }
+      } catch (error) {
+        console.error('Error loading saved selections:', error);
+      }
+    };
+    
+    loadSavedSelections();
+  }, []);
+
   const toggleInterest = (interestId: string) => {
     if (interestId === 'music') {
       setShowMusicModal(true);
@@ -112,21 +152,48 @@ const InterestsScreen: React.FC = () => {
     );
   };
 
-  const toggleMusicCategory = (category: string) => {
-    setSelectedMusicCategories(prev => 
-      prev.includes(category) 
-        ? prev.filter(cat => cat !== category)
-        : [...prev, category]
-    );
+  const toggleMusicCategory = async (category: string) => {
+    const newCategories = selectedMusicCategories.includes(category) 
+      ? selectedMusicCategories.filter(cat => cat !== category)
+      : [...selectedMusicCategories, category];
+    
+    setSelectedMusicCategories(newCategories);
+    
+    // Auto-select or deselect music pill based on selections
+    if (newCategories.length > 0) {
+      setSelectedInterests(prev => 
+        prev.includes('music') ? prev : [...prev, 'music']
+      );
+    } else {
+      setSelectedInterests(prev => prev.filter(id => id !== 'music'));
+    }
+    
+    // Save immediately to AsyncStorage
+    try {
+      await AsyncStorage.setItem('selectedMusicCategories', JSON.stringify(newCategories));
+      // Also update selected interests
+      const updatedInterests = newCategories.length > 0 
+        ? (selectedInterests.includes('music') ? selectedInterests : [...selectedInterests, 'music'])
+        : selectedInterests.filter(id => id !== 'music');
+      await AsyncStorage.setItem('selectedInterests', JSON.stringify(updatedInterests));
+    } catch (error) {
+      console.error('Error saving music categories:', error);
+    }
   };
 
-  const handleMusicModalClose = () => {
+  const handleMusicModalClose = async () => {
     if (selectedMusicCategories.length > 0) {
       setSelectedInterests(prev => 
         prev.includes('music') 
           ? prev
           : [...prev, 'music']
       );
+      // Save to AsyncStorage
+      try {
+        await AsyncStorage.setItem('selectedMusicCategories', JSON.stringify(selectedMusicCategories));
+      } catch (error) {
+        console.error('Error saving music categories:', error);
+      }
     }
     setShowMusicModal(false);
   };
@@ -150,15 +217,36 @@ const InterestsScreen: React.FC = () => {
     setShowSportsModal(false);
   };
 
-  const toggleEDMGenre = (genre: string) => {
-    setSelectedEDMGenres(prev => 
-      prev.includes(genre) 
-        ? prev.filter(g => g !== genre)
-        : [...prev, genre]
-    );
+  const toggleEDMGenre = async (genre: string) => {
+    const newGenres = selectedEDMGenres.includes(genre) 
+      ? selectedEDMGenres.filter(g => g !== genre)
+      : [...selectedEDMGenres, genre];
+    
+    setSelectedEDMGenres(newGenres);
+    
+    // Auto-select or deselect raving pill based on selections
+    if (newGenres.length > 0) {
+      setSelectedInterests(prev => 
+        prev.includes('raves') ? prev : [...prev, 'raves']
+      );
+    } else {
+      setSelectedInterests(prev => prev.filter(id => id !== 'raves'));
+    }
+    
+    // Save immediately to AsyncStorage
+    try {
+      await AsyncStorage.setItem('selectedEDMGenres', JSON.stringify(newGenres));
+      // Also update selected interests
+      const updatedInterests = newGenres.length > 0 
+        ? (selectedInterests.includes('raves') ? selectedInterests : [...selectedInterests, 'raves'])
+        : selectedInterests.filter(id => id !== 'raves');
+      await AsyncStorage.setItem('selectedInterests', JSON.stringify(updatedInterests));
+    } catch (error) {
+      console.error('Error saving EDM genres:', error);
+    }
   };
 
-  const handleEDMModalClose = () => {
+  const handleEDMModalClose = async () => {
     setShowEDMModal(false);
     if (selectedEDMGenres.length > 0) {
       setSelectedInterests(prev => 
@@ -166,6 +254,12 @@ const InterestsScreen: React.FC = () => {
           ? prev
           : [...prev, 'raves']
       );
+      // Save to AsyncStorage
+      try {
+        await AsyncStorage.setItem('selectedEDMGenres', JSON.stringify(selectedEDMGenres));
+      } catch (error) {
+        console.error('Error saving EDM genres:', error);
+      }
     }
   };
 
@@ -174,8 +268,21 @@ const InterestsScreen: React.FC = () => {
     interest.label.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (selectedInterests.length >= 5) {
+      // Save all interests data to AsyncStorage
+      try {
+        await AsyncStorage.setItem('selectedInterests', JSON.stringify(selectedInterests));
+        if (selectedMusicCategories.length > 0) {
+          await AsyncStorage.setItem('selectedMusicCategories', JSON.stringify(selectedMusicCategories));
+        }
+        if (selectedEDMGenres.length > 0) {
+          await AsyncStorage.setItem('selectedEDMGenres', JSON.stringify(selectedEDMGenres));
+        }
+      } catch (error) {
+        console.error('Error saving interests data:', error);
+      }
+      
       // Navigate to public figures screen
       router.replace('/public-figures');
       console.log('Selected interests:', selectedInterests);

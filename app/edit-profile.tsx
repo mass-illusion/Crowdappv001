@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useCallback, useState } from 'react';
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Image, Modal, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 
 export default function EditProfile() {
   const router = useRouter();
@@ -68,7 +68,6 @@ export default function EditProfile() {
     'Christianity',
     'Catholic',
     'Baptist',
-    'Pentecostal',
     'Judaism',
     'Islam',
     'Buddhism',
@@ -84,6 +83,12 @@ export default function EditProfile() {
   ];
   const [relationshipStatus, setRelationshipStatus] = useState('');
   const [showRelationshipDropdown, setShowRelationshipDropdown] = useState(false);
+  const [primaryGoals, setPrimaryGoals] = useState<string[]>([]);
+  const [socialStyle, setSocialStyle] = useState('');
+  const [idealHangouts, setIdealHangouts] = useState<string[]>([]);
+  const [showSocialGoals, setShowSocialGoals] = useState(false);
+  const [showSocialStyle, setShowSocialStyle] = useState(false);
+  const [showIdealHangouts, setShowIdealHangouts] = useState(false);
   const relationshipOptions = [
     'Single',
     'In a relationship',
@@ -96,12 +101,322 @@ export default function EditProfile() {
     'Ethical non-monogamy',
     'Prefer not to say'
   ];
+  const primaryGoalsOptions = [
+    'Find friends in my city',
+    'Meet people at events',
+    'Join hobby groups',
+    'Collaborate professionally',
+    'Travel buddies',
+    'Deep 1:1 connections'
+  ];
+  const socialStyleOptions = [
+    '👥 Small group',
+    '🎉 Large scene',
+    '💬 1:1 hangouts'
+  ];
+  const idealHangoutsOptions = [
+    '☕ Coffee',
+    '🎵 Concerts',
+    '💪 Workouts',
+    '🎮 Game nights',
+    '🎨 Creative',
+    '🏔️ Outdoors'
+  ];
   const [showOnProfile, setShowOnProfile] = useState(true);
+
+  // Load saved profile data when screen opens
+  useFocusEffect(
+    useCallback(() => {
+      loadProfileData();
+    }, [])
+  );
+
+  const saveProfileData = async () => {
+    try {
+      // Save all profile data to AsyncStorage with correct keys
+      await AsyncStorage.setItem('fullName', firstName); // Save full name
+      await AsyncStorage.setItem('firstName', firstName.split(' ')[0] || firstName); // Save first name for compatibility
+      await AsyncStorage.setItem('userName', userName);
+      await AsyncStorage.setItem('aboutMe', aboutMe);
+      await AsyncStorage.setItem('dreamIs', dreamIs);
+      await AsyncStorage.setItem('userLocation', location); // Use userLocation key
+      await AsyncStorage.setItem('age', age);
+      await AsyncStorage.setItem('gender', gender);
+      await AsyncStorage.setItem('ethnicity', ethnicity);
+      await AsyncStorage.setItem('occupation', occupation);
+      await AsyncStorage.setItem('industry', industry);
+      await AsyncStorage.setItem('religion', religion);
+      await AsyncStorage.setItem('relationshipStatus', relationshipStatus);
+      await AsyncStorage.setItem('primaryGoals', JSON.stringify(primaryGoals));
+      await AsyncStorage.setItem('socialStyle', socialStyle);
+      await AsyncStorage.setItem('idealHangouts', JSON.stringify(idealHangouts));
+      await AsyncStorage.setItem('energyLevel', energyLevel);
+      await AsyncStorage.setItem('socialBattery', socialBattery);
+      await AsyncStorage.setItem('conversationStyle', conversationStyle);
+      await AsyncStorage.setItem('selectedMusicGenres', JSON.stringify(selectedMusicGenres));
+      await AsyncStorage.setItem('selectedRavingPrefs', JSON.stringify(selectedRavingPrefs));
+      await AsyncStorage.setItem('selectedMusicActivities', JSON.stringify(selectedMusicActivities));
+      await AsyncStorage.setItem('selectedSports', JSON.stringify(selectedSports));
+      await AsyncStorage.setItem('selectedNFLTeams', JSON.stringify(selectedNFLTeams));
+      await AsyncStorage.setItem('selectedNBATeams', JSON.stringify(selectedNBATeams));
+      await AsyncStorage.setItem('selectedMLBTeams', JSON.stringify(selectedMLBTeams));
+      await AsyncStorage.setItem('selectedNHLTeams', JSON.stringify(selectedNHLTeams));
+      await AsyncStorage.setItem('selectedAnime', JSON.stringify(selectedAnime));
+      await AsyncStorage.setItem('selectedPassions', JSON.stringify(selectedPassions));
+      await AsyncStorage.setItem('selectedArtsCulture', JSON.stringify(selectedArtsCulture));
+      await AsyncStorage.setItem('selectedFoodDrinks', JSON.stringify(selectedFoodDrinks));
+      await AsyncStorage.setItem('selectedOutdoors', JSON.stringify(selectedOutdoors));
+      await AsyncStorage.setItem('selectedFitness', JSON.stringify(selectedFitness));
+      await AsyncStorage.setItem('selectedBusiness', JSON.stringify(selectedBusiness));
+      
+      // Show success feedback (optional)
+      console.log('Profile data saved successfully');
+    } catch (error) {
+      console.error('Error saving profile data:', error);
+    }
+  };
 
   // Personality tab states
   const [socialEnergy, setSocialEnergy] = useState('Ambivert');
   const [weekendMood, setWeekendMood] = useState('Chill');
+  const [energyLevel, setEnergyLevel] = useState('');
+  const [socialBattery, setSocialBattery] = useState('');
+  const [conversationStyle, setConversationStyle] = useState('');
   const [loveLanguage, setLoveLanguage] = useState('');
+  
+  // Music expansion states
+  const [showMusicExpanded, setShowMusicExpanded] = useState(false);
+  const [selectedMusicGenres, setSelectedMusicGenres] = useState<string[]>([]);
+  const [selectedRavingPrefs, setSelectedRavingPrefs] = useState<string[]>([]);
+  const [customMusicInput, setCustomMusicInput] = useState('');
+  const [selectedMusicActivities, setSelectedMusicActivities] = useState<string[]>([]);
+  
+  // Sports expansion states
+  const [showSportsExpanded, setShowSportsExpanded] = useState(false);
+  const [selectedSports, setSelectedSports] = useState<string[]>([]);
+  const [customSportsInput, setCustomSportsInput] = useState('');
+  const [showNFLModal, setShowNFLModal] = useState(false);
+  const [selectedNFLTeams, setSelectedNFLTeams] = useState<string[]>([]);
+  const [showNBAModal, setShowNBAModal] = useState(false);
+  const [selectedNBATeams, setSelectedNBATeams] = useState<string[]>([]);
+  const [showMLBModal, setShowMLBModal] = useState(false);
+  const [selectedMLBTeams, setSelectedMLBTeams] = useState<string[]>([]);
+  const [showNHLModal, setShowNHLModal] = useState(false);
+  const [selectedNHLTeams, setSelectedNHLTeams] = useState<string[]>([]);
+  
+  // Anime expansion states
+  const [showAnimeExpanded, setShowAnimeExpanded] = useState(false);
+  const [selectedAnime, setSelectedAnime] = useState<string[]>([]);
+  const [customAnimeInput, setCustomAnimeInput] = useState('');
+  
+  // Passion expansion states
+  const [showPassionExpanded, setShowPassionExpanded] = useState(false);
+  const [selectedPassions, setSelectedPassions] = useState<string[]>([]);
+  const [customPassionInput, setCustomPassionInput] = useState('');
+  
+  // Arts & Culture expansion states
+  const [showArtsCultureExpanded, setShowArtsCultureExpanded] = useState(false);
+  const [selectedArtsCulture, setSelectedArtsCulture] = useState<string[]>([]);
+  
+  // Food & Drinks expansion states
+  const [showFoodDrinksExpanded, setShowFoodDrinksExpanded] = useState(false);
+  const [selectedFoodDrinks, setSelectedFoodDrinks] = useState<string[]>([]);
+  
+  // Outdoors & Adventures expansion states
+  const [showOutdoorsExpanded, setShowOutdoorsExpanded] = useState(false);
+  const [selectedOutdoors, setSelectedOutdoors] = useState<string[]>([]);
+  const [customOutdoorsInput, setCustomOutdoorsInput] = useState('');
+  
+  // Fitness expansion states
+  const [showFitnessExpanded, setShowFitnessExpanded] = useState(false);
+  const [selectedFitness, setSelectedFitness] = useState<string[]>([]);
+  const [customFitnessInput, setCustomFitnessInput] = useState('');
+  
+  // Business & Networking expansion states
+  const [showBusinessExpanded, setShowBusinessExpanded] = useState(false);
+  const [selectedBusiness, setSelectedBusiness] = useState<string[]>([]);
+  const [customBusinessInput, setCustomBusinessInput] = useState('');
+  
+  // Music genres from interests.tsx
+  const MUSIC_CATEGORIES = [
+    'POP', 'EDM', 'ROCK', 'METAL', 'JAZZ',
+    'R&B', 'HIP HOP', 'PUNK', '90s', 'K-POP',
+    'INDIE', 'GOSPEL', 'CUMBIA', 'FOLK', '80s',
+    'REGGAE', 'REGGAETON', 'CLASSICAL', '2000s', '60 & 70s',
+    'CHILL', 'MUSICAL', 'SPANISH', 'WORLD', 'PROGRESSIVE',
+    'COUNTRY', 'BLUES', 'EASY LISTENING', 'HOUSE', 'TRANCE', 'TECHNO', 'TRAP'
+  ];
+  
+  const EDM_GENRES = [
+    'HOUSE', 'TECHNO', 'TECH HOUSE', 'DnB',
+    'DUBSTEP', 'BASS', 'BASS HOUSE', 'TRAP',
+    'HARDSTYLE', 'FUTURE BASS', 'AMBIENT', 'DEEP HOUSE',
+    'MINIMAL', 'MAIN STAGE', 'PSY-TRANCE', 'TRANCE',
+    'UK GARAGE', 'NU DISCO', 'MELODIC HOUSE', 'MELODIC TECHNO',
+    'DOWNTEMPO', 'GRIME', 'BREAKBEAT', 'HARD TECHNO'
+  ];
+
+  const MUSIC_ACTIVITIES = [
+    'Concerts',
+    'Music Festivals', 
+    'Jamming',
+    'Afters'
+  ];
+
+  const ARTS_CULTURE_ACTIVITIES = [
+    'Art Exhibitions',
+    'Theater Plays',
+    'Dance Shows'
+  ];
+
+  const FOOD_DRINKS_ACTIVITIES = [
+    'Food Exploration',
+    'Bar Hopping',
+    'Cooking',
+    'Happy Hour',
+    'BBQs'
+  ];
+
+  const OUTDOORS_ADVENTURES_ACTIVITIES = [
+    'Hiking',
+    'Rock Climbing',
+    'Kayaking',
+    'Boating',
+    'ATVs',
+    'White Water Rafting',
+    'Beach Days',
+    'Camping',
+    'Snowboarding',
+    'Picnicing',
+    'Stargazing',
+    'Farmers Markets'
+  ];
+
+  const FITNESS_ACTIVITIES = [
+    'Weight Training',
+    'Run Club',
+    'Cycling',
+    'Pilates',
+    'Yoga',
+    'Boxing',
+    'Swimming',
+    'Pickleball',
+    'Jiu Jitsu',
+    'Marathons'
+  ];
+
+  const BUSINESS_NETWORKING_ACTIVITIES = [
+    'Conferences',
+    'Networking Events'
+  ];
+  
+  const SPORTS_CATEGORIES = [
+    { name: 'NFL', emoji: '🏈' },
+    { name: 'NBA', emoji: '🏀' },
+    { name: 'MLB', emoji: '⚾' },
+    { name: 'NHL', emoji: '🏒' },
+    { name: 'UFC', emoji: '🥊' }
+  ];
+  
+  const NFL_TEAMS = [
+    'Arizona Cardinals', 'Atlanta Falcons', 'Baltimore Ravens', 'Buffalo Bills',
+    'Carolina Panthers', 'Chicago Bears', 'Cincinnati Bengals', 'Cleveland Browns',
+    'Dallas Cowboys', 'Denver Broncos', 'Detroit Lions', 'Green Bay Packers',
+    'Houston Texans', 'Indianapolis Colts', 'Jacksonville Jaguars', 'Kansas City Chiefs',
+    'Las Vegas Raiders', 'Los Angeles Chargers', 'Los Angeles Rams', 'Miami Dolphins',
+    'Minnesota Vikings', 'New England Patriots', 'New Orleans Saints', 'New York Giants',
+    'New York Jets', 'Philadelphia Eagles', 'Pittsburgh Steelers', 'San Francisco 49ers',
+    'Seattle Seahawks', 'Tampa Bay Buccaneers', 'Tennessee Titans', 'Washington Commanders'
+  ];
+  
+  const NBA_TEAMS = [
+    'Atlanta Hawks', 'Boston Celtics', 'Brooklyn Nets', 'Charlotte Hornets',
+    'Chicago Bulls', 'Cleveland Cavaliers', 'Dallas Mavericks', 'Denver Nuggets',
+    'Detroit Pistons', 'Golden State Warriors', 'Houston Rockets', 'Indiana Pacers',
+    'Los Angeles Clippers', 'Los Angeles Lakers', 'Memphis Grizzlies', 'Miami Heat',
+    'Milwaukee Bucks', 'Minnesota Timberwolves', 'New Orleans Pelicans', 'New York Knicks',
+    'Oklahoma City Thunder', 'Orlando Magic', 'Philadelphia 76ers', 'Phoenix Suns',
+    'Portland Trail Blazers', 'Sacramento Kings', 'San Antonio Spurs', 'Toronto Raptors',
+    'Utah Jazz', 'Washington Wizards'
+  ];
+  
+  const MLB_TEAMS = [
+    'Arizona Diamondbacks', 'Atlanta Braves', 'Baltimore Orioles', 'Boston Red Sox',
+    'Chicago Cubs', 'Chicago White Sox', 'Cincinnati Reds', 'Cleveland Guardians',
+    'Colorado Rockies', 'Detroit Tigers', 'Houston Astros', 'Kansas City Royals',
+    'Los Angeles Angels', 'Los Angeles Dodgers', 'Miami Marlins', 'Milwaukee Brewers',
+    'Minnesota Twins', 'New York Mets', 'New York Yankees', 'Oakland Athletics',
+    'Philadelphia Phillies', 'Pittsburgh Pirates', 'San Diego Padres', 'San Francisco Giants',
+    'Seattle Mariners', 'St. Louis Cardinals', 'Tampa Bay Rays', 'Texas Rangers',
+    'Toronto Blue Jays', 'Washington Nationals'
+  ];
+  
+  const NHL_TEAMS = [
+    'Anaheim Ducks', 'Arizona Coyotes', 'Boston Bruins', 'Buffalo Sabres',
+    'Calgary Flames', 'Carolina Hurricanes', 'Chicago Blackhawks', 'Colorado Avalanche',
+    'Columbus Blue Jackets', 'Dallas Stars', 'Detroit Red Wings', 'Edmonton Oilers',
+    'Florida Panthers', 'Los Angeles Kings', 'Minnesota Wild', 'Montreal Canadiens',
+    'Nashville Predators', 'New Jersey Devils', 'New York Islanders', 'New York Rangers',
+    'Ottawa Senators', 'Philadelphia Flyers', 'Pittsburgh Penguins', 'San Jose Sharks',
+    'Seattle Kraken', 'St. Louis Blues', 'Tampa Bay Lightning', 'Toronto Maple Leafs',
+    'Vancouver Canucks', 'Vegas Golden Knights', 'Washington Capitals', 'Winnipeg Jets'
+  ];
+  
+  const ANIME_GENRES = [
+    'NARUTO', 'ONE PIECE', 'DRAGON BALL', 'ATTACK ON TITAN', 'DEMON SLAYER',
+    'MY HERO ACADEMIA', 'DEATH NOTE', 'ONE PUNCH MAN', 'SPIRITED AWAY', 'POKEMON',
+    'SAILOR MOON', 'COWBOY BEBOP', 'FULLMETAL ALCHEMIST', 'HUNTER X HUNTER', 'BLEACH',
+    'JUJUTSU KAISEN', 'CHAINSAW MAN', 'SPY X FAMILY', 'JOJO\'S BIZARRE ADVENTURE', 'AKIRA'
+  ];
+  
+  const PASSION_INTERESTS = [
+    { id: 'music', label: 'Music', emoji: '🎧' },
+    { id: 'business', label: 'Business', emoji: '📈' },
+    { id: 'sports', label: 'Sports', emoji: '🏀' },
+    { id: 'raves', label: 'Raving', emoji: '🕺' },
+    { id: 'fitness', label: 'Fitness', emoji: '🏋️' },
+    { id: 'gaming', label: 'Gaming', emoji: '🎮' },
+    { id: 'parenting', label: 'Parenting', emoji: '👶' },
+    { id: 'filmContent', label: 'Content', emoji: '🎬' },
+    { id: 'dj', label: 'DJ', emoji: '🎧' },
+    { id: 'fashion', label: 'Fashion', emoji: '👗' },
+    { id: 'pets', label: 'Animals', emoji: '🐶' },
+    { id: 'photography', label: 'Photos', emoji: '📷' },
+    { id: 'reading', label: 'Reading', emoji: '📚' },
+    { id: 'anime', label: 'Anime', emoji: '👾' },
+    { id: 'singing', label: 'Singing', emoji: '🎤' },
+    { id: 'technology', label: 'Tech', emoji: '📱' },
+    { id: 'travel', label: 'Travel', emoji: '🗺️' },
+    { id: 'writing', label: 'Writing', emoji: '📝' },
+    { id: 'cooking', label: 'Cooking', emoji: '🍳' },
+    { id: 'cinema', label: 'Cinema', emoji: '🎬' },
+    { id: 'investing', label: 'Investing', emoji: '💰' },
+    { id: 'shopping', label: 'Shopping', emoji: '🛍️' },
+    { id: 'cars', label: 'Cars', emoji: '🏎️' },
+    { id: 'hiking', label: 'Hiking', emoji: '🥾' },
+    { id: 'art', label: 'Art', emoji: '🎨' },
+    { id: 'boardGames', label: 'Chess', emoji: '♟️' },
+    { id: 'musicians', label: 'Jammin', emoji: '🎻' },
+    { id: 'partying', label: 'Partying', emoji: '🎉' },
+    { id: 'lgbtRights', label: 'LGBT', emoji: '🏳️‍🌈' },
+    { id: 'disney', label: 'Disney', emoji: '🏰' },
+    { id: 'concerts', label: 'Concerts', emoji: '🎤' },
+    { id: 'ai', label: 'AI', emoji: '🤖' },
+    { id: 'godFearing', label: 'God', emoji: '🙏' },
+    { id: 'motorcycles', label: 'Motorcycles', emoji: '🏍️' },
+    { id: 'beauty', label: 'Beauty', emoji: '💄' },
+    { id: 'politics', label: 'Politics', emoji: '👨‍💼' },
+    { id: 'conspiracies', label: 'Conspiracies', emoji: '👁️' },
+    { id: 'founders', label: 'Founders', emoji: '💼' },
+    { id: 'skating', label: 'Skate', emoji: '🛹' },
+    { id: 'popCulture', label: 'Culture', emoji: '📱' },
+    { id: 'nature', label: 'Nature', emoji: '🌿' },
+    { id: 'food', label: 'Food', emoji: '🍔' },
+    { id: 'running', label: 'Running', emoji: '🏃' },
+    { id: 'camping', label: 'Camping', emoji: '🏕️' },
+    { id: 'snowboarding', label: 'Snow', emoji: '🏂' }
+  ];
+  
   const [qualityTime, setQualityTime] = useState('');
   const [actsOfService, setActsOfService] = useState('');
   const [deepTalk, setDeepTalk] = useState('');
@@ -122,29 +437,581 @@ export default function EditProfile() {
     travelAndAdventures: []
   });
 
+  const loadProfileData = async () => {
+    try {
+      // Load basic profile data from onboarding
+      const savedFullName = await AsyncStorage.getItem('fullName');
+      const savedUserName = await AsyncStorage.getItem('userName');
+      const savedLocation = await AsyncStorage.getItem('userLocation');
+      const savedAge = await AsyncStorage.getItem('age');
+      const savedGender = await AsyncStorage.getItem('gender');
+      const savedProfilePhoto = await AsyncStorage.getItem('profilePhoto');
+      
+      // Load additional profile data
+      const savedAboutMe = await AsyncStorage.getItem('aboutMe');
+      const savedDreamIs = await AsyncStorage.getItem('dreamIs');
+      const savedEthnicity = await AsyncStorage.getItem('ethnicity');
+      const savedOccupation = await AsyncStorage.getItem('occupation');
+      const savedIndustry = await AsyncStorage.getItem('industry');
+      const savedReligion = await AsyncStorage.getItem('religion');
+      const savedRelationshipStatus = await AsyncStorage.getItem('relationshipStatus');
+      const savedPrimaryGoals = await AsyncStorage.getItem('primaryGoals');
+      const savedSocialStyle = await AsyncStorage.getItem('socialStyle');
+      const savedIdealHangouts = await AsyncStorage.getItem('idealHangouts');
+      const savedEnergyLevel = await AsyncStorage.getItem('energyLevel');
+      const savedSocialBattery = await AsyncStorage.getItem('socialBattery');
+      const savedConversationStyle = await AsyncStorage.getItem('conversationStyle');
+      const savedMusicGenres = await AsyncStorage.getItem('selectedMusicGenres');
+      const savedRavingPrefs = await AsyncStorage.getItem('selectedRavingPrefs');
+      const savedSports = await AsyncStorage.getItem('selectedSports');
+      const savedNFLTeams = await AsyncStorage.getItem('selectedNFLTeams');
+      const savedNBATeams = await AsyncStorage.getItem('selectedNBATeams');
+      const savedMLBTeams = await AsyncStorage.getItem('selectedMLBTeams');
+      const savedNHLTeams = await AsyncStorage.getItem('selectedNHLTeams');
+      const savedAnime = await AsyncStorage.getItem('selectedAnime');
+      // Also load from interests.tsx selections
+      const savedInterestMusicCategories = await AsyncStorage.getItem('selectedMusicCategories');
+      const savedInterestEDMGenres = await AsyncStorage.getItem('selectedEDMGenres');
+      const savedInterestSports = await AsyncStorage.getItem('selectedSportsCategories');
+      
+      // Set the state with saved data
+      if (savedFullName) setFirstName(savedFullName);
+      if (savedUserName) setUserName(savedUserName);
+      if (savedLocation) setLocation(savedLocation);
+      if (savedAge) setAge(savedAge);
+      if (savedGender) {
+        // Normalize gender value to match current options
+        const normalizedGender = savedGender.toLowerCase() === 'nonbinary' ? 'Non-binary' : savedGender;
+        setGender(normalizedGender);
+      }
+      if (savedProfilePhoto) setUserProfileImage(savedProfilePhoto);
+      if (savedAboutMe) setAboutMe(savedAboutMe);
+      if (savedDreamIs) setDreamIs(savedDreamIs);
+      if (savedEthnicity) setEthnicity(savedEthnicity);
+      if (savedOccupation) setOccupation(savedOccupation);
+      if (savedIndustry) setIndustry(savedIndustry);
+      if (savedReligion) setReligion(savedReligion);
+      if (savedRelationshipStatus) setRelationshipStatus(savedRelationshipStatus);
+      if (savedPrimaryGoals) setPrimaryGoals(JSON.parse(savedPrimaryGoals));
+      if (savedSocialStyle) setSocialStyle(savedSocialStyle);
+      if (savedIdealHangouts) setIdealHangouts(JSON.parse(savedIdealHangouts));
+      if (savedEnergyLevel) setEnergyLevel(savedEnergyLevel);
+      if (savedSocialBattery) setSocialBattery(savedSocialBattery);
+      if (savedConversationStyle) setConversationStyle(savedConversationStyle);
+      
+      // Load music preferences from edit profile or interests screen
+      let musicGenresToLoad = [];
+      let ravingPrefsToLoad = [];
+      let sportsToLoad = [];
+      let nflTeamsToLoad = [];
+      let nbaTeamsToLoad = [];
+      let mlbTeamsToLoad = [];
+      let nhlTeamsToLoad = [];
+      
+      console.log('Loading music data...');
+      console.log('savedMusicGenres:', savedMusicGenres);
+      console.log('savedInterestMusicCategories:', savedInterestMusicCategories);
+      console.log('savedRavingPrefs:', savedRavingPrefs);
+      console.log('savedInterestEDMGenres:', savedInterestEDMGenres);
+      
+      if (savedMusicGenres) {
+        musicGenresToLoad = JSON.parse(savedMusicGenres);
+        console.log('Loaded edit profile music genres:', musicGenresToLoad);
+      } else if (savedInterestMusicCategories) {
+        // Pre-fill from interests.tsx selections
+        musicGenresToLoad = JSON.parse(savedInterestMusicCategories);
+        console.log('Loaded interests music categories:', musicGenresToLoad);
+      }
+      
+      if (savedRavingPrefs) {
+        ravingPrefsToLoad = JSON.parse(savedRavingPrefs);
+        console.log('Loaded edit profile raving prefs:', ravingPrefsToLoad);
+      } else if (savedInterestEDMGenres) {
+        // Pre-fill from interests.tsx EDM selections
+        ravingPrefsToLoad = JSON.parse(savedInterestEDMGenres);
+        console.log('Loaded interests EDM genres:', ravingPrefsToLoad);
+      }
+      
+      if (savedSports) {
+        sportsToLoad = JSON.parse(savedSports);
+        console.log('Loaded edit profile sports:', sportsToLoad);
+      } else if (savedInterestSports) {
+        // Pre-fill from interests.tsx sports selections
+        sportsToLoad = JSON.parse(savedInterestSports);
+        console.log('Loaded interests sports:', sportsToLoad);
+      }
+      
+      if (savedNFLTeams) {
+        nflTeamsToLoad = JSON.parse(savedNFLTeams);
+        console.log('Loaded NFL teams:', nflTeamsToLoad);
+      }
+      
+      if (savedNBATeams) {
+        nbaTeamsToLoad = JSON.parse(savedNBATeams);
+        console.log('Loaded NBA teams:', nbaTeamsToLoad);
+      }
+      
+      if (savedMLBTeams) {
+        mlbTeamsToLoad = JSON.parse(savedMLBTeams);
+        console.log('Loaded MLB teams:', mlbTeamsToLoad);
+      }
+      
+      if (savedNHLTeams) {
+        nhlTeamsToLoad = JSON.parse(savedNHLTeams);
+        console.log('Loaded NHL teams:', nhlTeamsToLoad);
+      }
+      
+      // Force state updates
+      setSelectedMusicGenres(musicGenresToLoad);
+      setSelectedRavingPrefs(ravingPrefsToLoad);
+      setSelectedSports(sportsToLoad);
+      setSelectedNFLTeams(nflTeamsToLoad);
+      setSelectedNBATeams(nbaTeamsToLoad);
+      setSelectedMLBTeams(mlbTeamsToLoad);
+      setSelectedNHLTeams(nhlTeamsToLoad);
+      
+      // Load anime and passions
+      if (savedAnime) {
+        setSelectedAnime(JSON.parse(savedAnime));
+      }
+      
+      // Load music activities
+      const savedMusicActivities = await AsyncStorage.getItem('selectedMusicActivities');
+      if (savedMusicActivities) {
+        setSelectedMusicActivities(JSON.parse(savedMusicActivities));
+      }
+      
+      // Load arts & culture activities
+      const savedArtsCulture = await AsyncStorage.getItem('selectedArtsCulture');
+      if (savedArtsCulture) {
+        setSelectedArtsCulture(JSON.parse(savedArtsCulture));
+      }
+      
+      // Load food & drinks activities
+      const savedFoodDrinks = await AsyncStorage.getItem('selectedFoodDrinks');
+      if (savedFoodDrinks) {
+        setSelectedFoodDrinks(JSON.parse(savedFoodDrinks));
+      }
+
+      // Load outdoors & adventures activities
+      const savedOutdoors = await AsyncStorage.getItem('selectedOutdoors');
+      if (savedOutdoors) {
+        setSelectedOutdoors(JSON.parse(savedOutdoors));
+      }
+
+      // Load fitness activities
+      const savedFitness = await AsyncStorage.getItem('selectedFitness');
+      if (savedFitness) {
+        setSelectedFitness(JSON.parse(savedFitness));
+      }
+
+      // Load business & networking activities
+      const savedBusiness = await AsyncStorage.getItem('selectedBusiness');
+      if (savedBusiness) {
+        setSelectedBusiness(JSON.parse(savedBusiness));
+      }
+      
+      // Load passions from edit profile or from interests.tsx
+      const savedPassions = await AsyncStorage.getItem('selectedPassions');
+      const savedInterests = await AsyncStorage.getItem('selectedInterests');
+      console.log('Loading passions - savedPassions:', savedPassions);
+      console.log('Loading passions - savedInterests:', savedInterests);
+      
+      if (savedPassions && savedPassions !== '[]') {
+        const passions = JSON.parse(savedPassions);
+        console.log('Setting passions from savedPassions:', passions);
+        setSelectedPassions(passions);
+      } else if (savedInterests && savedInterests !== '[]') {
+        // Load from interests.tsx if passions not found
+        const interests = JSON.parse(savedInterests);
+        console.log('Setting passions from savedInterests:', interests);
+        setSelectedPassions(interests);
+      } else {
+        console.log('No passions or interests found, setting empty array');
+        setSelectedPassions([]);
+      }
+      
+      // Auto-expand music section if user has any music selections
+      // if (musicGenresToLoad.length > 0 || ravingPrefsToLoad.length > 0) {
+      //   setShowMusicExpanded(true);
+      //   console.log('Auto-expanding music section');
+      // }
+      
+      // Auto-expand sports section if user has any sports selections
+      // if (sportsToLoad.length > 0 || nflTeamsToLoad.length > 0 || nbaTeamsToLoad.length > 0 || mlbTeamsToLoad.length > 0 || nhlTeamsToLoad.length > 0) {
+      //   setShowSportsExpanded(true);
+      //   console.log('Auto-expanding sports section');
+      // }
+      
+      // Log final state
+      setTimeout(() => {
+        console.log('Final selectedMusicGenres state:', musicGenresToLoad);
+        console.log('Final selectedRavingPrefs state:', ravingPrefsToLoad);
+      }, 100);
+    } catch (error) {
+      console.error('Error loading profile data:', error);
+    }
+  };
+
   useFocusEffect(
     useCallback(() => {
       loadProfileData();
     }, [])
   );
 
-  const loadProfileData = async () => {
-    try {
-      const profilePhoto = await AsyncStorage.getItem('profilePhoto');
-      const name = await AsyncStorage.getItem('firstName');
-      
-      if (profilePhoto) setUserProfileImage(profilePhoto);
-      if (name) setFirstName(name);
-    } catch (error) {
-      console.log('Error loading profile data:', error);
-    }
-  };
-
   const saveProfile = async () => {
-    // Save profile data logic here
+    await saveProfileData();
     router.back();
   };
 
+  const togglePrimaryGoal = (goal: string) => {
+    setPrimaryGoals(prev => {
+      const newGoals = prev.includes(goal) 
+        ? prev.filter(g => g !== goal)
+        : [...prev, goal];
+      
+      // Auto-save the changes
+      setTimeout(() => saveProfileData(), 100);
+      return newGoals;
+    });
+  };
+
+  const toggleIdealHangout = (hangout: string) => {
+    setIdealHangouts(prev => {
+      const newHangouts = prev.includes(hangout) 
+        ? prev.filter(h => h !== hangout)
+        : [...prev, hangout];
+      
+      // Auto-save the changes
+      setTimeout(() => saveProfileData(), 100);
+      return newHangouts;
+    });
+  };
+
+  const toggleMusicGenre = (genre: string) => {
+    setSelectedMusicGenres(prev => {
+      const newGenres = prev.includes(genre)
+        ? prev.filter(g => g !== genre)
+        : [...prev, genre];
+      
+      // Also update the interests.tsx data to keep in sync
+      setTimeout(async () => {
+        try {
+          await AsyncStorage.setItem('selectedMusicCategories', JSON.stringify(newGenres));
+          saveProfileData();
+        } catch (error) {
+          console.error('Error syncing music genres:', error);
+        }
+      }, 100);
+      return newGenres;
+    });
+  };
+
+  const toggleRavingPref = (pref: string) => {
+    setSelectedRavingPrefs(prev => {
+      const newPrefs = prev.includes(pref)
+        ? prev.filter(p => p !== pref)
+        : [...prev, pref];
+      
+      // Also update the interests.tsx data to keep in sync  
+      setTimeout(async () => {
+        try {
+          await AsyncStorage.setItem('selectedEDMGenres', JSON.stringify(newPrefs));
+          saveProfileData();
+        } catch (error) {
+          console.error('Error syncing raving prefs:', error);
+        }
+      }, 100);
+      return newPrefs;
+    });
+  };
+
+  const addCustomMusic = () => {
+    if (customMusicInput.trim() && !selectedMusicGenres.includes(customMusicInput.trim())) {
+      setSelectedMusicGenres(prev => [...prev, customMusicInput.trim()]);
+      setCustomMusicInput('');
+      setTimeout(() => saveProfileData(), 100);
+    }
+  };
+
+  const toggleMusicActivity = (activity: string) => {
+    setSelectedMusicActivities(prev => {
+      const newActivities = prev.includes(activity)
+        ? prev.filter(item => item !== activity)
+        : [...prev, activity];
+      
+      setTimeout(() => saveProfileData(), 100);
+      return newActivities;
+    });
+  };
+
+  const toggleSports = (sport: string) => {
+    if (sport === 'NFL') {
+      setShowNFLModal(true);
+      return;
+    }
+    
+    if (sport === 'NBA') {
+      setShowNBAModal(true);
+      return;
+    }
+    
+    if (sport === 'MLB') {
+      setShowMLBModal(true);
+      return;
+    }
+    
+    if (sport === 'NHL') {
+      setShowNHLModal(true);
+      return;
+    }
+    
+    setSelectedSports(prev => {
+      const newSports = prev.includes(sport)
+        ? prev.filter(s => s !== sport)
+        : [...prev, sport];
+      
+      // Also update the interests.tsx data to keep in sync
+      setTimeout(async () => {
+        try {
+          await AsyncStorage.setItem('selectedSportsCategories', JSON.stringify(newSports));
+          saveProfileData();
+        } catch (error) {
+          console.error('Error syncing sports:', error);
+        }
+      }, 100);
+      return newSports;
+    });
+  };
+
+  const toggleNFLTeam = (team: string) => {
+    setSelectedNFLTeams(prev => {
+      const newTeams = prev.includes(team)
+        ? prev.filter(t => t !== team)
+        : [...prev, team];
+      
+      setTimeout(() => saveProfileData(), 100);
+      return newTeams;
+    });
+  };
+
+  const toggleNBATeam = (team: string) => {
+    setSelectedNBATeams(prev => {
+      const newTeams = prev.includes(team)
+        ? prev.filter(t => t !== team)
+        : [...prev, team];
+      
+      setTimeout(() => saveProfileData(), 100);
+      return newTeams;
+    });
+  };
+
+  const toggleMLBTeam = (team: string) => {
+    setSelectedMLBTeams(prev => {
+      const newTeams = prev.includes(team)
+        ? prev.filter(t => t !== team)
+        : [...prev, team];
+      
+      setTimeout(() => saveProfileData(), 100);
+      return newTeams;
+    });
+  };
+
+  const toggleNHLTeam = (team: string) => {
+    setSelectedNHLTeams(prev => {
+      const newTeams = prev.includes(team)
+        ? prev.filter(t => t !== team)
+        : [...prev, team];
+      
+      setTimeout(() => saveProfileData(), 100);
+      return newTeams;
+    });
+  };
+
+  const addCustomSports = () => {
+    if (customSportsInput.trim() && !selectedSports.includes(customSportsInput.trim())) {
+      setSelectedSports(prev => [...prev, customSportsInput.trim()]);
+      setCustomSportsInput('');
+      setTimeout(() => saveProfileData(), 100);
+    }
+  };
+
+  const toggleAnimeGenre = (genre: string) => {
+    setSelectedAnime(prev => {
+      const newAnime = prev.includes(genre)
+        ? prev.filter(g => g !== genre)
+        : [...prev, genre];
+      
+      setTimeout(() => saveProfileData(), 100);
+      return newAnime;
+    });
+  };
+
+  const addCustomAnime = () => {
+    if (customAnimeInput.trim() && !selectedAnime.includes(customAnimeInput.trim())) {
+      setSelectedAnime(prev => [...prev, customAnimeInput.trim()]);
+      setCustomAnimeInput('');
+      setTimeout(() => saveProfileData(), 100);
+    }
+  };
+
+  const togglePassion = (passionId: string) => {
+    setSelectedPassions(prev => {
+      const newPassions = prev.includes(passionId)
+        ? prev.filter(id => id !== passionId)
+        : [...prev, passionId];
+      
+      setTimeout(() => saveProfileData(), 100);
+      return newPassions;
+    });
+  };
+
+  // ID mapping between interests.tsx and PASSION_INTERESTS
+  const mapInterestIdToPassionId = (interestId: string): string => {
+    const mapping: { [key: string]: string } = {
+      'music': 'music',
+      'sports': 'sports', 
+      'raves': 'raves',
+      'dj': 'dj',
+      'fashion': 'fashion',
+      'pets': 'pets',        // interests.tsx uses 'pets', PASSION_INTERESTS uses 'pets'
+      'anime': 'anime',
+      'business': 'business',
+      'fitness': 'fitness',
+      'gaming': 'gaming',
+      'parenting': 'parenting',
+      'filmContent': 'filmContent',
+      'photography': 'photography',
+      'reading': 'reading',
+      'singing': 'singing',
+      'technology': 'technology',
+      'travel': 'travel',
+      'writing': 'writing',
+      'cooking': 'cooking',
+      'cinema': 'cinema',
+      'investing': 'investing',
+      'shopping': 'shopping',
+      'cars': 'cars',
+      'hiking': 'hiking',
+      'art': 'art',
+      'boardGames': 'boardGames',
+      'musicians': 'musicians',
+      'partying': 'partying',
+      'lgbtRights': 'lgbtRights',
+      'disney': 'disney',
+      'concerts': 'concerts',
+      'ai': 'ai',
+      'godFearing': 'godFearing',
+      'motorcycles': 'motorcycles',
+      'beauty': 'beauty',
+      'politics': 'politics',
+      'conspiracies': 'conspiracies',
+      'founders': 'founders',
+      'skating': 'skating',
+      'popCulture': 'popCulture',
+      'nature': 'nature',
+      'food': 'food',
+      'running': 'running',
+      'camping': 'camping',
+      'snowboarding': 'snowboarding'
+    };
+    return mapping[interestId] || interestId;
+  };
+
+  // Get mapped passions for display (convert from interests.tsx IDs to our PASSION_INTERESTS IDs)
+  const getMappedSelectedPassions = (): string[] => {
+    return selectedPassions.map(id => mapInterestIdToPassionId(id));
+  };
+
+  const addCustomPassion = () => {
+    if (customPassionInput.trim() && !selectedPassions.includes(customPassionInput.trim())) {
+      setSelectedPassions(prev => [...prev, customPassionInput.trim()]);
+      setCustomPassionInput('');
+      setTimeout(() => saveProfileData(), 100);
+    }
+  };
+
+  const toggleArtsCulture = (activity: string) => {
+    setSelectedArtsCulture(prev => {
+      const newActivities = prev.includes(activity)
+        ? prev.filter(item => item !== activity)
+        : [...prev, activity];
+      
+      setTimeout(() => saveProfileData(), 100);
+      return newActivities;
+    });
+  };
+
+  const toggleFoodDrinks = (activity: string) => {
+    setSelectedFoodDrinks(prev => {
+      const newActivities = prev.includes(activity)
+        ? prev.filter(item => item !== activity)
+        : [...prev, activity];
+      
+      setTimeout(() => saveProfileData(), 100);
+      return newActivities;
+    });
+  };
+
+  const addCustomOutdoors = () => {
+    if (customOutdoorsInput.trim() && !selectedOutdoors.includes(customOutdoorsInput.trim())) {
+      setSelectedOutdoors(prev => [...prev, customOutdoorsInput.trim()]);
+      setCustomOutdoorsInput('');
+      setTimeout(() => saveProfileData(), 100);
+    }
+  };
+
+  const toggleFitness = (activity: string) => {
+    setSelectedFitness(prev => {
+      const newActivities = prev.includes(activity)
+        ? prev.filter(item => item !== activity)
+        : [...prev, activity];
+      
+      setTimeout(() => saveProfileData(), 100);
+      return newActivities;
+    });
+  };
+
+  const addCustomFitness = () => {
+    if (customFitnessInput.trim() && !selectedFitness.includes(customFitnessInput.trim())) {
+      setSelectedFitness(prev => [...prev, customFitnessInput.trim()]);
+      setCustomFitnessInput('');
+      setTimeout(() => saveProfileData(), 100);
+    }
+  };
+
+  const toggleBusiness = (activity: string) => {
+    setSelectedBusiness(prev => {
+      const newActivities = prev.includes(activity)
+        ? prev.filter(item => item !== activity)
+        : [...prev, activity];
+      
+      setTimeout(() => saveProfileData(), 100);
+      return newActivities;
+    });
+  };
+
+  const addCustomBusiness = () => {
+    if (customBusinessInput.trim() && !selectedBusiness.includes(customBusinessInput.trim())) {
+      setSelectedBusiness(prev => [...prev, customBusinessInput.trim()]);
+      setCustomBusinessInput('');
+      setTimeout(() => saveProfileData(), 100);
+    }
+  };
+  // --- End of addCustomOutdoors ---
+
+  // Toggle function for Outdoors & Adventures activities
+  const toggleOutdoors = (activity: string) => {
+    setSelectedOutdoors(prev => {
+      const newOutdoors = prev.includes(activity)
+        ? prev.filter(item => item !== activity)
+        : [...prev, activity];
+      setTimeout(() => saveProfileData(), 100);
+      return newOutdoors;
+    });
+  };
+
+  // Core tab rendering function
   const renderCoreTab = () => (
     <View style={styles.tabContent}>
       <View style={styles.section}>
@@ -171,7 +1038,10 @@ export default function EditProfile() {
           <TextInput
             style={[styles.textInput, styles.usernameInput]}
             value={userName}
-            onChangeText={setUserName}
+            onChangeText={(text) => {
+              setUserName(text);
+              saveProfileData();
+            }}
             placeholder=""
           />
         </View>
@@ -182,7 +1052,10 @@ export default function EditProfile() {
         <TextInput
           style={[styles.textInput, styles.textArea, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedInput]}
           value={aboutMe}
-          onChangeText={setAboutMe}
+          onChangeText={(text) => {
+            setAboutMe(text);
+            saveProfileData();
+          }}
           placeholder="Describe yourself in a way your friends would."
           multiline
           numberOfLines={3}
@@ -194,7 +1067,10 @@ export default function EditProfile() {
         <TextInput
           style={[styles.textInput, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedInput]}
           value={dreamIs}
-          onChangeText={setDreamIs}
+          onChangeText={(text) => {
+            setDreamIs(text);
+            saveProfileData();
+          }}
           placeholder=""
         />
       </View>
@@ -204,7 +1080,10 @@ export default function EditProfile() {
         <TextInput
           style={[styles.textInput, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedInput]}
           value={location}
-          onChangeText={setLocation}
+          onChangeText={(text) => {
+            setLocation(text);
+            saveProfileData();
+          }}
           placeholder="Enter your location"
         />
       </View>
@@ -215,7 +1094,10 @@ export default function EditProfile() {
           <TextInput
             style={[styles.textInput, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedInput]}
             value={age}
-            onChangeText={setAge}
+            onChangeText={(text) => {
+              setAge(text);
+              saveProfileData();
+            }}
             placeholder="Age"
             keyboardType="numeric"
           />
@@ -255,6 +1137,7 @@ export default function EditProfile() {
                         onPress={() => {
                           setGender(option);
                           setShowGenderDropdown(false);
+                          saveProfileData();
                         }}
                       >
                         <Text style={styles.dropdownItemText}>{option}</Text>
@@ -292,6 +1175,7 @@ export default function EditProfile() {
                       onPress={() => {
                         setEthnicity(option);
                         setShowEthnicityDropdown(false);
+                        saveProfileData();
                       }}
                     >
                       <Text style={styles.dropdownItemText}>{option}</Text>
@@ -320,7 +1204,10 @@ export default function EditProfile() {
         <TextInput
           style={[styles.textInput, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedInput]}
           value={occupation}
-          onChangeText={setOccupation}
+          onChangeText={(text) => {
+            setOccupation(text);
+            saveProfileData();
+          }}
           placeholder="Your occupation"
         />
       </View>
@@ -349,6 +1236,7 @@ export default function EditProfile() {
                       onPress={() => {
                         setIndustry(option);
                         setShowIndustryDropdown(false);
+                        saveProfileData();
                       }}
                     >
                       <Text style={styles.dropdownItemText}>{option}</Text>
@@ -385,6 +1273,7 @@ export default function EditProfile() {
                       onPress={() => {
                         setReligion(option);
                         setShowReligionDropdown(false);
+                        saveProfileData();
                       }}
                     >
                       <Text style={styles.dropdownItemText}>{option}</Text>
@@ -421,6 +1310,7 @@ export default function EditProfile() {
                       onPress={() => {
                         setRelationshipStatus(option);
                         setShowRelationshipDropdown(false);
+                        saveProfileData();
                       }}
                     >
                       <Text style={styles.dropdownItemText}>{option}</Text>
@@ -433,10 +1323,67 @@ export default function EditProfile() {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.goalButton}>
-        <Text style={styles.goalButtonText}>Social & Friendship Goals</Text>
-        <Ionicons name="chevron-forward" size={20} color="#007AFF" />
-      </TouchableOpacity>
+      <View style={[styles.section, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedField]}>
+        <Text style={[styles.sectionTitle, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedText]}>Social & Friendship Goals</Text>
+      </View>
+      <View style={styles.socialGoalsContent}>
+        <View style={styles.socialSection}>
+          <View style={styles.primaryGoalHeader}>
+            <View style={styles.primaryGoalTitleContainer}>
+              <View style={styles.primaryGoalIconContainer}>
+                <Text style={styles.primaryGoalEmoji}>🎯</Text>
+              </View>
+              <Text style={styles.primaryGoalTitle}>Primary Goal</Text>
+            </View>
+            <View style={styles.primaryGoalBadge}>
+              <Text style={styles.primaryGoalBadgeText}>Pick all that apply</Text>
+            </View>
+          </View>
+          
+          <View style={styles.enhancedGoalGrid}>
+            {primaryGoalsOptions.map((goal, index) => {
+              const isSelected = primaryGoals.includes(goal);
+              const goalIcons = {
+                'Find friends in my city': '🏙️',
+                'Meet people at events': '🎪',
+                'Join hobby groups': '🎨',
+                'Collaborate professionally': '💼',
+                'Travel buddies': '✈️',
+                'Deep 1:1 connections': '💬'
+              };
+              
+              return (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.enhancedGoalButton,
+                    isSelected && styles.enhancedGoalButtonActive
+                  ]}
+                  onPress={() => togglePrimaryGoal(goal)}
+                >
+                  <View style={styles.goalButtonContent}>
+                    <Text style={[
+                      styles.goalButtonIcon,
+                      isSelected && styles.goalButtonIconActive
+                    ]}>
+                      {goalIcons[goal as keyof typeof goalIcons]}
+                    </Text>
+                    <Text style={[
+                      styles.enhancedGoalButtonText,
+                      isSelected && styles.enhancedGoalButtonTextActive
+                    ]}>{goal}</Text>
+                  </View>
+                  {isSelected && (
+                    <View style={styles.selectedIndicator}>
+                      <Text style={styles.checkmark}>✓</Text>
+                    </View>
+                  )}
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </View>
+      </View>
     </View>
   );
 
@@ -488,40 +1435,134 @@ export default function EditProfile() {
         </View>
       </View>
 
-      <View style={styles.fieldGroup}>
-        <Text style={styles.fieldLabel}>Love Language (Friend Edition)</Text>
-        <Text style={styles.fieldSubtext}>Quality Time</Text>
+      <View style={styles.socialSection}>
+        <View style={styles.socialSectionHeader}>
+          <View style={styles.socialSectionTitleContainer}>
+            <Text style={styles.socialSectionTitle}>Ideal Hangouts</Text>
+          </View>
+        </View>
+        
+        <View style={styles.hangoutGrid}>
+          {idealHangoutsOptions.map((hangout, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.hangoutButton,
+                idealHangouts.includes(hangout) && styles.hangoutButtonActive
+              ]}
+              onPress={() => toggleIdealHangout(hangout)}
+            >
+              <Text style={[
+                styles.hangoutText,
+                idealHangouts.includes(hangout) && styles.hangoutTextActive
+              ]}>{hangout}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+
+      <View style={styles.socialSection}>
+        <View style={styles.socialSectionHeader}>
+          <View style={styles.socialSectionTitleContainer}>
+            <Text style={styles.socialSectionIcon}>👥</Text>
+            <Text style={styles.socialSectionTitle}>Social Style</Text>
+          </View>
+        </View>
+        
+        <View style={styles.socialStyleGrid}>
+          {socialStyleOptions.map((style, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.socialStyleButton,
+                socialStyle === style && styles.socialStyleButtonActive
+              ]}
+              onPress={() => setSocialStyle(style)}
+            >
+              <Text style={[
+                styles.socialStyleText,
+                socialStyle === style && styles.socialStyleTextActive
+              ]}>{style}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
 
       <View style={styles.fieldGroup}>
-        <Text style={styles.fieldLabel}>Acts of Service</Text>
-        <TouchableOpacity style={styles.tagButton}>
-          <Text style={styles.tagText}>Humor</Text>
-        </TouchableOpacity>
+        <Text style={styles.fieldLabel}>Energy Level</Text>
+        <View style={styles.optionGroup}>
+          {[
+            { key: 'morning', label: 'Morning person', icon: '🌅' },
+            { key: 'night', label: 'Night owl', icon: '🦉' },
+            { key: 'afternoon', label: 'Afternoon peak', icon: '☀️' }
+          ].map((option) => (
+            <TouchableOpacity
+              key={option.key}
+              style={[styles.moodButton, energyLevel === option.label && styles.moodButtonActive]}
+              onPress={() => {
+                setEnergyLevel(option.label);
+                saveProfileData();
+              }}
+            >
+              <Text style={styles.moodIcon}>{option.icon}</Text>
+              <Text style={[styles.moodText, energyLevel === option.label && styles.moodTextActive]}>
+                {option.label}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
 
       <View style={styles.fieldGroup}>
-        <Text style={styles.fieldLabel}>Deep Talk</Text>
+        <Text style={styles.fieldLabel}>Social Battery</Text>
+        <View style={styles.optionGroup}>
+          {[
+            { key: 'alone', label: 'Recharges alone', icon: '🔋' },
+            { key: 'people', label: 'Recharges with people', icon: '⚡' },
+            { key: 'mixed', label: 'Mixed', icon: '🔄' }
+          ].map((option) => (
+            <TouchableOpacity
+              key={option.key}
+              style={[styles.moodButton, socialBattery === option.label && styles.moodButtonActive]}
+              onPress={() => {
+                setSocialBattery(option.label);
+                saveProfileData();
+              }}
+            >
+              <Text style={styles.moodIcon}>{option.icon}</Text>
+              <Text style={[styles.moodText, socialBattery === option.label && styles.moodTextActive]}>
+                {option.label}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
 
       <View style={styles.fieldGroup}>
-        <Text style={styles.fieldLabel}>Communication Style</Text>
-        <TouchableOpacity style={styles.dropdownButton}>
-          <Ionicons name="chevron-down" size={20} color="#666" />
-        </TouchableOpacity>
+        <Text style={styles.fieldLabel}>Conversation Style</Text>
+        <View style={styles.optionGroup}>
+          {[
+            { key: 'deep', label: 'Deep diver', icon: '🤿' },
+            { key: 'light', label: 'Light & fun', icon: '🎈' },
+            { key: 'both', label: 'Mix of both', icon: '🌊' }
+          ].map((option) => (
+            <TouchableOpacity
+              key={option.key}
+              style={[styles.moodButton, conversationStyle === option.label && styles.moodButtonActive]}
+              onPress={() => {
+                setConversationStyle(option.label);
+                saveProfileData();
+              }}
+            >
+              <Text style={styles.moodIcon}>{option.icon}</Text>
+              <Text style={[styles.moodText, conversationStyle === option.label && styles.moodTextActive]}>
+                {option.label}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
-
-      <View style={styles.fieldGroup}>
-        <Text style={styles.fieldLabel}>Conflict Style</Text>
-        <TouchableOpacity style={styles.dropdownButton}>
-          <Ionicons name="chevron-down" size={20} color="#666" />
-        </TouchableOpacity>
-      </View>
-
-      <TouchableOpacity style={styles.goalButton}>
-        <Text style={styles.goalButtonText}>Friendship Goals</Text>
-        <Ionicons name="chevron-forward" size={20} color="#007AFF" />
-      </TouchableOpacity>
+      
     </View>
   );
 
@@ -535,76 +1576,887 @@ export default function EditProfile() {
       </View>
 
       <View style={styles.interestCategory}>
-        <TouchableOpacity style={styles.categoryHeader}>
+        <TouchableOpacity 
+          style={styles.categoryHeader}
+          onPress={() => {
+            setShowMusicExpanded(false);
+            setShowAnimeExpanded(false);
+            setShowPassionExpanded(false);
+            setShowArtsCultureExpanded(false);
+            setShowFoodDrinksExpanded(false);
+            setShowOutdoorsExpanded(false);
+            setShowFitnessExpanded(false);
+            setShowBusinessExpanded(false);
+            setShowSportsExpanded(!showSportsExpanded);
+          }}
+        >
+          <View style={styles.categoryIcon}>
+            <Text style={styles.categoryEmoji}>🏀</Text>
+          </View>
+          <Text style={styles.categoryTitle}>Sports</Text>
+          <Ionicons 
+            name={showSportsExpanded ? "chevron-up" : "chevron-down"} 
+            size={20} 
+            color="#666" 
+          />
+        </TouchableOpacity>
+        
+        {showSportsExpanded && (
+          <View style={styles.expandedContent}>
+            <Text style={styles.subCategoryTitle}>Leagues</Text>
+            <View style={styles.genreGrid}>
+              {SPORTS_CATEGORIES.map((sport, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.musicGenreButton,
+                    (selectedSports.includes(sport.name) || 
+                     (sport.name === 'NFL' && selectedNFLTeams.length > 0) ||
+                     (sport.name === 'NBA' && selectedNBATeams.length > 0) ||
+                     (sport.name === 'MLB' && selectedMLBTeams.length > 0) ||
+                     (sport.name === 'NHL' && selectedNHLTeams.length > 0)) && styles.genreButtonActive
+                  ]}
+                  onPress={() => toggleSports(sport.name)}
+                >
+                  <Text style={[
+                    styles.genreText,
+                    (selectedSports.includes(sport.name) || 
+                     (sport.name === 'NFL' && selectedNFLTeams.length > 0) ||
+                     (sport.name === 'NBA' && selectedNBATeams.length > 0) ||
+                     (sport.name === 'MLB' && selectedMLBTeams.length > 0) ||
+                     (sport.name === 'NHL' && selectedNHLTeams.length > 0)) && styles.genreTextActive
+                  ]}>{sport.emoji} {sport.name}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+            
+            {/* Display selected NFL teams */}
+            {selectedNFLTeams.length > 0 && (
+              <View style={styles.customMusicSection}>
+                <Text style={styles.subCategoryTitle}>My NFL Teams</Text>
+                <View style={styles.genreGrid}>
+                  {selectedNFLTeams.map((team, index) => (
+                    <TouchableOpacity
+                      key={`nfl-${index}`}
+                      style={[styles.genreButton, styles.genreButtonActive, styles.customMusicPill]}
+                      onPress={() => {
+                        setSelectedNFLTeams(prev => {
+                          const newTeams = prev.filter(item => item !== team);
+                          // Remove NFL from selectedSports if no teams left
+                          if (newTeams.length === 0) {
+                            setSelectedSports(sportsPrev => sportsPrev.filter(s => s !== 'NFL'));
+                          }
+                          setTimeout(() => saveProfileData(), 100);
+                          return newTeams;
+                        });
+                      }}
+                    >
+                      <Text style={[styles.genreText, styles.genreTextActive]}>{team}</Text>
+                      <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            )}
+            
+            {/* Display selected NBA teams */}
+            {selectedNBATeams.length > 0 && (
+              <View style={styles.customMusicSection}>
+                <Text style={styles.subCategoryTitle}>My NBA Teams</Text>
+                <View style={styles.genreGrid}>
+                  {selectedNBATeams.map((team, index) => (
+                    <TouchableOpacity
+                      key={`nba-${index}`}
+                      style={[styles.genreButton, styles.genreButtonActive, styles.customMusicPill]}
+                      onPress={() => {
+                        setSelectedNBATeams(prev => {
+                          const newTeams = prev.filter(item => item !== team);
+                          // Remove NBA from selectedSports if no teams left
+                          if (newTeams.length === 0) {
+                            setSelectedSports(sportsPrev => sportsPrev.filter(s => s !== 'NBA'));
+                          }
+                          setTimeout(() => saveProfileData(), 100);
+                          return newTeams;
+                        });
+                      }}
+                    >
+                      <Text style={[styles.genreText, styles.genreTextActive]}>{team}</Text>
+                      <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            )}
+            
+            {/* Display selected MLB teams */}
+            {selectedMLBTeams.length > 0 && (
+              <View style={styles.customMusicSection}>
+                <Text style={styles.subCategoryTitle}>My MLB Teams</Text>
+                <View style={styles.genreGrid}>
+                  {selectedMLBTeams.map((team, index) => (
+                    <TouchableOpacity
+                      key={`mlb-${index}`}
+                      style={[styles.genreButton, styles.genreButtonActive, styles.customMusicPill]}
+                      onPress={() => {
+                        setSelectedMLBTeams(prev => {
+                          const newTeams = prev.filter(item => item !== team);
+                          // Remove MLB from selectedSports if no teams left
+                          if (newTeams.length === 0) {
+                            setSelectedSports(sportsPrev => sportsPrev.filter(s => s !== 'MLB'));
+                          }
+                          setTimeout(() => saveProfileData(), 100);
+                          return newTeams;
+                        });
+                      }}
+                    >
+                      <Text style={[styles.genreText, styles.genreTextActive]}>{team}</Text>
+                      <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            )}
+            
+            {/* Display selected NHL teams */}
+            {selectedNHLTeams.length > 0 && (
+              <View style={styles.customMusicSection}>
+                <Text style={styles.subCategoryTitle}>My NHL Teams</Text>
+                <View style={styles.genreGrid}>
+                  {selectedNHLTeams.map((team, index) => (
+                    <TouchableOpacity
+                      key={`nhl-${index}`}
+                      style={[styles.genreButton, styles.genreButtonActive, styles.customMusicPill]}
+                      onPress={() => {
+                        setSelectedNHLTeams(prev => {
+                          const newTeams = prev.filter(item => item !== team);
+                          // Remove NHL from selectedSports if no teams left
+                          if (newTeams.length === 0) {
+                            setSelectedSports(sportsPrev => sportsPrev.filter(s => s !== 'NHL'));
+                          }
+                          setTimeout(() => saveProfileData(), 100);
+                          return newTeams;
+                        });
+                      }}
+                    >
+                      <Text style={[styles.genreText, styles.genreTextActive]}>{team}</Text>
+                      <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            )}
+            
+            {/* Display custom sports entries as pills above the input */}
+            {selectedSports.filter(sport => !SPORTS_CATEGORIES.some(cat => cat.name === sport)).length > 0 && (
+              <View style={styles.customMusicSection}>
+                <Text style={styles.subCategoryTitle}>Favorite Athletes</Text>
+                <View style={styles.genreGrid}>
+                  {selectedSports
+                    .filter(sport => !SPORTS_CATEGORIES.some(cat => cat.name === sport))
+                    .map((customEntry, index) => (
+                    <TouchableOpacity
+                      key={`athlete-${index}`}
+                      style={[styles.genreButton, styles.genreButtonActive, styles.customMusicPill]}
+                      onPress={() => {
+                        setSelectedSports(prev => prev.filter(item => item !== customEntry));
+                        setTimeout(() => saveProfileData(), 100);
+                      }}
+                    >
+                      <Text style={[styles.genreText, styles.genreTextActive]}>{customEntry}</Text>
+                      <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            )}
+
+            <View style={styles.customInputContainer}>
+              <TextInput
+                style={styles.customInput}
+                value={customSportsInput}
+                onChangeText={setCustomSportsInput}
+                placeholder="Add your favorite athlete"
+                placeholderTextColor="#999"
+                onSubmitEditing={addCustomSports}
+              />
+              <TouchableOpacity 
+                style={styles.addButton}
+                onPress={addCustomSports}
+              >
+                <Text style={styles.addButtonText}>Add</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      </View>
+
+      <View style={styles.interestCategory}>
+        <TouchableOpacity 
+          style={styles.categoryHeader}
+          onPress={() => {
+            setShowMusicExpanded(false);
+            setShowSportsExpanded(false);
+            setShowPassionExpanded(false);
+            setShowArtsCultureExpanded(false);
+            setShowFoodDrinksExpanded(false);
+            setShowOutdoorsExpanded(false);
+            setShowFitnessExpanded(false);
+            setShowBusinessExpanded(false);
+            setShowAnimeExpanded(!showAnimeExpanded);
+          }}
+        >
+          <View style={styles.categoryIcon}>
+            <Text style={styles.categoryEmoji}>🎌</Text>
+          </View>
+          <Text style={styles.categoryTitle}>Anime</Text>
+          <Ionicons 
+            name={showAnimeExpanded ? "chevron-up" : "chevron-down"} 
+            size={20} 
+            color="#666" 
+          />
+        </TouchableOpacity>
+        
+        {showAnimeExpanded && (
+          <View style={styles.expandedContent}>
+            <Text style={styles.subCategoryTitle}>Favorite Anime</Text>
+            <View style={styles.genreGrid}>
+              {ANIME_GENRES.map((genre, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.musicGenreButton,
+                    selectedAnime.includes(genre) && styles.genreButtonActive
+                  ]}
+                  onPress={() => toggleAnimeGenre(genre)}
+                >
+                  <Text style={[
+                    styles.genreText,
+                    selectedAnime.includes(genre) && styles.genreTextActive
+                  ]}>{genre}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+            
+            {/* Display custom anime entries as pills above the input */}
+            {selectedAnime.filter(anime => !ANIME_GENRES.includes(anime)).length > 0 && (
+              <View style={styles.customMusicSection}>
+                <Text style={styles.subCategoryTitle}>Your Anime</Text>
+                <View style={styles.genreGrid}>
+                  {selectedAnime
+                    .filter(anime => !ANIME_GENRES.includes(anime))
+                    .map((customEntry, index) => (
+                    <TouchableOpacity
+                      key={`anime-${index}`}
+                      style={[styles.genreButton, styles.genreButtonActive, styles.customMusicPill]}
+                      onPress={() => {
+                        setSelectedAnime(prev => prev.filter(item => item !== customEntry));
+                        setTimeout(() => saveProfileData(), 100);
+                      }}
+                    >
+                      <Text style={[styles.genreText, styles.genreTextActive]}>{customEntry}</Text>
+                      <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            )}
+
+            <View style={styles.customInputContainer}>
+              <TextInput
+                style={styles.customInput}
+                value={customAnimeInput}
+                onChangeText={setCustomAnimeInput}
+                placeholder="Add your favorite anime"
+                placeholderTextColor="#999"
+                onSubmitEditing={addCustomAnime}
+              />
+              <TouchableOpacity 
+                style={styles.addButton}
+                onPress={addCustomAnime}
+              >
+                <Text style={styles.addButtonText}>Add</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      </View>
+
+      <View style={styles.interestCategory}>
+        <TouchableOpacity 
+          style={styles.categoryHeader}
+          onPress={() => {
+            setShowSportsExpanded(false);
+            setShowAnimeExpanded(false);
+            setShowPassionExpanded(false);
+            setShowArtsCultureExpanded(false);
+            setShowFoodDrinksExpanded(false);
+            setShowOutdoorsExpanded(false);
+            setShowFitnessExpanded(false);
+            setShowBusinessExpanded(false);
+            setShowMusicExpanded(!showMusicExpanded);
+          }}
+        >
           <View style={styles.categoryIcon}>
             <Text style={styles.categoryEmoji}>🎵</Text>
           </View>
           <Text style={styles.categoryTitle}>Music</Text>
-          <Ionicons name="chevron-down" size={20} color="#666" />
+          <Ionicons 
+            name={showMusicExpanded ? "chevron-up" : "chevron-down"} 
+            size={20} 
+            color="#666" 
+          />
         </TouchableOpacity>
+        
+        {showMusicExpanded && (
+          <View style={styles.expandedContent}>
+            <Text style={styles.subCategoryTitle}>Events</Text>
+            <View style={styles.genreGrid}>
+              {MUSIC_ACTIVITIES.map((activity, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.musicGenreButton,
+                    selectedMusicActivities.includes(activity) && styles.genreButtonActive
+                  ]}
+                  onPress={() => toggleMusicActivity(activity)}
+                >
+                  <Text style={[
+                    styles.genreText,
+                    selectedMusicActivities.includes(activity) && styles.genreTextActive
+                  ]}>{activity}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+            
+            <Text style={styles.subCategoryTitle}>Music Genres</Text>
+            <View style={styles.genreGrid}>
+              {MUSIC_CATEGORIES.map((genre, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.musicGenreButton,
+                    selectedMusicGenres.includes(genre) && styles.genreButtonActive
+                  ]}
+                  onPress={() => toggleMusicGenre(genre)}
+                >
+                  <Text style={[
+                    styles.genreText,
+                    selectedMusicGenres.includes(genre) && styles.genreTextActive
+                  ]}>{genre}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+            
+            <Text style={styles.subCategoryTitle}>EDM Genres</Text>
+            <View style={styles.genreGrid}>
+              {EDM_GENRES.map((genre, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.musicGenreButton,
+                    selectedRavingPrefs.includes(genre) && styles.genreButtonActive
+                  ]}
+                  onPress={() => toggleRavingPref(genre)}
+                >
+                  <Text style={[
+                    styles.genreText,
+                    selectedRavingPrefs.includes(genre) && styles.genreTextActive
+                  ]}>{genre}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+            
+            {/* Display custom music entries as pills above the input */}
+            {selectedMusicGenres.filter(genre => !MUSIC_CATEGORIES.includes(genre)).length > 0 && (
+              <View style={styles.customMusicSection}>
+                <Text style={styles.subCategoryTitle}>Your Artists & Preferences</Text>
+                <View style={styles.genreGrid}>
+                  {selectedMusicGenres
+                    .filter(genre => !MUSIC_CATEGORIES.includes(genre))
+                    .map((customEntry, index) => (
+                    <TouchableOpacity
+                      key={`custom-${index}`}
+                      style={[styles.musicGenreButton, styles.genreButtonActive, styles.customMusicPill]}
+                      onPress={() => {
+                        setSelectedMusicGenres(prev => prev.filter(item => item !== customEntry));
+                        setTimeout(() => saveProfileData(), 100);
+                      }}
+                    >
+                      <Text style={[styles.genreText, styles.genreTextActive]}>{customEntry}</Text>
+                      <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            )}
+
+            <View style={styles.customInputContainer}>
+              <TextInput
+                style={styles.customInput}
+                value={customMusicInput}
+                onChangeText={setCustomMusicInput}
+                placeholder="Add your favorite artist"
+                placeholderTextColor="#999"
+                onSubmitEditing={addCustomMusic}
+              />
+              <TouchableOpacity 
+                style={styles.addButton}
+                onPress={addCustomMusic}
+              >
+                <Text style={styles.addButtonText}>Add</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
       </View>
 
       <View style={styles.interestCategory}>
-        <TouchableOpacity style={styles.categoryHeader}>
+        <TouchableOpacity 
+          style={styles.categoryHeader}
+          onPress={() => {
+            setShowMusicExpanded(false);
+            setShowSportsExpanded(false);
+            setShowAnimeExpanded(false);
+            setShowArtsCultureExpanded(false);
+            setShowFoodDrinksExpanded(false);
+            setShowOutdoorsExpanded(false);
+            setShowFitnessExpanded(false);
+            setShowBusinessExpanded(false);
+            setShowPassionExpanded(!showPassionExpanded);
+          }}
+        >
+          <View style={styles.categoryIcon}>
+            <Text style={styles.categoryEmoji}>❤️</Text>
+          </View>
+          <Text style={styles.categoryTitle}>Passions</Text>
+          <Ionicons 
+            name={showPassionExpanded ? "chevron-up" : "chevron-down"} 
+            size={20} 
+            color="#666" 
+          />
+        </TouchableOpacity>
+        
+        {showPassionExpanded && (
+          <View style={styles.expandedContent}>
+            <Text style={styles.subCategoryTitle}>Your Interests & Passions ({getMappedSelectedPassions().length} selected)</Text>
+            <View style={styles.genreGrid}>
+              {PASSION_INTERESTS.map((passion, index) => {
+                const mappedSelectedPassions = getMappedSelectedPassions();
+                const isSelected = mappedSelectedPassions.includes(passion.id);
+                
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    style={[
+                      styles.musicGenreButton,
+                      isSelected && styles.genreButtonActive
+                    ]}
+                    onPress={() => {
+                      console.log(`Tapped ${passion.label} (${passion.id})`);
+                      console.log(`Is currently selected: ${isSelected}`);
+                      console.log(`mappedSelectedPassions:`, mappedSelectedPassions);
+                      // When toggling, we need to work with the original interests.tsx ID
+                      const originalId = selectedPassions.find(id => mapInterestIdToPassionId(id) === passion.id) || passion.id;
+                      togglePassion(originalId);
+                    }}
+                  >
+                    <Text style={[
+                      styles.genreText,
+                      isSelected && styles.genreTextActive
+                    ]}>
+                      {passion.emoji} {passion.label}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+            
+            {/* Display custom passion entries as pills above the input */}
+            {selectedPassions.filter(passion => !PASSION_INTERESTS.some(p => p.id === passion)).length > 0 && (
+              <View style={styles.customMusicSection}>
+                <Text style={styles.subCategoryTitle}>Your Custom Interests</Text>
+                <View style={styles.genreGrid}>
+                  {selectedPassions
+                    .filter(passion => !PASSION_INTERESTS.some(p => p.id === passion))
+                    .map((customEntry, index) => (
+                    <TouchableOpacity
+                      key={`custom-passion-${index}`}
+                      style={[styles.genreButton, styles.genreButtonActive, styles.customMusicPill]}
+                      onPress={() => {
+                        setSelectedPassions(prev => prev.filter(item => item !== customEntry));
+                        setTimeout(() => saveProfileData(), 100);
+                      }}
+                    >
+                      <Text style={[styles.genreText, styles.genreTextActive]}>{customEntry}</Text>
+                      <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            )}
+
+            <View style={styles.customInputContainer}>
+              <TextInput
+                style={styles.customInput}
+                value={customPassionInput}
+                onChangeText={setCustomPassionInput}
+                placeholder="Add your own interest"
+                placeholderTextColor="#999"
+                onSubmitEditing={addCustomPassion}
+              />
+              <TouchableOpacity 
+                style={styles.addButton}
+                onPress={addCustomPassion}
+              >
+                <Text style={styles.addButtonText}>Add</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      </View>
+
+      <View style={styles.interestCategory}>
+        <TouchableOpacity 
+          style={styles.categoryHeader}
+          onPress={() => {
+            setShowMusicExpanded(false);
+            setShowSportsExpanded(false);
+            setShowAnimeExpanded(false);
+            setShowPassionExpanded(false);
+            setShowFoodDrinksExpanded(false);
+            setShowOutdoorsExpanded(false);
+            setShowFitnessExpanded(false);
+            setShowBusinessExpanded(false);
+            setShowArtsCultureExpanded(!showArtsCultureExpanded);
+          }}
+        >
           <View style={styles.categoryIcon}>
             <Text style={styles.categoryEmoji}>🎨</Text>
           </View>
           <Text style={styles.categoryTitle}>Arts & Culture</Text>
-          <Ionicons name="chevron-down" size={20} color="#666" />
+          <Ionicons 
+            name={showArtsCultureExpanded ? "chevron-up" : "chevron-down"} 
+            size={20} 
+            color="#666" 
+          />
         </TouchableOpacity>
+        
+        {showArtsCultureExpanded && (
+          <View style={[styles.expandedContent, { paddingHorizontal: 8 }]}>
+            <View style={[styles.genreGrid, { justifyContent: 'space-between' }]}>
+              {ARTS_CULTURE_ACTIVITIES.map((activity, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.musicGenreButton,
+                    selectedArtsCulture.includes(activity) && styles.genreButtonActive,
+                    { flex: 0.32, marginHorizontal: 2 }
+                  ]}
+                  onPress={() => toggleArtsCulture(activity)}
+                >
+                  <Text style={[
+                    styles.genreText,
+                    selectedArtsCulture.includes(activity) && styles.genreTextActive,
+                    { fontSize: 12, textAlign: 'center' }
+                  ]}>{activity}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+        )}
       </View>
 
       <View style={styles.interestCategory}>
-        <TouchableOpacity style={styles.categoryHeader}>
+        <TouchableOpacity 
+          style={styles.categoryHeader}
+          onPress={() => {
+            setShowMusicExpanded(false);
+            setShowSportsExpanded(false);
+            setShowAnimeExpanded(false);
+            setShowPassionExpanded(false);
+            setShowArtsCultureExpanded(false);
+            setShowOutdoorsExpanded(false);
+            setShowFitnessExpanded(false);
+            setShowBusinessExpanded(false);
+            setShowFoodDrinksExpanded(!showFoodDrinksExpanded);
+          }}
+        >
           <View style={styles.categoryIcon}>
             <Text style={styles.categoryEmoji}>🍽️</Text>
           </View>
-          <Text style={styles.categoryTitle}>Food & Drink</Text>
-          <Ionicons name="chevron-down" size={20} color="#666" />
+          <Text style={styles.categoryTitle}>Food & Drinks</Text>
+          <Ionicons 
+            name={showFoodDrinksExpanded ? "chevron-up" : "chevron-down"} 
+            size={20} 
+            color="#666" 
+          />
         </TouchableOpacity>
-        <View style={styles.interestTags}>
-          <View style={styles.interestTag}>
-            <Text style={styles.interestTagText}>Foodie</Text>
+        
+        {showFoodDrinksExpanded && (
+          <View style={styles.expandedContent}>
+            <View style={styles.genreGrid}>
+              {FOOD_DRINKS_ACTIVITIES.map((activity, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.musicGenreButton,
+                    selectedFoodDrinks.includes(activity) && styles.genreButtonActive
+                  ]}
+                  onPress={() => toggleFoodDrinks(activity)}
+                >
+                  <Text style={[
+                    styles.genreText,
+                    selectedFoodDrinks.includes(activity) && styles.genreTextActive
+                  ]}>{activity}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
-          <View style={styles.interestTag}>
-            <Text style={styles.interestTagText}>Bar Hopping</Text>
-          </View>
-        </View>
+        )}
       </View>
 
       <View style={styles.interestCategory}>
-        <TouchableOpacity style={styles.categoryHeader}>
+        <TouchableOpacity 
+          style={styles.categoryHeader}
+          onPress={() => {
+            setShowMusicExpanded(false);
+            setShowSportsExpanded(false);
+            setShowAnimeExpanded(false);
+            setShowPassionExpanded(false);
+            setShowArtsCultureExpanded(false);
+            setShowFoodDrinksExpanded(false);
+            setShowFitnessExpanded(false);
+            setShowBusinessExpanded(false);
+            setShowOutdoorsExpanded(!showOutdoorsExpanded);
+          }}
+        >
           <View style={styles.categoryIcon}>
-            <Text style={styles.categoryEmoji}>🏃</Text>
+            <Text style={styles.categoryEmoji}>🏕️</Text>
           </View>
-          <Text style={styles.categoryTitle}>Outdoorsy</Text>
-          <Ionicons name="chevron-forward" size={20} color="#666" />
+          <Text style={styles.categoryTitle}>Outdoors & Adventures</Text>
+          <Ionicons 
+            name={showOutdoorsExpanded ? "chevron-up" : "chevron-down"} 
+            size={20} 
+            color="#666" 
+          />
         </TouchableOpacity>
+        
+        {showOutdoorsExpanded && (
+          <View style={styles.expandedContent}>
+            <View style={styles.genreGrid}>
+              {OUTDOORS_ADVENTURES_ACTIVITIES.map((activity, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.musicGenreButton,
+                    selectedOutdoors.includes(activity) && styles.genreButtonActive
+                  ]}
+                  onPress={() => toggleOutdoors(activity)}
+                >
+                  <Text style={[
+                    styles.genreText,
+                    selectedOutdoors.includes(activity) && styles.genreTextActive
+                  ]}>{activity}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            {/* Custom activities from user input */}
+            {selectedOutdoors.filter(activity => !OUTDOORS_ADVENTURES_ACTIVITIES.includes(activity)).length > 0 && (
+              <View style={styles.customMusicSection}>
+                <Text style={styles.subCategoryTitle}>Your Custom Activities</Text>
+                <View style={styles.genreGrid}>
+                  {selectedOutdoors
+                    .filter(activity => !OUTDOORS_ADVENTURES_ACTIVITIES.includes(activity))
+                    .map((activity, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      style={[styles.musicGenreButton, styles.genreButtonActive, styles.customMusicPill]}
+                      onPress={() => toggleOutdoors(activity)}
+                    >
+                      <Text style={[styles.genreText, styles.genreTextActive]}>{activity}</Text>
+                      <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            )}
+
+            <View style={[styles.customInputContainer, { marginTop: 16 }]}>
+              <TextInput
+                style={styles.customInput}
+                value={customOutdoorsInput}
+                onChangeText={setCustomOutdoorsInput}
+                placeholder="Add your own outdoor activity"
+                placeholderTextColor="#999"
+                onSubmitEditing={addCustomOutdoors}
+              />
+              <TouchableOpacity 
+                style={styles.addButton}
+                onPress={addCustomOutdoors}
+              >
+                <Text style={styles.addButtonText}>Add</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
       </View>
 
       <View style={styles.interestCategory}>
-        <TouchableOpacity style={styles.categoryHeader}>
+        <TouchableOpacity 
+          style={styles.categoryHeader}
+          onPress={() => {
+            setShowMusicExpanded(false);
+            setShowSportsExpanded(false);
+            setShowAnimeExpanded(false);
+            setShowPassionExpanded(false);
+            setShowArtsCultureExpanded(false);
+            setShowFoodDrinksExpanded(false);
+            setShowOutdoorsExpanded(false);
+            setShowBusinessExpanded(false);
+            setShowFitnessExpanded(!showFitnessExpanded);
+          }}
+        >
           <View style={styles.categoryIcon}>
-            <Text style={styles.categoryEmoji}>💼</Text>
+            <Text style={styles.categoryEmoji}>🚴🏼‍♀️</Text>
           </View>
-          <Text style={styles.categoryTitle}>Sports & Fitness</Text>
-          <Ionicons name="chevron-down" size={20} color="#666" />
+          <Text style={styles.categoryTitle}>Fitness</Text>
+          <Ionicons 
+            name={showFitnessExpanded ? "chevron-up" : "chevron-down"} 
+            size={20} 
+            color="#666" 
+          />
         </TouchableOpacity>
-        <View style={styles.interestTags}>
-          <View style={styles.interestTag}>
-            <Text style={styles.interestTagText}>Yoga Sessions</Text>
+        
+        {showFitnessExpanded && (
+          <View style={styles.expandedContent}>
+            <View style={styles.genreGrid}>
+              {FITNESS_ACTIVITIES.map((activity, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.musicGenreButton,
+                    selectedFitness.includes(activity) && styles.genreButtonActive
+                  ]}
+                  onPress={() => toggleFitness(activity)}
+                >
+                  <Text style={[
+                    styles.genreText,
+                    selectedFitness.includes(activity) && styles.genreTextActive
+                  ]}>{activity}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            {/* Custom activities from user input */}
+            {selectedFitness.filter(activity => !FITNESS_ACTIVITIES.includes(activity)).length > 0 && (
+              <View style={styles.customMusicSection}>
+                <Text style={styles.subCategoryTitle}>Your Custom Activities</Text>
+                <View style={styles.genreGrid}>
+                  {selectedFitness
+                    .filter(activity => !FITNESS_ACTIVITIES.includes(activity))
+                    .map((activity, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      style={[styles.musicGenreButton, styles.genreButtonActive, styles.customMusicPill]}
+                      onPress={() => toggleFitness(activity)}
+                    >
+                      <Text style={[styles.genreText, styles.genreTextActive]}>{activity}</Text>
+                      <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            )}
+
+            <View style={[styles.customInputContainer, { marginTop: 16 }]}>
+              <TextInput
+                style={styles.customInput}
+                value={customFitnessInput}
+                onChangeText={setCustomFitnessInput}
+                placeholder="Add your own fitness activity"
+                placeholderTextColor="#999"
+                onSubmitEditing={addCustomFitness}
+              />
+              <TouchableOpacity 
+                style={styles.addButton}
+                onPress={addCustomFitness}
+              >
+                <Text style={styles.addButtonText}>Add</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        )}
       </View>
 
       <View style={styles.interestCategory}>
-        <TouchableOpacity style={styles.categoryHeader}>
+        <TouchableOpacity 
+          style={styles.categoryHeader}
+          onPress={() => {
+            setShowMusicExpanded(false);
+            setShowSportsExpanded(false);
+            setShowAnimeExpanded(false);
+            setShowPassionExpanded(false);
+            setShowArtsCultureExpanded(false);
+            setShowFoodDrinksExpanded(false);
+            setShowOutdoorsExpanded(false);
+            setShowFitnessExpanded(false);
+            setShowBusinessExpanded(!showBusinessExpanded);
+          }}
+        >
           <View style={styles.categoryIcon}>
             <Text style={styles.categoryEmoji}>💼</Text>
           </View>
           <Text style={styles.categoryTitle}>Business & Networking</Text>
-          <Ionicons name="chevron-down" size={20} color="#666" />
+          <Ionicons 
+            name={showBusinessExpanded ? "chevron-up" : "chevron-down"} 
+            size={20} 
+            color="#666" 
+          />
         </TouchableOpacity>
+        
+        {showBusinessExpanded && (
+          <View style={styles.expandedContent}>
+            <View style={styles.genreGrid}>
+              {BUSINESS_NETWORKING_ACTIVITIES.map((activity, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.musicGenreButton,
+                    selectedBusiness.includes(activity) && styles.genreButtonActive
+                  ]}
+                  onPress={() => toggleBusiness(activity)}
+                >
+                  <Text style={[
+                    styles.genreText,
+                    selectedBusiness.includes(activity) && styles.genreTextActive
+                  ]}>{activity}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            {/* Custom activities from user input */}
+            {selectedBusiness.filter(activity => !BUSINESS_NETWORKING_ACTIVITIES.includes(activity)).length > 0 && (
+              <View style={styles.customMusicSection}>
+                <Text style={styles.subCategoryTitle}>Your Custom Activities</Text>
+                <View style={styles.genreGrid}>
+                  {selectedBusiness
+                    .filter(activity => !BUSINESS_NETWORKING_ACTIVITIES.includes(activity))
+                    .map((activity, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      style={[styles.musicGenreButton, styles.genreButtonActive, styles.customMusicPill]}
+                      onPress={() => toggleBusiness(activity)}
+                    >
+                      <Text style={[styles.genreText, styles.genreTextActive]}>{activity}</Text>
+                      <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            )}
+          </View>
+        )}
       </View>
 
       <View style={styles.interestCategory}>
@@ -676,7 +2528,10 @@ export default function EditProfile() {
       <View style={styles.profileSection}>
         <View style={styles.profileImageContainer}>
           <Image source={{ uri: userProfileImage }} style={styles.profileImage} />
-          <TouchableOpacity style={styles.editImageButton}>
+          <TouchableOpacity 
+            style={styles.editImageButton}
+            onPress={() => setActiveTab('Basics')}
+          >
             <Ionicons name="pencil" size={16} color="white" />
           </TouchableOpacity>
         </View>
@@ -688,7 +2543,14 @@ export default function EditProfile() {
           <TouchableOpacity
             key={tab}
             style={[styles.tab, activeTab === tab && styles.activeTab]}
-            onPress={() => setActiveTab(tab)}
+            onPress={() => {
+              setActiveTab(tab);
+              if (tab === 'Interests') {
+                setShowMusicExpanded(false);
+                setShowSportsExpanded(false);
+                setShowAnimeExpanded(false);
+              }
+            }}
           >
             <Text style={[styles.tabText, activeTab === tab && styles.activeTabText]}>
               {tab}
@@ -707,6 +2569,218 @@ export default function EditProfile() {
         {activeTab === 'Personality' && renderPersonalityTab()}
         {activeTab === 'Interests' && renderInterestsTab()}
       </ScrollView>
+
+      {/* NFL Teams Modal */}
+      <Modal
+        visible={showNFLModal}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowNFLModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>🏈 NFL Teams</Text>
+              <TouchableOpacity
+                style={styles.modalCloseButton}
+                onPress={() => setShowNFLModal(false)}
+              >
+                <Ionicons name="close" size={24} color="#666" />
+              </TouchableOpacity>
+            </View>
+            
+            <ScrollView style={styles.modalScrollView}>
+              <View style={styles.teamsGrid}>
+                {NFL_TEAMS.map((team, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={[
+                      styles.teamButton,
+                      selectedNFLTeams.includes(team) && styles.teamButtonActive
+                    ]}
+                    onPress={() => toggleNFLTeam(team)}
+                  >
+                    <Text style={[
+                      styles.teamButtonText,
+                      selectedNFLTeams.includes(team) && styles.teamButtonTextActive
+                    ]}>
+                      {team}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </ScrollView>
+            
+            <View style={styles.modalFooter}>
+              <TouchableOpacity
+                style={styles.modalDoneButton}
+                onPress={() => setShowNFLModal(false)}
+              >
+                <Text style={styles.modalDoneButtonText}>Done</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* NBA Teams Modal */}
+      <Modal
+        visible={showNBAModal}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowNBAModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>🏀 NBA Teams</Text>
+              <TouchableOpacity
+                style={styles.modalCloseButton}
+                onPress={() => setShowNBAModal(false)}
+              >
+                <Ionicons name="close" size={24} color="#666" />
+              </TouchableOpacity>
+            </View>
+            
+            <ScrollView style={styles.modalScrollView}>
+              <View style={styles.teamsGrid}>
+                {NBA_TEAMS.map((team, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={[
+                      styles.teamButton,
+                      selectedNBATeams.includes(team) && styles.teamButtonActive
+                    ]}
+                    onPress={() => toggleNBATeam(team)}
+                  >
+                    <Text style={[
+                      styles.teamButtonText,
+                      selectedNBATeams.includes(team) && styles.teamButtonTextActive
+                    ]}>
+                      {team}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </ScrollView>
+            
+            <View style={styles.modalFooter}>
+              <TouchableOpacity
+                style={styles.modalDoneButton}
+                onPress={() => setShowNBAModal(false)}
+              >
+                <Text style={styles.modalDoneButtonText}>Done</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* MLB Teams Modal */}
+      <Modal
+        visible={showMLBModal}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowMLBModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>⚾ MLB Teams</Text>
+              <TouchableOpacity
+                style={styles.modalCloseButton}
+                onPress={() => setShowMLBModal(false)}
+              >
+                <Ionicons name="close" size={24} color="#666" />
+              </TouchableOpacity>
+            </View>
+            
+            <ScrollView style={styles.modalScrollView}>
+              <View style={styles.teamsGrid}>
+                {MLB_TEAMS.map((team, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={[
+                      styles.teamButton,
+                      selectedMLBTeams.includes(team) && styles.teamButtonActive
+                    ]}
+                    onPress={() => toggleMLBTeam(team)}
+                  >
+                    <Text style={[
+                      styles.teamButtonText,
+                      selectedMLBTeams.includes(team) && styles.teamButtonTextActive
+                    ]}>
+                      {team}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </ScrollView>
+            
+            <View style={styles.modalFooter}>
+              <TouchableOpacity
+                style={styles.modalDoneButton}
+                onPress={() => setShowMLBModal(false)}
+              >
+                <Text style={styles.modalDoneButtonText}>Done</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* NHL Teams Modal */}
+      <Modal
+        visible={showNHLModal}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowNHLModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>🏒 NHL Teams</Text>
+              <TouchableOpacity
+                style={styles.modalCloseButton}
+                onPress={() => setShowNHLModal(false)}
+              >
+                <Ionicons name="close" size={24} color="#666" />
+              </TouchableOpacity>
+            </View>
+            
+            <ScrollView style={styles.modalScrollView}>
+              <View style={styles.teamsGrid}>
+                {NHL_TEAMS.map((team, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={[
+                      styles.teamButton,
+                      selectedNHLTeams.includes(team) && styles.teamButtonActive
+                    ]}
+                    onPress={() => toggleNHLTeam(team)}
+                  >
+                    <Text style={[
+                      styles.teamButtonText,
+                      selectedNHLTeams.includes(team) && styles.teamButtonTextActive
+                    ]}>
+                      {team}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </ScrollView>
+            
+            <View style={styles.modalFooter}>
+              <TouchableOpacity
+                style={styles.modalDoneButton}
+                onPress={() => setShowNHLModal(false)}
+              >
+                <Text style={styles.modalDoneButtonText}>Done</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -715,6 +2789,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+  },
+  customMusicSection: {
+    marginTop: 8,
+    marginBottom: 4,
   },
   header: {
     flexDirection: 'row',
@@ -1014,7 +3092,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#000',
   },
-  goalButton: {
+  personalityGoalButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -1022,7 +3100,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#E5E5EA',
   },
-  goalButtonText: {
+  personalityGoalButtonText: {
     fontSize: 16,
     color: '#007AFF',
   },
@@ -1069,6 +3147,7 @@ const styles = StyleSheet.create({
   moodText: {
     fontSize: 12,
     color: '#666',
+    textAlign: 'center',
   },
   moodTextActive: {
     color: '#007AFF',
@@ -1134,5 +3213,425 @@ const styles = StyleSheet.create({
   dimmedInput: {
     borderColor: 'transparent',
     backgroundColor: 'rgba(245, 245, 247, 0.5)',
+  },
+  socialGoalsHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 16,
+  },
+  socialGoalsIconContainer: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#F0F8FF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  socialGoalsIcon: {
+    fontSize: 16,
+  },
+  socialGoalsTitle: {
+    flex: 1,
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#007AFF',
+  },
+  socialGoalsContent: {
+    paddingLeft: 0,
+  },
+  primaryGoalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  primaryGoalTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  primaryGoalIconContainer: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#F0F8FF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  primaryGoalEmoji: {
+    fontSize: 14,
+  },
+  primaryGoalTitle: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: '#000',
+  },
+  primaryGoalBadge: {
+    backgroundColor: '#E8F4FD',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  primaryGoalBadgeText: {
+    fontSize: 12,
+    color: '#007AFF',
+    fontWeight: '500',
+  },
+  enhancedGoalGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+  },
+  enhancedGoalButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderWidth: 1.5,
+    borderColor: '#E5E5EA',
+    borderRadius: 12,
+    backgroundColor: '#FFFFFF',
+    marginBottom: 8,
+    minWidth: '48%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  enhancedGoalButtonActive: {
+    backgroundColor: '#007AFF',
+    borderColor: '#007AFF',
+    shadowColor: '#007AFF',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  goalButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  goalButtonIcon: {
+    fontSize: 16,
+    marginRight: 8,
+  },
+  goalButtonIconActive: {
+    opacity: 0.9,
+  },
+  enhancedGoalButtonText: {
+    fontSize: 14,
+    color: '#333',
+    fontWeight: '500',
+    flex: 1,
+  },
+  enhancedGoalButtonTextActive: {
+    color: 'white',
+    fontWeight: '600',
+  },
+  selectedIndicator: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  checkmark: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  socialGoalsDescription: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 20,
+  },
+  socialSection: {
+    marginBottom: 24,
+  },
+  socialSectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  socialSectionTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  socialSectionIcon: {
+    fontSize: 16,
+    marginRight: 8,
+  },
+  socialSectionTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#000',
+  },
+  socialSectionSubtitle: {
+    fontSize: 14,
+    color: '#666',
+    marginLeft: 4,
+    flex: 1,
+  },
+  socialSectionOptional: {
+    fontSize: 14,
+    color: '#666',
+    marginLeft: 4,
+  },
+  goalGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  goalButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderWidth: 1,
+    borderColor: '#E5E5EA',
+    borderRadius: 8,
+    backgroundColor: '#F8F9FA',
+    marginBottom: 8,
+  },
+  goalButtonActive: {
+    backgroundColor: '#007AFF',
+    borderColor: '#007AFF',
+  },
+  goalButtonText: {
+    fontSize: 14,
+    color: '#666',
+  },
+  goalButtonTextActive: {
+    color: 'white',
+  },
+  socialStyleGrid: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  socialStyleButton: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderWidth: 1,
+    borderColor: '#E5E5EA',
+    borderRadius: 8,
+    backgroundColor: '#F8F9FA',
+  },
+  socialStyleButtonActive: {
+    backgroundColor: '#007AFF',
+    borderColor: '#007AFF',
+  },
+  socialStyleText: {
+    fontSize: 14,
+    color: '#666',
+  },
+  socialStyleTextActive: {
+    color: 'white',
+  },
+  hangoutGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  hangoutButton: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderWidth: 1,
+    borderColor: '#E5E5EA',
+    borderRadius: 8,
+    backgroundColor: '#F8F9FA',
+  },
+  hangoutButtonActive: {
+    backgroundColor: '#007AFF',
+    borderColor: '#007AFF',
+  },
+  hangoutText: {
+    fontSize: 14,
+    color: '#666',
+  },
+  hangoutTextActive: {
+    color: 'white',
+  },
+  expandedContent: {
+    paddingTop: 8,
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+  },
+  subCategoryTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#000',
+    marginBottom: 12,
+    marginTop: 8,
+  },
+  genreGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginBottom: 8,
+  },
+  genreButton: {
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: '#E5E5EA',
+    borderRadius: 20,
+    backgroundColor: '#F8F9FA',
+  },
+  genreButtonActive: {
+    backgroundColor: '#007AFF',
+    borderColor: '#007AFF',
+  },
+  musicGenreButton: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderWidth: 1,
+    borderColor: '#E5E5EA',
+    borderRadius: 8,
+    backgroundColor: '#F8F9FA',
+  },
+  largePill: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    minWidth: 80,
+  },
+  genreText: {
+    fontSize: 12,
+    color: '#666',
+    textAlign: 'center',
+  },
+  genreTextActive: {
+    color: 'white',
+  },
+  customInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 8,
+  },
+  customInput: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#E5E5EA',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    fontSize: 14,
+    backgroundColor: 'white',
+  },
+  addButton: {
+    backgroundColor: '#007AFF',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  addButtonText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  // customMusicSection: {   // Removed duplicate definition
+  //   marginTop: 16,
+  // },
+  customMusicPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingRight: 8,
+  },
+  removePillIcon: {
+    marginLeft: 6,
+  },
+  modalOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 9999,
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    borderRadius: 16,
+    width: '90%',
+    maxHeight: '80%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E5EA',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#000',
+  },
+  modalCloseButton: {
+    padding: 4,
+  },
+  modalScrollView: {
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+  },
+  teamsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  teamButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: '#E5E5EA',
+    borderRadius: 20,
+    backgroundColor: '#F8F9FA',
+    marginBottom: 8,
+  },
+  teamButtonActive: {
+    backgroundColor: '#007AFF',
+    borderColor: '#007AFF',
+  },
+  teamButtonText: {
+    fontSize: 14,
+    color: '#333',
+    textAlign: 'center',
+  },
+  teamButtonTextActive: {
+    color: 'white',
+    fontWeight: '500',
+  },
+  modalFooter: {
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#E5E5EA',
+  },
+  modalDoneButton: {
+    backgroundColor: '#007AFF',
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  modalDoneButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });

@@ -40,8 +40,10 @@ const ProfileScreen = () => {
             const firstName = fullName.split(' ')[0] || fullName;
             try {
               await AsyncStorage.setItem('firstName', firstName);
+              await AsyncStorage.setItem('fullName', fullName);
+              await AsyncStorage.setItem('userName', userName);
             } catch (e) {
-              console.warn('Failed saving first name', e);
+              console.warn('Failed saving profile data', e);
             }
             router.replace(`/welcome?name=${encodeURIComponent(firstName)}`);
           }}
