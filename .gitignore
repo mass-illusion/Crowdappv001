@@ -41,3 +41,10 @@ app-example
 # generated native folders
 /ios
 /android
+
+# Random local images & downloads
+*.jpg
+*.zip
+*.rpm
+*.HEIC
+Expo Orbit.app/
