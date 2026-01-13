@@ -54,7 +54,7 @@ const CirclesScreen = () => {
       id: '2',
       title: 'Founders',
       subtitle: 'Entrepreneurship',
-      image: require('../assets/images/founder2 (1).png'),
+      image: require('../assets/images/founder2.webp'),
       buttonText: 'Join Now'
     },
     {

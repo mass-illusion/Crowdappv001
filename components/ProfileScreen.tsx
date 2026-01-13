@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     color: "#000000",
-    marginBottom: 3,
+    marginBottom: 1,
     fontWeight: '500',
     alignSelf: "flex-start",
     marginLeft: '5%',

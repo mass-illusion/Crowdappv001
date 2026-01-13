@@ -48,3 +48,5 @@ app-example
 *.rpm
 *.HEIC
 Expo Orbit.app/
+Expo Orbit.app/
+**/Expo Orbit.app/

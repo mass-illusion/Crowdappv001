@@ -1,20 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect, useRouter } from 'expo-router';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Svg, { Rect, Text as SvgText } from 'react-native-svg';
-import WelcomeButtonSVG from '../assets/images/welcomebutton.svg';
-
-// For now, let's create a simple SVG component to replace the import
-const Welcome2SVG = ({ width = 360, height = 90 }) => (
-  <Svg width={width} height={height} viewBox="0 0 360 90">
-    <Rect width="360" height="90" fill="#f0f0f0" rx="12" />
-    <SvgText x="180" y="45" fontSize="18" fill="#333" textAnchor="middle" alignmentBaseline="middle">
-      Welcome to CrowdApp
-    </SvgText>
-  </Svg>
-);
+import Welcome2SVG from '../assets/images/welcome2.svg';
 
 
 const Homepage = () => {
@@ -23,7 +12,7 @@ const Homepage = () => {
   const [userProfileImage, setUserProfileImage] = React.useState('https://via.placeholder.com/50');
   const [loadFeatureImages, setLoadFeatureImages] = React.useState(false);
 
-  const router = useRouter();
+  const navigation = useNavigation();
   // const [activeTab, setActiveTab] = React.useState('home');
 
   useFocusEffect(
@@ -51,8 +40,8 @@ const Homepage = () => {
 
   // Optimize navigation handler for Live Events
   const handleLiveEventsPress = React.useCallback(() => {
-    router.push('/live-events');
-  }, [router]);
+    navigation.navigate('live-events' as never);
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -71,7 +60,7 @@ const Homepage = () => {
             <TouchableOpacity style={styles.menuButton}>
               <Ionicons name="options" size={28} color="#8E8E93" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.profileButton} onPress={() => router.push('/edit-profile' as any)}>
+            <TouchableOpacity style={styles.profileButton} onPress={() => navigation.navigate('edit-profile' as never)}>
               <View style={styles.profileWrap}>
                 <Image
                   source={{ uri: userProfileImage }}
@@ -96,7 +85,7 @@ const Homepage = () => {
 
           <TouchableOpacity 
             style={[styles.categoryCard, styles.localsCard]}
-            onPress={() => router.push('/map')}
+            onPress={() => navigation.navigate('map' as never)}
           >
             <Image
               source={require('../assets/images/locals1.webp')}
@@ -109,7 +98,7 @@ const Homepage = () => {
 
           <TouchableOpacity 
             style={[styles.categoryCard, styles.circlesCard]}
-            onPress={() => router.push('/circles')}
+            onPress={() => navigation.navigate('circles' as never)}
           >
             <Image
               source={require('../assets/images/circle4.webp')}
@@ -134,9 +123,9 @@ const Homepage = () => {
         {/* Welcome Card */}
         <TouchableOpacity 
           style={styles.welcomeCard}
-          onPress={() => router.push('/welcome')}
+          onPress={() => navigation.navigate('welcome' as never)}
         >
-          <WelcomeButtonSVG width={360} height={90} />
+          <Welcome2SVG width={340} height={85} />
         </TouchableOpacity>
 
         {/* Feature Sections - Lazy Loaded */}
@@ -194,10 +183,10 @@ const Homepage = () => {
         <TouchableOpacity style={styles.navItemCustom}>
           <Ionicons name="mic" size={24} color="#999" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItemCustom} onPress={() => router.push('/map')}>
+        <TouchableOpacity style={styles.navItemCustom} onPress={() => navigation.navigate('map' as never)}>
           <Ionicons name="map" size={24} color="#999" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItemCustom} onPress={() => router.push('/messages')}>
+        <TouchableOpacity style={styles.navItemCustom} onPress={() => navigation.navigate('messages' as never)}>
           <Ionicons name="chatbubble" size={24} color="#999" />
         </TouchableOpacity>
       </View>
@@ -306,7 +295,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    marginBottom: 20,
+    marginBottom: 3,
   },
   categoryCard: {
     width: '48%',
@@ -355,13 +344,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
-    marginHorizontal: 16,
-    paddingLeft: 0,
+    marginHorizontal: 12,
+    paddingLeft: 10,
     paddingRight: 10,
     paddingTop: 2,
     paddingBottom: 0,
     borderRadius: 12,
-    marginBottom: 20,
+    marginBottom: 12,
     justifyContent: 'flex-start',
   },
   buttonContainer: {

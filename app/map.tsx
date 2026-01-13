@@ -534,41 +534,26 @@ export default function MapScreen() {
         <TouchableOpacity style={styles.navItem}>
           <Ionicons name="person" size={24} color="#999" />
         </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
   },
-  // ... (rest of your styles object, unchanged)
-  starredProfileLocation: {
-    fontSize: 14,
-    color: '#666',
-    marginTop: 4,
+  header: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-start',
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 16,
+    backgroundColor: '#fff',
+    position: 'relative',
   },
-});
-
-export default function MapScreen() {
-  const router = useRouter();
-  const { starredProfiles, removeStarredProfile } = useStarredProfiles();
-  const [searchText, setSearchText] = useState('');
-  const [isMapMode, setIsMapMode] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [favoritedSpots, setFavoritedSpots] = useState<string[]>([]);
-  const [showFavoritedModal, setShowFavoritedModal] = useState(false);
-  const [showStarredModal, setShowStarredModal] = useState(false);
-  const [businesses, setBusinesses] = useState<Business[]>(sampleBusinesses);
-  const [userLocation, setUserLocation] = useState({
-    latitude: 37.7749,
-    longitude: -122.4194,
-    latitudeDelta: 0.015,
-    longitudeDelta: 0.0121,
-  });
-  const [locationPermission, setLocationPermission] = useState(false);
-
-  useEffect(() => {
-    loadFavoritedSpots();
-    requestLocationPermission();
-  }, []);
   headerTitle: {
     fontSize: 72,
     fontWeight: 'bold',
