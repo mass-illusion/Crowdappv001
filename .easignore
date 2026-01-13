@@ -22,3 +22,17 @@ tiniifiedsports
 *.zip
 *.log
 .DS_Store
+
+# Local apps / binaries
+Expo Orbit.app
+*.zip
+*.rpm
+*.HEIC
+*.jpg
+
+# Native folders
+ios
+android
+
+# Dependencies
+node_modules
