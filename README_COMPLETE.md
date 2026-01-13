@@ -106,7 +106,7 @@ Think of it as a combination of:
 ```
 
 ### Key Features & Libraries
-- **🗺️ Maps**: React Native Maps + Google Places API
+- **🗺️ Maps**: React Native Maps + Google Places API (requires API key setup)
 - **📱 Messaging**: Built-in chat + SMS integration
 - **📸 Media**: Image picker, camera, photo uploads
 - **📍 Location**: GPS tracking, nearby users/events
@@ -351,10 +351,13 @@ These are configured in `app.json` for both iOS and Android.
 ### Q: How do I add a backend?
 **A**: You'll need to:
 1. Set up a backend (Node.js, Python, etc.)
-2. Create API endpoints
-3. Replace AsyncStorage calls with API calls
+2. Create API endpoints (e.g., `/api/events`, `/api/profiles`, `/api/messages`)
+3. Replace AsyncStorage calls with API calls:
+   - User data: `AsyncStorage.getItem('firstName')` → `fetch('/api/user/profile')`
+   - Starred profiles: Context state → Backend database
+   - Events & messages: Add real-time sync
 4. Add authentication (JWT, OAuth)
-5. Set up database (PostgreSQL, MongoDB, etc.)
+5. Set up database (PostgreSQL, MongoDB, etc.) for users, events, messages
 
 ---
 

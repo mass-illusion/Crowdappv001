@@ -41,6 +41,7 @@ Your repository contains:
 
 ### Key Features & Libraries
 - **Maps & Location**: `expo-location`, `react-native-maps`, `react-native-google-places-autocomplete`
+  - ⚠️ Note: Google Places API requires API key configuration
 - **Messaging**: `expo-sms` for sending text messages
 - **Media**: `expo-image-picker`, `expo-av` (audio/video)
 - **UI/UX**: `expo-blur`, `expo-linear-gradient`, `@react-native-async-storage/async-storage`
@@ -254,7 +255,9 @@ assets/
 ### Issue: Build errors with new architecture
 **Note**: App has `newArchEnabled: true` in app.json
 - This uses React Native's new architecture (Fabric, TurboModules)
-- Some libraries may need updates for compatibility
+- Most libraries in this project support the new architecture
+- If you encounter issues, check the library's documentation for new architecture support
+- React Native compatibility: https://reactnative.dev/docs/new-architecture-library-intro
 
 ### Issue: Large repository size
 **Cause**: 45+ MB of images in root directory
