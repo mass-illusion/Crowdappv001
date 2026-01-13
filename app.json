@@ -7,7 +7,7 @@
     "icon": "./assets/images/icon.png",
     "scheme": "crowdappv01",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.yourcompany.crowdappv01",
@@ -27,6 +27,10 @@
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "READ_CONTACTS",
+        "SEND_SMS",
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION",
         "READ_CONTACTS",
@@ -64,6 +68,10 @@
         "projectId": "b2c9cdea-3185-4a23-84fd-51b8cfeaf9a0"
       }
     },
-    "owner": "mass_illusion"
+    "owner": "mass_illusion",
+    "runtimeVersion": "1.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/b2c9cdea-3185-4a23-84fd-51b8cfeaf9a0"
+    }
   }
 }
