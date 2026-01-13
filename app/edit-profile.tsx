@@ -2390,6 +2390,16 @@ export default function EditProfile() {
       </View>
 
       <View style={styles.interestCategory}>
+        <TouchableOpacity style={styles.categoryHeader}>
+          <View style={styles.categoryIcon}>
+            <Text style={styles.categoryEmoji}>💻</Text>
+          </View>
+          <Text style={styles.categoryTitle}>Technology</Text>
+          <Ionicons name="chevron-down" size={20} color="#666" />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.interestCategory}>
         <TouchableOpacity 
           style={styles.categoryHeader}
           onPress={() => {
@@ -2465,16 +2475,6 @@ export default function EditProfile() {
             <Text style={styles.categoryEmoji}>👨‍👩‍👧‍👦</Text>
           </View>
           <Text style={styles.categoryTitle}>Family & Kids</Text>
-          <Ionicons name="chevron-down" size={20} color="#666" />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.interestCategory}>
-        <TouchableOpacity style={styles.categoryHeader}>
-          <View style={styles.categoryIcon}>
-            <Text style={styles.categoryEmoji}>💻</Text>
-          </View>
-          <Text style={styles.categoryTitle}>Technology</Text>
           <Ionicons name="chevron-down" size={20} color="#666" />
         </TouchableOpacity>
       </View>

@@ -71,7 +71,7 @@ const Homepage = () => {
             <TouchableOpacity style={styles.menuButton}>
               <Ionicons name="options" size={28} color="#8E8E93" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.profileButton} onPress={() => router.push('/edit-profile')}>
+            <TouchableOpacity style={styles.profileButton} onPress={() => router.push('/edit-profile' as any)}>
               <View style={styles.profileWrap}>
                 <Image
                   source={{ uri: userProfileImage }}

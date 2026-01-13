@@ -3,18 +3,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-  Image,
-  KeyboardAvoidingView,
-  Modal,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Switch,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
+    Image,
+    KeyboardAvoidingView,
+    Modal,
+    Platform,
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    Switch,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import { useStarredProfiles } from '../contexts/StarredProfilesContext';
 
@@ -302,8 +302,8 @@ export default function InterestMapScreen() {
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.interestPillsContainer}
               >
-                <View style={styles.interestPillsColumn}>
-                  <View style={styles.interestPillsRow}>
+                <View style={styles.interestPillsColumn} key="interest-pills-column">
+                  <View style={styles.interestPillsRow} key="interest-pills-row-1">
                     {INTERESTS.slice(0, 4).map((interest) => (
                       <TouchableOpacity
                         key={interest.id}
@@ -327,7 +327,7 @@ export default function InterestMapScreen() {
                       </TouchableOpacity>
                     ))}
                   </View>
-                  <View style={styles.interestPillsRow}>
+                  <View style={styles.interestPillsRow} key="interest-pills-row-2">
                     {INTERESTS.slice(4, 8).map((interest) => (
                       <TouchableOpacity
                         key={interest.id}

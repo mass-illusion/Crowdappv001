@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
   Image,
+  ImageBackground,
   Modal,
   SafeAreaView,
   ScrollView,
@@ -12,111 +13,109 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
+  Alert
 } from 'react-native';
-import BeerSVG from '../assets/images/beer.svg'; // Mock data for spots with users who love them
+import BeerSVG from '../assets/images/beer.svg';
 import BobaSVG from '../assets/images/boba.svg';
 import PlateSVG from '../assets/images/plate.svg';
 import { useStarredProfiles } from '../contexts/StarredProfilesContext';
 import CoffeeSVG from '../Map/Coffee.svg';
-const mockSpots = [
+import * as Location from 'expo-location';
+
+// Types for business places
+interface Business {
+  id: string;
+  name: string;
+  type: string;
+  emoji: string;
+  coordinate: {
+    latitude: number;
+    longitude: number;
+  };
+  address?: string;
+  rating?: number;
+  users: Array<{
+    id: number;
+    avatar: any;
+    name?: string;
+  }>;
+}
+
+// Sample real-world business data (you can replace with API calls to Google Places, Yelp, etc.)
+const sampleBusinesses: Business[] = [
   {
-    id: 1,
-    name: "Whittier Street",
-    type: "bubble_tea",
-    icon: "🧋",
-    coordinates: { x: 40, y: 620 },
+    id: 'starbucks_union_sq',
+    name: 'Starbucks',
+    type: 'coffee',
+    emoji: '☕',
+    coordinate: { latitude: 37.7879, longitude: -122.4075 },
+    address: '901 Market St, San Francisco, CA',
+    rating: 4.2,
     users: [
-      { id: 1, avatar: require('../assets/images/profile01.png') },
-      { id: 2, avatar: require('../assets/images/profile2.png') },
-      { id: 3, avatar: require('../assets/images/profile01.png') },
-      { id: 4, avatar: require('../assets/images/profile2.png') },
+      { id: 1, avatar: require('../assets/images/profile01.png'), name: 'Sarah' },
+      { id: 2, avatar: require('../assets/images/profile2.png'), name: 'Mike' },
+      { id: 3, avatar: require('../assets/images/profile01.png'), name: 'Emma' },
     ]
   },
   {
-    id: 10,
-    name: "Corner Bistro",
-    type: "restaurant",
-    icon: "plate",
-    coordinates: { x: 20, y: 80 },
+    id: 'chipotle_market',
+    name: 'Chipotle Mexican Grill',
+    type: 'restaurant',
+    emoji: '🌯',
+    coordinate: { latitude: 37.7849, longitude: -122.4094 },
+    address: '1145 Market St, San Francisco, CA',
+    rating: 4.0,
     users: [
-      { id: 27, avatar: require('../assets/images/profile01.png') },
-      { id: 28, avatar: require('../assets/images/profile2.png') },
-      { id: 29, avatar: require('../assets/images/profile01.png') },
+      { id: 4, avatar: require('../assets/images/profile2.png'), name: 'Alex' },
+      { id: 5, avatar: require('../assets/images/profile01.png'), name: 'Lisa' },
     ]
   },
   {
-    id: 4,
-    name: "Your Favorite Restaurant",
-    type: "restaurant",
-    icon: "plate", 
-    coordinates: { x: 220, y: 500 },
+    id: 'bluebottle_mint',
+    name: 'Blue Bottle Coffee',
+    type: 'coffee',
+    emoji: '☕',
+    coordinate: { latitude: 37.7764, longitude: -122.4193 },
+    address: '66 Mint St, San Francisco, CA',
+    rating: 4.5,
     users: [
-      { id: 10, avatar: require('../assets/images/profile2.png') },
-      { id: 11, avatar: require('../assets/images/profile01.png') },
-      { id: 12, avatar: require('../assets/images/profile2.png') },
+      { id: 6, avatar: require('../assets/images/profile01.png'), name: 'Jordan' },
+      { id: 7, avatar: require('../assets/images/profile2.png'), name: 'Casey' },
+      { id: 8, avatar: require('../assets/images/profile01.png'), name: 'Taylor' },
+      { id: 9, avatar: require('../assets/images/profile2.png'), name: 'Morgan' },
     ]
   },
   {
-    id: 5,
-    name: "McD",
-    type: "fast_food",
-    icon: "🍟",
-    coordinates: { x: 380, y: 700 },
+    id: 'gong_cha_market',
+    name: 'Gong Cha',
+    type: 'boba',
+    emoji: '🧋',
+    coordinate: { latitude: 37.7875, longitude: -122.4058 },
+    address: '833 Market St, San Francisco, CA',
+    rating: 4.3,
     users: [
-      { id: 13, avatar: require('../assets/images/profile01.png') },
-      { id: 14, avatar: require('../assets/images/profile2.png') },
-      { id: 15, avatar: require('../assets/images/profile01.png') },
-      { id: 16, avatar: require('../assets/images/profile2.png') },
+      { id: 10, avatar: require('../assets/images/profile2.png'), name: 'Kevin' },
+      { id: 11, avatar: require('../assets/images/profile01.png'), name: 'Anna' },
+      { id: 12, avatar: require('../assets/images/profile2.png'), name: 'Chris' },
     ]
   },
   {
-    id: 6,
-    name: "Hoppy Hour",
-    type: "beer",
-    icon: "beer",
-    coordinates: { x: 250, y: 200 },
+    id: 'zeitgeist_valencia',
+    name: 'Zeitgeist',
+    type: 'bar',
+    emoji: '🍺',
+    coordinate: { latitude: 37.7648, longitude: -122.4194 },
+    address: '199 Valencia St, San Francisco, CA',
+    rating: 4.4,
     users: [
-      { id: 17, avatar: require('../assets/images/profile01.png') },
-      { id: 18, avatar: require('../assets/images/profile2.png') },
+      { id: 13, avatar: require('../assets/images/profile01.png'), name: 'Sam' },
+      { id: 14, avatar: require('../assets/images/profile2.png'), name: 'Riley' },
     ]
   },
-  {
-    id: 7,
-    name: "The Local Brewery",
-    type: "beer",
-    icon: "beer",
-    coordinates: { x: 150, y: 650 },
-    users: [
-      { id: 19, avatar: require('../assets/images/profile01.png') },
-    ]
-  },
-  {
-    id: 8,
-    name: "Boba Paradise",
-    type: "boba",
-    icon: "boba",
-    coordinates: { x: 120, y: 220 },
-    users: [
-      { id: 20, avatar: require('../assets/images/profile01.png') },
-      { id: 21, avatar: require('../assets/images/profile2.png') },
-      { id: 22, avatar: require('../assets/images/profile01.png') },
-    ]
-  },
-  {
-    id: 9,
-    name: "Tea Time Corner",
-    type: "coffee",
-    icon: "coffee",
-    coordinates: { x: 20, y: 450 },
-    users: [
-      { id: 23, avatar: require('../assets/images/profile2.png') },
-      { id: 24, avatar: require('../assets/images/profile01.png') },
-      { id: 25, avatar: require('../assets/images/profile2.png') },
-      { id: 26, avatar: require('../assets/images/profile01.png') },
-    ]
-  }
 ];
+
+// (styles object moved above MapScreen, see previous replacement)
 
 export default function MapScreen() {
   const router = useRouter();
@@ -124,15 +123,43 @@ export default function MapScreen() {
   const [searchText, setSearchText] = useState('');
   const [isMapMode, setIsMapMode] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [favoritedSpots, setFavoritedSpots] = useState<number[]>([]);
-  const [showFavoritedList, setShowFavoritedList] = useState(false);
+  const [favoritedSpots, setFavoritedSpots] = useState<string[]>([]);
   const [showFavoritedModal, setShowFavoritedModal] = useState(false);
   const [showStarredModal, setShowStarredModal] = useState(false);
+  const [businesses, setBusinesses] = useState<Business[]>(sampleBusinesses);
+  const [userLocation, setUserLocation] = useState({
+    latitude: 37.7749,
+    longitude: -122.4194,
+    latitudeDelta: 0.015,
+    longitudeDelta: 0.0121,
+  });
+  const [locationPermission, setLocationPermission] = useState(false);
 
-  // Load favorited spots from AsyncStorage on component mount
   useEffect(() => {
     loadFavoritedSpots();
+    requestLocationPermission();
   }, []);
+
+  const requestLocationPermission = async () => {
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission denied', 'Location permission is required to show nearby businesses');
+        return;
+      }
+      
+      setLocationPermission(true);
+      const location = await Location.getCurrentPositionAsync({});
+      setUserLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.015,
+        longitudeDelta: 0.0121,
+      });
+    } catch (error) {
+      console.log('Error getting location:', error);
+    }
+  };
 
   const loadFavoritedSpots = async () => {
     try {
@@ -145,7 +172,7 @@ export default function MapScreen() {
     }
   };
 
-  const saveFavoritedSpots = async (spots: number[]) => {
+  const saveFavoritedSpots = async (spots: string[]) => {
     try {
       await AsyncStorage.setItem('favoritedSpots', JSON.stringify(spots));
     } catch (error) {
@@ -153,11 +180,11 @@ export default function MapScreen() {
     }
   };
 
-  const filteredSpots = mockSpots.filter(spot => 
+  const filteredSpots = sampleBusinesses.filter(spot => 
     spot.name.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  const toggleFavorite = (spotId: number) => {
+  const toggleFavorite = (spotId: string) => {
     setFavoritedSpots(prev => {
       const newFavorites = prev.includes(spotId) 
         ? prev.filter(id => id !== spotId)
@@ -171,33 +198,47 @@ export default function MapScreen() {
   };
 
   const getFavoritedSpotsList = () => {
-    return mockSpots.filter(spot => favoritedSpots.includes(spot.id));
+    return sampleBusinesses.filter(spot => favoritedSpots.includes(spot.id));
   };
 
-  const renderSpotOnMap = (spot: typeof mockSpots[0]) => {
+  const renderSpotOnMap = (spot: typeof sampleBusinesses[0]) => {
     const isFavorited = favoritedSpots.includes(spot.id);
+    // Convert lat/lng to approximate x/y coordinates for the static map
+    const x = ((spot.coordinate.longitude + 122.4194) * 1000) + 200;
+    const y = ((37.7749 - spot.coordinate.latitude) * 1000) + 400;
+    
     return (
-      <View key={spot.id} style={[styles.mapSpot, { left: spot.coordinates.x, top: spot.coordinates.y }]}>
+      <View 
+        key={spot.id}
+        style={[
+          styles.spotContainer, 
+          { 
+            position: 'absolute',
+            left: x - 25, // Offset for centering
+            top: y - 90 // Offset for centering and user avatars
+          }
+        ]}
+      >
         {/* Spot icon */}
         <TouchableOpacity 
-          style={spot.icon === "plate" || spot.icon === "beer" || spot.icon === "boba" || spot.icon === "coffee" ? styles.spotIconNoCircle : styles.spotIcon}
+          style={spot.type === "restaurant" || spot.type === "bar" || spot.type === "boba" || spot.type === "coffee" ? styles.spotIconNoCircle : styles.spotIcon}
           onPress={() => toggleFavorite(spot.id)}
           activeOpacity={0.7}
         >
-          {spot.icon === "plate" ? (
-            <PlateSVG width={68} height={68} />
-          ) : spot.icon === "beer" ? (
-            <BeerSVG width={68} height={68} />
-          ) : spot.icon === "boba" ? (
-            <BobaSVG width={80} height={80} />
-          ) : spot.icon === "coffee" ? (
-            <CoffeeSVG width={68} height={68} />
+          {spot.type === "restaurant" ? (
+            <PlateSVG width={40} height={40} />
+          ) : spot.type === "bar" ? (
+            <BeerSVG width={40} height={40} />
+          ) : spot.type === "boba" ? (
+            <BobaSVG width={40} height={40} />
+          ) : spot.type === "coffee" ? (
+            <CoffeeSVG width={40} height={40} />
           ) : (
-            <Text style={styles.spotIconText}>{spot.icon}</Text>
+            <Text style={styles.spotIconText}>{spot.emoji}</Text>
           )}
           {isFavorited && (
             <View style={styles.favoriteIndicator}>
-              <Ionicons name="heart" size={16} color="#FF3B30" />
+              <Ionicons name="heart" size={12} color="#FF3B30" />
             </View>
           )}
         </TouchableOpacity>
@@ -228,16 +269,6 @@ export default function MapScreen() {
               <Text style={styles.moreUsersText}>+{spot.users.length - 4}</Text>
             </View>
           )}
-        </TouchableOpacity>
-        
-        {/* Spot name */}
-        <TouchableOpacity
-          onPress={() => router.push({
-            pathname: '/spot-matches',
-            params: { spotId: spot.id, spotName: spot.name }
-          })}
-        >
-          <Text style={styles.spotName}>{spot.name}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -331,19 +362,31 @@ export default function MapScreen() {
 
       {/* Map Area */}
       {!isMapMode ? (
-        <ScrollView style={styles.mapContainer} showsVerticalScrollIndicator={false}>
-          <View style={styles.mapBackground}>
-            {/* Background map grid */}
-            <View style={styles.mapGrid} />
-            
-            {/* Render spots on map */}
-            {filteredSpots.map((spot) => renderSpotOnMap(spot))}
-          </View>
-        </ScrollView>
+        <View style={styles.mapContainer}>
+          <ScrollView
+            style={styles.mapScrollView}
+            contentContainerStyle={styles.mapContent}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            maximumZoomScale={2}
+            minimumZoomScale={0.5}
+            bouncesZoom={true}
+            scrollEnabled={true}
+          >
+            <ImageBackground
+              source={require('../assets/images/map.png')}
+              style={styles.mapBackground}
+              resizeMode="contain"
+            >
+              {/* Render spots on map */}
+              {filteredSpots.map((spot) => renderSpotOnMap(spot))}
+            </ImageBackground>
+          </ScrollView>
+        </View>
       ) : (
         <ScrollView style={styles.listContainer} showsVerticalScrollIndicator={false}>
           {filteredSpots.map((spot) => (
-            <View key={spot.id} style={styles.listItem}>
+            <View key={spot.id.toString()} style={styles.listItem}>
               <View style={styles.listItemIcon}>
                 {spot.icon === "plate" ? (
                   <PlateSVG width={62} height={62} />
@@ -489,28 +532,43 @@ export default function MapScreen() {
           <Ionicons name="map" size={24} color="#999" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="chatbubble" size={24} color="#999" />
+          <Ionicons name="person" size={24} color="#999" />
         </TouchableOpacity>
-      </View>
-    </SafeAreaView>
-  );
-}
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'flex-start',
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 16,
-    backgroundColor: '#fff',
-    position: 'relative',
+  // ... (rest of your styles object, unchanged)
+  starredProfileLocation: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 4,
   },
+});
+
+export default function MapScreen() {
+  const router = useRouter();
+  const { starredProfiles, removeStarredProfile } = useStarredProfiles();
+  const [searchText, setSearchText] = useState('');
+  const [isMapMode, setIsMapMode] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [favoritedSpots, setFavoritedSpots] = useState<string[]>([]);
+  const [showFavoritedModal, setShowFavoritedModal] = useState(false);
+  const [showStarredModal, setShowStarredModal] = useState(false);
+  const [businesses, setBusinesses] = useState<Business[]>(sampleBusinesses);
+  const [userLocation, setUserLocation] = useState({
+    latitude: 37.7749,
+    longitude: -122.4194,
+    latitudeDelta: 0.015,
+    longitudeDelta: 0.0121,
+  });
+  const [locationPermission, setLocationPermission] = useState(false);
+
+  useEffect(() => {
+    loadFavoritedSpots();
+    requestLocationPermission();
+  }, []);
   headerTitle: {
     fontSize: 72,
     fontWeight: 'bold',
@@ -664,10 +722,21 @@ const styles = StyleSheet.create({
   mapContainer: {
     flex: 1,
   },
+  mapScrollView: {
+    flex: 1,
+  },
+  mapContent: {
+    flexGrow: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   mapBackground: {
     height: 800,
+    width: 400,
     position: 'relative',
-    backgroundColor: '#E8E8E8',
+  },
+  spotContainer: {
+    alignItems: 'center',
   },
   mapGrid: {
     position: 'absolute',
@@ -683,11 +752,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   spotIcon: {
-    width: 70,
-    height: 70,
+    width: 50,
+    height: 50,
     backgroundColor: '#fff',
-    borderRadius: 35,
-
+    borderRadius: 25,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
@@ -701,8 +769,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   spotIconNoCircle: {
-    width: 70,
-    height: 70,
+    width: 50,
+    height: 50,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 8,
