@@ -1,35 +1,79 @@
+import * as SecureStore from 'expo-secure-store'
 import { createClient } from '@supabase/supabase-js'
 
-// Replace with your Supabase project URL and anon key
+// Replace with your actual Supabase project URL and anon key
 const supabaseUrl = 'YOUR_SUPABASE_URL'
 const supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY'
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Secure storage adapter for Supabase
+const ExpoSecureStoreAdapter = {
+  getItem: (key: string) => {
+    return SecureStore.getItemAsync(key)
+  },
+  setItem: (key: string, value: string) => {
+    SecureStore.setItemAsync(key, value)
+  },
+  removeItem: (key: string) => {
+    SecureStore.deleteItemAsync(key)
+  },
+}
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    storage: ExpoSecureStoreAdapter,
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: false,
+  },
+})
 
 // Types for your database tables
-export interface FavoritePlace {
+export interface UserProfile {
   id: string
-  user_id: string
-  place_id: string
-  name: string
-  category: 'restaurant' | 'bar' | 'coffee' | 'boba' | 'ice_cream' | 'other'
-  latitude: number
-  longitude: number
-  address?: string
-  rating?: number
-  notes?: string
+  email?: string
+  phone_number?: string
+  username?: string
+  full_name?: string
+  avatar_url?: string
+  gender?: 'male' | 'female' | 'nonbinary'
+  age?: number
+  looking_for?: string[]
+  profile_photos?: string[]
+  interests?: string[]
+  bio?: string
+  onboarding_completed?: boolean
   created_at: string
   updated_at: string
 }
 
-export interface UserProfile {
-  id: string
-  email: string
-  username?: string
-  full_name?: string
-  avatar_url?: string
-  created_at: string
-  updated_at: string
+// Auth helper functions
+export const signUpWithPhone = async (phone: string) => {
+  const { data, error } = await supabase.auth.signInWithOtp({
+    phone: phone,
+  })
+  return { data, error }
+}
+
+export const verifyOtp = async (phone: string, token: string) => {
+  const { data, error } = await supabase.auth.verifyOtp({
+    phone,
+    token,
+    type: 'sms'
+  })
+  return { data, error }
+}
+
+export const signOut = async () => {
+  const { error } = await supabase.auth.signOut()
+  return { error }
+}
+
+export const getCurrentUser = () => {
+  return supabase.auth.getUser()
+}
+
+export const onAuthStateChange = (callback: (event: string, session: any) => void) => {
+  return supabase.auth.onAuthStateChange(callback)
 }
 
 export interface PlaceMatch {
