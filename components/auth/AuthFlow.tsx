@@ -1,17 +1,18 @@
 import React, { useState } from 'react'
 import { Alert } from 'react-native'
 import { useAuth } from '../../contexts/AuthContext'
-import WelcomeScreen from './WelcomeScreen'
 import LoginScreen from './LoginScreen'
 import OtpVerification from './OtpVerification'
+import WelcomeScreen from './WelcomeScreen'
 
 type AuthScreen = 'welcome' | 'login' | 'register' | 'otp-verification'
 
 interface AuthFlowProps {
   onAuthComplete?: () => void
+  onCreateAccount?: () => void
 }
 
-export default function AuthFlow({ onAuthComplete }: AuthFlowProps) {
+export default function AuthFlow({ onAuthComplete, onCreateAccount }: AuthFlowProps) {
   const [currentScreen, setCurrentScreen] = useState<AuthScreen>('welcome')
   const [phoneNumber, setPhoneNumber] = useState('')
   const [isRegistering, setIsRegistering] = useState(false)
@@ -19,10 +20,8 @@ export default function AuthFlow({ onAuthComplete }: AuthFlowProps) {
   const { signIn, signUp } = useAuth()
 
   const handleCreateAccount = () => {
-    setIsRegistering(true)
-    setCurrentScreen('register')
-    // For now, go to login screen - you can replace with actual registration flow
-    setCurrentScreen('login')
+    // Go to onboarding instead of login screen
+    onCreateAccount?.()
   }
 
   const handleLogin = () => {

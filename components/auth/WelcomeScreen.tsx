@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import CreateAccountButton from '../assets/images/createaccount.svg';
-import Crowd4Logo from '../assets/images/crowd4.svg';
+import CreateAccountButton from '../../assets/images/createaccount.svg';
+import Crowd4Logo from '../../assets/images/crowd4.svg';
 
 interface WelcomeScreenProps {
   onCreateAccount: () => void;
@@ -33,12 +33,12 @@ export default function WelcomeScreen({ onCreateAccount, onLogin }: WelcomeScree
         {/* Mascots */}
         <View style={styles.mascotContainer}>
           <Image 
-            source={require('../assets/images/mascot1.png')} 
+            source={require('../../assets/images/mascot1.png')} 
             style={styles.mascot}
             resizeMode="contain"
           />
           <Image 
-            source={require('../assets/images/mascot2.png')} 
+            source={require('../../assets/images/mascot2.png')} 
             style={styles.mascot}
             resizeMode="contain"
           />

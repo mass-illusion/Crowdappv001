@@ -19,7 +19,7 @@ const PUBLIC_FIGURES = [
   { name: 'Emma Chamberlin', emoji: '☕' },
   { name: 'Daniel Mac', emoji: '🕶️' },
   { name: 'garbo.zhu', emoji: '🎨' },
-  { name: 'Kristy Scott', emoji: '😊' },
+  { name: 'Kristy Sarah', emoji: '😊' },
   { name: 'IShowSpeed', emoji: '🏎️' },
   { name: 'rafaeltats', emoji: '🖼️' },
   { name: 'Steven Bartlett', emoji: '🎙️' },

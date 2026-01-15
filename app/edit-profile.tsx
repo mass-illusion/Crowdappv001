@@ -86,6 +86,8 @@ export default function EditProfile() {
   const [primaryGoals, setPrimaryGoals] = useState<string[]>([]);
   const [socialStyle, setSocialStyle] = useState('');
   const [idealHangouts, setIdealHangouts] = useState<string[]>([]);
+  const [customHangoutInput, setCustomHangoutInput] = useState('');
+  const [showIdealHangoutsExpanded, setShowIdealHangoutsExpanded] = useState(false);
   const [showSocialGoals, setShowSocialGoals] = useState(false);
   const [showSocialStyle, setShowSocialStyle] = useState(false);
   const [showIdealHangouts, setShowIdealHangouts] = useState(false);
@@ -120,7 +122,16 @@ export default function EditProfile() {
     '💪 Workouts',
     '🎮 Game nights',
     '🎨 Creative',
-    '🏔️ Outdoors'
+    '🛍️ Shop',
+    '🏔️ Outdoors',
+    '🍽️ Food & Drinks',
+    '🕺 Club',
+    '📚 Study',
+    '🌿 420',
+    '🎬 Movies',
+    '🍄 Psychedelics',
+    '📱 Make Content',
+    '🏠 Stay In'
   ];
   const [showOnProfile, setShowOnProfile] = useState(true);
 
@@ -162,12 +173,19 @@ export default function EditProfile() {
       await AsyncStorage.setItem('selectedMLBTeams', JSON.stringify(selectedMLBTeams));
       await AsyncStorage.setItem('selectedNHLTeams', JSON.stringify(selectedNHLTeams));
       await AsyncStorage.setItem('selectedAnime', JSON.stringify(selectedAnime));
+      await AsyncStorage.setItem('selectedVideoGames', JSON.stringify(selectedVideoGames));
       await AsyncStorage.setItem('selectedPassions', JSON.stringify(selectedPassions));
       await AsyncStorage.setItem('selectedArtsCulture', JSON.stringify(selectedArtsCulture));
+      await AsyncStorage.setItem('selectedArtsMediums', JSON.stringify(selectedArtsMediums));
       await AsyncStorage.setItem('selectedFoodDrinks', JSON.stringify(selectedFoodDrinks));
       await AsyncStorage.setItem('selectedOutdoors', JSON.stringify(selectedOutdoors));
       await AsyncStorage.setItem('selectedFitness', JSON.stringify(selectedFitness));
       await AsyncStorage.setItem('selectedBusiness', JSON.stringify(selectedBusiness));
+      await AsyncStorage.setItem('selectedTechnology', JSON.stringify(selectedTechnology));
+      await AsyncStorage.setItem('selectedFamilyKids', JSON.stringify(selectedFamilyKids));
+      await AsyncStorage.setItem('selectedComedyEntertainment', JSON.stringify(selectedComedyEntertainment));
+      await AsyncStorage.setItem('selectedInfluences', JSON.stringify(selectedInfluences));
+      await AsyncStorage.setItem('selectedIdentities', JSON.stringify(selectedIdentities));
       
       // Show success feedback (optional)
       console.log('Profile data saved successfully');
@@ -183,6 +201,16 @@ export default function EditProfile() {
   const [socialBattery, setSocialBattery] = useState('');
   const [conversationStyle, setConversationStyle] = useState('');
   const [loveLanguage, setLoveLanguage] = useState('');
+  const [selectedIdentities, setSelectedIdentities] = useState<string[]>([]);
+  const [showIdentitiesExpanded, setShowIdentitiesExpanded] = useState(false);
+
+  // Identity options array
+  const IDENTITY_OPTIONS = [
+    'Baddie', 'Nerd', 'Creative', 'Gym Rat', 'Music Head', 'Pop Culture Junkie', 'Sober', 'Soft Girl', 'Chronically Inspired', 'Minimal', 'Unhinged', 'Chill Guy', 'ADHD', 'Aware', 'Tomboy',
+    'Career-Focused', 'Entrepreneurial', 'Fashionably Late', 'Burnt-Out But Ambitious', 'Chaos But Effective',
+    'Alternative', 'Shy', 'Confident', 'Finance Bro', 'Tik Tok Brain', 'Corporate',
+    'Side Hustler', 'Vintage Soul', 'Building Something', 'Fashion-Forward'
+  ];
   
   // Music expansion states
   const [showMusicExpanded, setShowMusicExpanded] = useState(false);
@@ -209,6 +237,11 @@ export default function EditProfile() {
   const [selectedAnime, setSelectedAnime] = useState<string[]>([]);
   const [customAnimeInput, setCustomAnimeInput] = useState('');
   
+  // Video Games expansion states
+  const [showVideoGamesExpanded, setShowVideoGamesExpanded] = useState(false);
+  const [selectedVideoGames, setSelectedVideoGames] = useState<string[]>([]);
+  const [customVideoGameInput, setCustomVideoGameInput] = useState('');
+  
   // Passion expansion states
   const [showPassionExpanded, setShowPassionExpanded] = useState(false);
   const [selectedPassions, setSelectedPassions] = useState<string[]>([]);
@@ -217,10 +250,15 @@ export default function EditProfile() {
   // Arts & Culture expansion states
   const [showArtsCultureExpanded, setShowArtsCultureExpanded] = useState(false);
   const [selectedArtsCulture, setSelectedArtsCulture] = useState<string[]>([]);
+  const [selectedArtsMediums, setSelectedArtsMediums] = useState<string[]>([]);
   
   // Food & Drinks expansion states
   const [showFoodDrinksExpanded, setShowFoodDrinksExpanded] = useState(false);
   const [selectedFoodDrinks, setSelectedFoodDrinks] = useState<string[]>([]);
+  
+  // Influences expansion states
+  const [showInfluencesExpanded, setShowInfluencesExpanded] = useState(false);
+  const [selectedInfluences, setSelectedInfluences] = useState<string[]>([]);
   
   // Outdoors & Adventures expansion states
   const [showOutdoorsExpanded, setShowOutdoorsExpanded] = useState(false);
@@ -236,6 +274,31 @@ export default function EditProfile() {
   const [showBusinessExpanded, setShowBusinessExpanded] = useState(false);
   const [selectedBusiness, setSelectedBusiness] = useState<string[]>([]);
   const [customBusinessInput, setCustomBusinessInput] = useState('');
+  
+  // Technology expansion states
+  const [showTechnologyExpanded, setShowTechnologyExpanded] = useState(false);
+  const [selectedTechnology, setSelectedTechnology] = useState<string[]>([]);
+  const [customTechnologyInput, setCustomTechnologyInput] = useState('');
+  
+  // Family & Kids expansion states
+  const [showFamilyKidsExpanded, setShowFamilyKidsExpanded] = useState(false);
+  const [selectedFamilyKids, setSelectedFamilyKids] = useState<string[]>([]);
+  
+  // Comedy & Entertainment expansion states
+  const [showComedyEntertainmentExpanded, setShowComedyEntertainmentExpanded] = useState(false);
+  const [selectedComedyEntertainment, setSelectedComedyEntertainment] = useState<string[]>([]);
+  
+  const TECHNOLOGY_EVENTS = [
+    'Tech Conferences', 'Hackathons', 'Startup Events'
+  ];
+  
+  const FAMILY_KIDS_EVENTS = [
+    'Family-Friendly Events'
+  ];
+  
+  const COMEDY_ENTERTAINMENT_EVENTS = [
+    'Stand-up Comedy', 'Movie Nights', 'Magic Shows', 'Escape Rooms', 'Virtual Reality'
+  ];
   
   // Music genres from interests.tsx
   const MUSIC_CATEGORIES = [
@@ -269,12 +332,72 @@ export default function EditProfile() {
     'Dance Shows'
   ];
 
+  const ARTS_CULTURE_MEDIUMS = [
+    'Painting',
+    'Sculpture',
+    'Drawing',
+    'Photography',
+    'Film',
+    'Graphic Design',
+    'Fashion',
+    'Architecture',
+    'Street Art'
+  ];
+
   const FOOD_DRINKS_ACTIVITIES = [
     'Food Exploration',
+    'BBQs',
     'Bar Hopping',
+    'Veggie Life',
     'Cooking',
-    'Happy Hour',
-    'BBQs'
+    'Happy Hour'
+  ];
+
+  const INFLUENCES = [
+    'Alex Hormozi',
+    'Theo Von',
+    'Cardi B',
+    'Gary Vee',
+    'Alex Earl',
+    'Joe Rogan',
+    'Ryan Trahan',
+    'Ralph Barbosa',
+    'Kardashian',
+    'Tom Holland',
+    'Sam Sulek',
+    'Chloe Shih',
+    'Emma Chamberlain',
+    'Daniel Mac',
+    'garbo.zhu',
+    'Kristy Sarah',
+    'IShowSpeed',
+    'rafaeltats',
+    'Steven Bartlett',
+    'POV Husband',
+    'Jake Paul',
+    'Kai Cenat',
+    'Vanilla Mace',
+    'Blue Face'
+  ];
+
+  const INFLUENCE_BRANDS = [
+    'Nike',
+    'Aritzia',
+    'Uniqlo',
+    'Patagonia',
+    'Skims',
+    'Sweetgreen',
+    'Erewhon',
+    'Trader Joe\'s',
+    'Stanley',
+    'Apple',
+    'Notion',
+    'Spotify',
+    'Peloton',
+    'Alo',
+    'Lululemon',
+    'Equinox',
+    'Not into brands'
   ];
 
   const OUTDOORS_ADVENTURES_ACTIVITIES = [
@@ -367,6 +490,15 @@ export default function EditProfile() {
     'MY HERO ACADEMIA', 'DEATH NOTE', 'ONE PUNCH MAN', 'SPIRITED AWAY', 'POKEMON',
     'SAILOR MOON', 'COWBOY BEBOP', 'FULLMETAL ALCHEMIST', 'HUNTER X HUNTER', 'BLEACH',
     'JUJUTSU KAISEN', 'CHAINSAW MAN', 'SPY X FAMILY', 'JOJO\'S BIZARRE ADVENTURE', 'AKIRA'
+  ];
+  
+  const VIDEO_GAMES = [
+    'Fortnite', 'Call of Duty', 'FIFA', 'NBA 2K', 'League of Legends', 'Minecraft', 'Valorant',
+    'Apex Legends', 'Fall Guys', 'Grand Theft Auto', 'Rocket League',
+    'Overwatch', 'Among Us', 'Roblox', 'World of Warcraft',
+    'Genshin Impact', 'Elden Ring', 'The Witcher 3', 'Cyberpunk 2077', 'Red Dead Redemption',
+    'Super Mario', 'Zelda', 'Pokemon', 'Destiny 2', 'Counter-Strike',
+    'Dota 2', 'Halo', 'Assassins Creed', 'Battlefield', 'Mortal Kombat'
   ];
   
   const PASSION_INTERESTS = [
@@ -469,6 +601,7 @@ export default function EditProfile() {
       const savedMLBTeams = await AsyncStorage.getItem('selectedMLBTeams');
       const savedNHLTeams = await AsyncStorage.getItem('selectedNHLTeams');
       const savedAnime = await AsyncStorage.getItem('selectedAnime');
+      const savedVideoGames = await AsyncStorage.getItem('selectedVideoGames');
       // Also load from interests.tsx selections
       const savedInterestMusicCategories = await AsyncStorage.getItem('selectedMusicCategories');
       const savedInterestEDMGenres = await AsyncStorage.getItem('selectedEDMGenres');
@@ -575,6 +708,10 @@ export default function EditProfile() {
         setSelectedAnime(JSON.parse(savedAnime));
       }
       
+      if (savedVideoGames) {
+        setSelectedVideoGames(JSON.parse(savedVideoGames));
+      }
+      
       // Load music activities
       const savedMusicActivities = await AsyncStorage.getItem('selectedMusicActivities');
       if (savedMusicActivities) {
@@ -585,6 +722,12 @@ export default function EditProfile() {
       const savedArtsCulture = await AsyncStorage.getItem('selectedArtsCulture');
       if (savedArtsCulture) {
         setSelectedArtsCulture(JSON.parse(savedArtsCulture));
+      }
+      
+      // Load arts & culture mediums
+      const savedArtsMediums = await AsyncStorage.getItem('selectedArtsMediums');
+      if (savedArtsMediums) {
+        setSelectedArtsMediums(JSON.parse(savedArtsMediums));
       }
       
       // Load food & drinks activities
@@ -609,6 +752,36 @@ export default function EditProfile() {
       const savedBusiness = await AsyncStorage.getItem('selectedBusiness');
       if (savedBusiness) {
         setSelectedBusiness(JSON.parse(savedBusiness));
+      }
+      
+      // Load technology activities
+      const savedTechnology = await AsyncStorage.getItem('selectedTechnology');
+      if (savedTechnology) {
+        setSelectedTechnology(JSON.parse(savedTechnology));
+      }
+      
+      // Load family & kids activities
+      const savedFamilyKids = await AsyncStorage.getItem('selectedFamilyKids');
+      if (savedFamilyKids) {
+        setSelectedFamilyKids(JSON.parse(savedFamilyKids));
+      }
+      
+      // Load comedy & entertainment activities
+      const savedComedyEntertainment = await AsyncStorage.getItem('selectedComedyEntertainment');
+      if (savedComedyEntertainment) {
+        setSelectedComedyEntertainment(JSON.parse(savedComedyEntertainment));
+      }
+      
+      // Load influences activities
+      const savedInfluences = await AsyncStorage.getItem('selectedInfluences');
+      if (savedInfluences) {
+        setSelectedInfluences(JSON.parse(savedInfluences));
+      }
+      
+      // Load identity selections
+      const savedIdentities = await AsyncStorage.getItem('selectedIdentities');
+      if (savedIdentities) {
+        setSelectedIdentities(JSON.parse(savedIdentities));
       }
       
       // Load passions from edit profile or from interests.tsx
@@ -686,6 +859,14 @@ export default function EditProfile() {
       setTimeout(() => saveProfileData(), 100);
       return newHangouts;
     });
+  };
+
+  const addCustomHangout = () => {
+    if (customHangoutInput.trim() && !idealHangouts.includes(customHangoutInput.trim())) {
+      setIdealHangouts(prev => [...prev, customHangoutInput.trim()]);
+      setCustomHangoutInput('');
+      setTimeout(() => saveProfileData(), 100);
+    }
   };
 
   const toggleMusicGenre = (genre: string) => {
@@ -855,6 +1036,25 @@ export default function EditProfile() {
     }
   };
 
+  const toggleVideoGame = (game: string) => {
+    setSelectedVideoGames(prev => {
+      const newGames = prev.includes(game)
+        ? prev.filter(g => g !== game)
+        : [...prev, game];
+      
+      setTimeout(() => saveProfileData(), 100);
+      return newGames;
+    });
+  };
+
+  const addCustomVideoGame = () => {
+    if (customVideoGameInput.trim() && !selectedVideoGames.includes(customVideoGameInput.trim())) {
+      setSelectedVideoGames(prev => [...prev, customVideoGameInput.trim()]);
+      setCustomVideoGameInput('');
+      setTimeout(() => saveProfileData(), 100);
+    }
+  };
+
   const togglePassion = (passionId: string) => {
     setSelectedPassions(prev => {
       const newPassions = prev.includes(passionId)
@@ -942,6 +1142,17 @@ export default function EditProfile() {
     });
   };
 
+  const toggleArtsMedium = (medium: string) => {
+    setSelectedArtsMediums(prev => {
+      const newMediums = prev.includes(medium)
+        ? prev.filter(item => item !== medium)
+        : [...prev, medium];
+      
+      setTimeout(() => saveProfileData(), 100);
+      return newMediums;
+    });
+  };
+
   const toggleFoodDrinks = (activity: string) => {
     setSelectedFoodDrinks(prev => {
       const newActivities = prev.includes(activity)
@@ -950,6 +1161,28 @@ export default function EditProfile() {
       
       setTimeout(() => saveProfileData(), 100);
       return newActivities;
+    });
+  };
+
+  const toggleInfluence = (influenceName: string) => {
+    setSelectedInfluences(prev => {
+      const newInfluences = prev.includes(influenceName)
+        ? prev.filter(item => item !== influenceName)
+        : [...prev, influenceName];
+      
+      setTimeout(() => saveProfileData(), 100);
+      return newInfluences;
+    });
+  };
+
+  const toggleIdentity = (identity: string) => {
+    setSelectedIdentities(prev => {
+      const newIdentities = prev.includes(identity)
+        ? prev.filter(item => item !== identity)
+        : [...prev, identity];
+      
+      setTimeout(() => saveProfileData(), 100);
+      return newIdentities;
     });
   };
 
@@ -998,6 +1231,48 @@ export default function EditProfile() {
       setTimeout(() => saveProfileData(), 100);
     }
   };
+
+  const toggleTechnology = (event: string) => {
+    setSelectedTechnology(prev => {
+      const newEvents = prev.includes(event)
+        ? prev.filter(item => item !== event)
+        : [...prev, event];
+      
+      setTimeout(() => saveProfileData(), 100);
+      return newEvents;
+    });
+  };
+
+  const addCustomTechnology = () => {
+    if (customTechnologyInput.trim() && !selectedTechnology.includes(customTechnologyInput.trim())) {
+      setSelectedTechnology(prev => [...prev, customTechnologyInput.trim()]);
+      setCustomTechnologyInput('');
+      setTimeout(() => saveProfileData(), 100);
+    }
+  };
+
+  const toggleFamilyKids = (event: string) => {
+    setSelectedFamilyKids(prev => {
+      const newEvents = prev.includes(event)
+        ? prev.filter(item => item !== event)
+        : [...prev, event];
+      
+      setTimeout(() => saveProfileData(), 100);
+      return newEvents;
+    });
+  };
+
+  const toggleComedyEntertainment = (event: string) => {
+    setSelectedComedyEntertainment(prev => {
+      const newEvents = prev.includes(event)
+        ? prev.filter(item => item !== event)
+        : [...prev, event];
+      
+      setTimeout(() => saveProfileData(), 100);
+      return newEvents;
+    });
+  };
+
   // --- End of addCustomOutdoors ---
 
   // Toggle function for Outdoors & Adventures activities
@@ -1396,6 +1671,45 @@ export default function EditProfile() {
         </Text>
       </View>
 
+      <View style={styles.interestCategory}>
+        <TouchableOpacity 
+          style={styles.categoryHeader}
+          onPress={() => setShowIdentitiesExpanded(!showIdentitiesExpanded)}
+        >
+          <Text style={styles.fieldLabel}>Identify As</Text>
+          <Ionicons 
+            name={showIdentitiesExpanded ? "chevron-up" : "chevron-down"} 
+            size={20} 
+            color="#666"
+            style={{ marginTop: -6, marginLeft: 4 }}
+          />
+        </TouchableOpacity>
+        
+        {showIdentitiesExpanded && (
+          <View style={[styles.expandedContent, { paddingHorizontal: 8 }]}>
+            <View style={styles.genreGrid}>
+              {IDENTITY_OPTIONS.map((identity, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.musicGenreButton,
+                    selectedIdentities.includes(identity) && styles.genreButtonActive
+                  ]}
+                  onPress={() => toggleIdentity(identity)}
+                >
+                  <Text style={[
+                    styles.genreText,
+                    selectedIdentities.includes(identity) && styles.genreTextActive
+                  ]}>
+                    {identity}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+        )}
+      </View>
+
       <View style={styles.fieldGroup}>
         <Text style={styles.fieldLabel}>Social Energy</Text>
         <View style={styles.optionGroup}>
@@ -1436,35 +1750,86 @@ export default function EditProfile() {
       </View>
 
       <View style={styles.socialSection}>
-        <View style={styles.socialSectionHeader}>
-          <View style={styles.socialSectionTitleContainer}>
-            <Text style={styles.socialSectionTitle}>Ideal Hangouts</Text>
-          </View>
-        </View>
+        <TouchableOpacity 
+          style={styles.categoryHeader}
+          onPress={() => setShowIdealHangoutsExpanded(!showIdealHangoutsExpanded)}
+        >
+          <Text style={styles.fieldLabel}>Ideal Hangouts</Text>
+          <Ionicons 
+            name={showIdealHangoutsExpanded ? "chevron-up" : "chevron-down"} 
+            size={20} 
+            color="#666"
+            style={{ marginTop: -6, marginLeft: 4 }}
+          />
+        </TouchableOpacity>
         
-        <View style={styles.hangoutGrid}>
-          {idealHangoutsOptions.map((hangout, index) => (
-            <TouchableOpacity
-              key={index}
-              style={[
-                styles.hangoutButton,
-                idealHangouts.includes(hangout) && styles.hangoutButtonActive
-              ]}
-              onPress={() => toggleIdealHangout(hangout)}
-            >
-              <Text style={[
-                styles.hangoutText,
-                idealHangouts.includes(hangout) && styles.hangoutTextActive
-              ]}>{hangout}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+        {showIdealHangoutsExpanded && (
+          <View style={[styles.expandedContent, { paddingHorizontal: 0 }]}>
+            <View style={styles.hangoutGrid}>
+              {idealHangoutsOptions.map((hangout, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.hangoutButton,
+                    idealHangouts.includes(hangout) && styles.hangoutButtonActive
+                  ]}
+                  onPress={() => toggleIdealHangout(hangout)}
+                >
+                  <Text style={[
+                    styles.hangoutText,
+                    idealHangouts.includes(hangout) && styles.hangoutTextActive
+                  ]}>{hangout}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            {/* Display custom hangout entries as pills above the input */}
+            {idealHangouts.filter(hangout => !idealHangoutsOptions.includes(hangout)).length > 0 && (
+              <View style={styles.customMusicSection}>
+                <Text style={styles.subCategoryTitle}>Your Hangouts</Text>
+                <View style={styles.genreGrid}>
+                  {idealHangouts
+                    .filter(hangout => !idealHangoutsOptions.includes(hangout))
+                    .map((customEntry, index) => (
+                    <TouchableOpacity
+                      key={`hangout-${index}`}
+                      style={[styles.genreButton, styles.genreButtonActive, styles.customMusicPill]}
+                      onPress={() => {
+                        setIdealHangouts(prev => prev.filter(item => item !== customEntry));
+                        setTimeout(() => saveProfileData(), 100);
+                      }}
+                    >
+                      <Text style={[styles.genreText, styles.genreTextActive]}>{customEntry}</Text>
+                      <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            )}
+
+            <View style={styles.customInputContainer}>
+              <TextInput
+                style={styles.customInput}
+                value={customHangoutInput}
+                onChangeText={setCustomHangoutInput}
+                placeholder="Add your favorite hangout"
+                placeholderTextColor="#999"
+                onSubmitEditing={addCustomHangout}
+              />
+              <TouchableOpacity 
+                style={styles.addButton}
+                onPress={addCustomHangout}
+              >
+                <Text style={styles.addButtonText}>Add</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
       </View>
 
       <View style={styles.socialSection}>
         <View style={styles.socialSectionHeader}>
           <View style={styles.socialSectionTitleContainer}>
-            <Text style={styles.socialSectionIcon}>👥</Text>
             <Text style={styles.socialSectionTitle}>Social Style</Text>
           </View>
         </View>
@@ -1568,223 +1933,273 @@ export default function EditProfile() {
 
   const renderInterestsTab = () => (
     <View style={styles.tabContent}>
-      <View style={styles.section}>
-        <Text style={styles.sectionDescription}>
-          Share your interests so we can suggest friends and events you'll love.{' '}
-          <Text style={styles.addNewText}>Add new</Text>
-        </Text>
-      </View>
+        <View style={styles.section}>
+          <Text style={styles.sectionDescription}>
+            Share your interests so we can suggest friends and events you'll love.{' '}
+            <Text style={styles.addNewText}>Add new</Text>
+          </Text>
+        </View>
+
+        <View style={styles.interestCategory}>
+          <TouchableOpacity 
+            style={styles.categoryHeader}
+            onPress={() => {
+              setShowMusicExpanded(false);
+              setShowAnimeExpanded(false);
+              setShowPassionExpanded(false);
+              setShowArtsCultureExpanded(false);
+              setShowFoodDrinksExpanded(false);
+              setShowOutdoorsExpanded(false);
+              setShowFitnessExpanded(false);
+              setShowBusinessExpanded(false);
+              setShowSportsExpanded(!showSportsExpanded);
+            }}
+          >
+            <View style={styles.categoryIcon}>
+              <Text style={styles.categoryEmoji}>🏀</Text>
+            </View>
+            <Text style={styles.categoryTitle}>Sports</Text>
+            <Ionicons 
+              name={showSportsExpanded ? "chevron-up" : "chevron-down"} 
+              size={20} 
+              color="#666" 
+            />
+          </TouchableOpacity>
+          
+          {showSportsExpanded && (
+            <View style={styles.expandedContent}>
+              <Text style={styles.subCategoryTitle}>Leagues</Text>
+              <View style={styles.genreGrid}>
+                {SPORTS_CATEGORIES.map((sport, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={[
+                      styles.musicGenreButton,
+                      (selectedSports.includes(sport.name) || 
+                       (sport.name === 'NFL' && selectedNFLTeams.length > 0) ||
+                       (sport.name === 'NBA' && selectedNBATeams.length > 0) ||
+                       (sport.name === 'MLB' && selectedMLBTeams.length > 0) ||
+                       (sport.name === 'NHL' && selectedNHLTeams.length > 0)) && styles.genreButtonActive
+                    ]}
+                    onPress={() => toggleSports(sport.name)}
+                  >
+                    <Text style={[
+                      styles.genreText,
+                      (selectedSports.includes(sport.name) || 
+                       (sport.name === 'NFL' && selectedNFLTeams.length > 0) ||
+                       (sport.name === 'NBA' && selectedNBATeams.length > 0) ||
+                       (sport.name === 'MLB' && selectedMLBTeams.length > 0) ||
+                       (sport.name === 'NHL' && selectedNHLTeams.length > 0)) && styles.genreTextActive
+                    ]}>{sport.emoji} {sport.name}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+              
+              {/* Display selected NFL teams */}
+              {selectedNFLTeams.length > 0 && (
+                <View style={styles.customMusicSection}>
+                  <Text style={styles.subCategoryTitle}>My NFL Teams</Text>
+                  <View style={styles.genreGrid}>
+                    {selectedNFLTeams.map((team, index) => (
+                      <TouchableOpacity
+                        key={`nfl-${index}`}
+                        style={[styles.genreButton, styles.genreButtonActive, styles.customMusicPill]}
+                        onPress={() => {
+                          setSelectedNFLTeams(prev => {
+                            const newTeams = prev.filter(item => item !== team);
+                            // Remove NFL from selectedSports if no teams left
+                            if (newTeams.length === 0) {
+                              setSelectedSports(sportsPrev => sportsPrev.filter(s => s !== 'NFL'));
+                            }
+                            setTimeout(() => saveProfileData(), 100);
+                            return newTeams;
+                          });
+                        }}
+                      >
+                        <Text style={[styles.genreText, styles.genreTextActive]}>{team}</Text>
+                        <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+              )}
+              
+              {/* Display selected NBA teams */}
+              {selectedNBATeams.length > 0 && (
+                <View style={styles.customMusicSection}>
+                  <Text style={styles.subCategoryTitle}>My NBA Teams</Text>
+                  <View style={styles.genreGrid}>
+                    {selectedNBATeams.map((team, index) => (
+                      <TouchableOpacity
+                        key={`nba-${index}`}
+                        style={[styles.genreButton, styles.genreButtonActive, styles.customMusicPill]}
+                        onPress={() => {
+                          setSelectedNBATeams(prev => {
+                            const newTeams = prev.filter(item => item !== team);
+                            // Remove NBA from selectedSports if no teams left
+                            if (newTeams.length === 0) {
+                              setSelectedSports(sportsPrev => sportsPrev.filter(s => s !== 'NBA'));
+                            }
+                            setTimeout(() => saveProfileData(), 100);
+                            return newTeams;
+                          });
+                        }}
+                      >
+                        <Text style={[styles.genreText, styles.genreTextActive]}>{team}</Text>
+                        <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+              )}
+              
+              {/* Display selected MLB teams */}
+              {selectedMLBTeams.length > 0 && (
+                <View style={styles.customMusicSection}>
+                  <Text style={styles.subCategoryTitle}>My MLB Teams</Text>
+                  <View style={styles.genreGrid}>
+                    {selectedMLBTeams.map((team, index) => (
+                      <TouchableOpacity
+                        key={`mlb-${index}`}
+                        style={[styles.genreButton, styles.genreButtonActive, styles.customMusicPill]}
+                        onPress={() => {
+                          setSelectedMLBTeams(prev => {
+                            const newTeams = prev.filter(item => item !== team);
+                            // Remove MLB from selectedSports if no teams left
+                            if (newTeams.length === 0) {
+                              setSelectedSports(sportsPrev => sportsPrev.filter(s => s !== 'MLB'));
+                            }
+                            setTimeout(() => saveProfileData(), 100);
+                            return newTeams;
+                          });
+                        }}
+                      >
+                        <Text style={[styles.genreText, styles.genreTextActive]}>{team}</Text>
+                        <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+              )}
+              
+              {/* Display selected NHL teams */}
+              {selectedNHLTeams.length > 0 && (
+                <View style={styles.customMusicSection}>
+                  <Text style={styles.subCategoryTitle}>My NHL Teams</Text>
+                  <View style={styles.genreGrid}>
+                    {selectedNHLTeams.map((team, index) => (
+                      <TouchableOpacity
+                        key={`nhl-${index}`}
+                        style={[styles.genreButton, styles.genreButtonActive, styles.customMusicPill]}
+                        onPress={() => {
+                          setSelectedNHLTeams(prev => {
+                            const newTeams = prev.filter(item => item !== team);
+                            // Remove NHL from selectedSports if no teams left
+                            if (newTeams.length === 0) {
+                              setSelectedSports(sportsPrev => sportsPrev.filter(s => s !== 'NHL'));
+                            }
+                            setTimeout(() => saveProfileData(), 100);
+                            return newTeams;
+                          });
+                        }}
+                      >
+                        <Text style={[styles.genreText, styles.genreTextActive]}>{team}</Text>
+                        <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+              )}
+              
+              {/* Display custom sports entries as pills above the input */}
+              {selectedSports.filter(sport => !SPORTS_CATEGORIES.some(cat => cat.name === sport)).length > 0 && (
+                <View style={styles.customMusicSection}>
+                  <Text style={styles.subCategoryTitle}>Favorite Athletes</Text>
+                  <View style={styles.genreGrid}>
+                    {selectedSports
+                      .filter(sport => !SPORTS_CATEGORIES.some(cat => cat.name === sport))
+                      .map((customEntry, index) => (
+                      <TouchableOpacity
+                        key={`athlete-${index}`}
+                        style={[styles.genreButton, styles.genreButtonActive, styles.customMusicPill]}
+                        onPress={() => {
+                          setSelectedSports(prev => prev.filter(item => item !== customEntry));
+                          setTimeout(() => saveProfileData(), 100);
+                        }}
+                      >
+                        <Text style={[styles.genreText, styles.genreTextActive]}>{customEntry}</Text>
+                        <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+              )}
+
+              <View style={styles.customInputContainer}>
+                <TextInput
+                  style={styles.customInput}
+                  value={customSportsInput}
+                  onChangeText={setCustomSportsInput}
+                  placeholder="Add your favorite athlete"
+                  placeholderTextColor="#999"
+                  onSubmitEditing={addCustomSports}
+                />
+                <TouchableOpacity 
+                  style={styles.addButton}
+                  onPress={addCustomSports}
+                >
+                  <Text style={styles.addButtonText}>Add</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+        </View>
 
       <View style={styles.interestCategory}>
         <TouchableOpacity 
           style={styles.categoryHeader}
           onPress={() => {
             setShowMusicExpanded(false);
-            setShowAnimeExpanded(false);
+            setShowSportsExpanded(false);
             setShowPassionExpanded(false);
             setShowArtsCultureExpanded(false);
-            setShowFoodDrinksExpanded(false);
+            setShowAnimeExpanded(false);
+            setShowVideoGamesExpanded(false);
             setShowOutdoorsExpanded(false);
             setShowFitnessExpanded(false);
             setShowBusinessExpanded(false);
-            setShowSportsExpanded(!showSportsExpanded);
+            setShowFoodDrinksExpanded(!showFoodDrinksExpanded);
           }}
         >
           <View style={styles.categoryIcon}>
-            <Text style={styles.categoryEmoji}>🏀</Text>
+            <Text style={styles.categoryEmoji}>🍽️</Text>
           </View>
-          <Text style={styles.categoryTitle}>Sports</Text>
+          <Text style={styles.categoryTitle}>Food & Drinks</Text>
           <Ionicons 
-            name={showSportsExpanded ? "chevron-up" : "chevron-down"} 
+            name={showFoodDrinksExpanded ? "chevron-up" : "chevron-down"} 
             size={20} 
             color="#666" 
           />
         </TouchableOpacity>
         
-        {showSportsExpanded && (
+        {showFoodDrinksExpanded && (
           <View style={styles.expandedContent}>
-            <Text style={styles.subCategoryTitle}>Leagues</Text>
             <View style={styles.genreGrid}>
-              {SPORTS_CATEGORIES.map((sport, index) => (
+              {FOOD_DRINKS_ACTIVITIES.map((activity, index) => (
                 <TouchableOpacity
                   key={index}
                   style={[
                     styles.musicGenreButton,
-                    (selectedSports.includes(sport.name) || 
-                     (sport.name === 'NFL' && selectedNFLTeams.length > 0) ||
-                     (sport.name === 'NBA' && selectedNBATeams.length > 0) ||
-                     (sport.name === 'MLB' && selectedMLBTeams.length > 0) ||
-                     (sport.name === 'NHL' && selectedNHLTeams.length > 0)) && styles.genreButtonActive
+                    selectedFoodDrinks.includes(activity) && styles.genreButtonActive
                   ]}
-                  onPress={() => toggleSports(sport.name)}
+                  onPress={() => toggleFoodDrinks(activity)}
                 >
                   <Text style={[
                     styles.genreText,
-                    (selectedSports.includes(sport.name) || 
-                     (sport.name === 'NFL' && selectedNFLTeams.length > 0) ||
-                     (sport.name === 'NBA' && selectedNBATeams.length > 0) ||
-                     (sport.name === 'MLB' && selectedMLBTeams.length > 0) ||
-                     (sport.name === 'NHL' && selectedNHLTeams.length > 0)) && styles.genreTextActive
-                  ]}>{sport.emoji} {sport.name}</Text>
+                    selectedFoodDrinks.includes(activity) && styles.genreTextActive
+                  ]}>{activity}</Text>
                 </TouchableOpacity>
               ))}
-            </View>
-            
-            {/* Display selected NFL teams */}
-            {selectedNFLTeams.length > 0 && (
-              <View style={styles.customMusicSection}>
-                <Text style={styles.subCategoryTitle}>My NFL Teams</Text>
-                <View style={styles.genreGrid}>
-                  {selectedNFLTeams.map((team, index) => (
-                    <TouchableOpacity
-                      key={`nfl-${index}`}
-                      style={[styles.genreButton, styles.genreButtonActive, styles.customMusicPill]}
-                      onPress={() => {
-                        setSelectedNFLTeams(prev => {
-                          const newTeams = prev.filter(item => item !== team);
-                          // Remove NFL from selectedSports if no teams left
-                          if (newTeams.length === 0) {
-                            setSelectedSports(sportsPrev => sportsPrev.filter(s => s !== 'NFL'));
-                          }
-                          setTimeout(() => saveProfileData(), 100);
-                          return newTeams;
-                        });
-                      }}
-                    >
-                      <Text style={[styles.genreText, styles.genreTextActive]}>{team}</Text>
-                      <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </View>
-            )}
-            
-            {/* Display selected NBA teams */}
-            {selectedNBATeams.length > 0 && (
-              <View style={styles.customMusicSection}>
-                <Text style={styles.subCategoryTitle}>My NBA Teams</Text>
-                <View style={styles.genreGrid}>
-                  {selectedNBATeams.map((team, index) => (
-                    <TouchableOpacity
-                      key={`nba-${index}`}
-                      style={[styles.genreButton, styles.genreButtonActive, styles.customMusicPill]}
-                      onPress={() => {
-                        setSelectedNBATeams(prev => {
-                          const newTeams = prev.filter(item => item !== team);
-                          // Remove NBA from selectedSports if no teams left
-                          if (newTeams.length === 0) {
-                            setSelectedSports(sportsPrev => sportsPrev.filter(s => s !== 'NBA'));
-                          }
-                          setTimeout(() => saveProfileData(), 100);
-                          return newTeams;
-                        });
-                      }}
-                    >
-                      <Text style={[styles.genreText, styles.genreTextActive]}>{team}</Text>
-                      <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </View>
-            )}
-            
-            {/* Display selected MLB teams */}
-            {selectedMLBTeams.length > 0 && (
-              <View style={styles.customMusicSection}>
-                <Text style={styles.subCategoryTitle}>My MLB Teams</Text>
-                <View style={styles.genreGrid}>
-                  {selectedMLBTeams.map((team, index) => (
-                    <TouchableOpacity
-                      key={`mlb-${index}`}
-                      style={[styles.genreButton, styles.genreButtonActive, styles.customMusicPill]}
-                      onPress={() => {
-                        setSelectedMLBTeams(prev => {
-                          const newTeams = prev.filter(item => item !== team);
-                          // Remove MLB from selectedSports if no teams left
-                          if (newTeams.length === 0) {
-                            setSelectedSports(sportsPrev => sportsPrev.filter(s => s !== 'MLB'));
-                          }
-                          setTimeout(() => saveProfileData(), 100);
-                          return newTeams;
-                        });
-                      }}
-                    >
-                      <Text style={[styles.genreText, styles.genreTextActive]}>{team}</Text>
-                      <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </View>
-            )}
-            
-            {/* Display selected NHL teams */}
-            {selectedNHLTeams.length > 0 && (
-              <View style={styles.customMusicSection}>
-                <Text style={styles.subCategoryTitle}>My NHL Teams</Text>
-                <View style={styles.genreGrid}>
-                  {selectedNHLTeams.map((team, index) => (
-                    <TouchableOpacity
-                      key={`nhl-${index}`}
-                      style={[styles.genreButton, styles.genreButtonActive, styles.customMusicPill]}
-                      onPress={() => {
-                        setSelectedNHLTeams(prev => {
-                          const newTeams = prev.filter(item => item !== team);
-                          // Remove NHL from selectedSports if no teams left
-                          if (newTeams.length === 0) {
-                            setSelectedSports(sportsPrev => sportsPrev.filter(s => s !== 'NHL'));
-                          }
-                          setTimeout(() => saveProfileData(), 100);
-                          return newTeams;
-                        });
-                      }}
-                    >
-                      <Text style={[styles.genreText, styles.genreTextActive]}>{team}</Text>
-                      <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </View>
-            )}
-            
-            {/* Display custom sports entries as pills above the input */}
-            {selectedSports.filter(sport => !SPORTS_CATEGORIES.some(cat => cat.name === sport)).length > 0 && (
-              <View style={styles.customMusicSection}>
-                <Text style={styles.subCategoryTitle}>Favorite Athletes</Text>
-                <View style={styles.genreGrid}>
-                  {selectedSports
-                    .filter(sport => !SPORTS_CATEGORIES.some(cat => cat.name === sport))
-                    .map((customEntry, index) => (
-                    <TouchableOpacity
-                      key={`athlete-${index}`}
-                      style={[styles.genreButton, styles.genreButtonActive, styles.customMusicPill]}
-                      onPress={() => {
-                        setSelectedSports(prev => prev.filter(item => item !== customEntry));
-                        setTimeout(() => saveProfileData(), 100);
-                      }}
-                    >
-                      <Text style={[styles.genreText, styles.genreTextActive]}>{customEntry}</Text>
-                      <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </View>
-            )}
-
-            <View style={styles.customInputContainer}>
-              <TextInput
-                style={styles.customInput}
-                value={customSportsInput}
-                onChangeText={setCustomSportsInput}
-                placeholder="Add your favorite athlete"
-                placeholderTextColor="#999"
-                onSubmitEditing={addCustomSports}
-              />
-              <TouchableOpacity 
-                style={styles.addButton}
-                onPress={addCustomSports}
-              >
-                <Text style={styles.addButtonText}>Add</Text>
-              </TouchableOpacity>
             </View>
           </View>
         )}
@@ -1873,6 +2288,97 @@ export default function EditProfile() {
               <TouchableOpacity 
                 style={styles.addButton}
                 onPress={addCustomAnime}
+              >
+                <Text style={styles.addButtonText}>Add</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      </View>
+
+      <View style={styles.interestCategory}>
+        <TouchableOpacity 
+          style={styles.categoryHeader}
+          onPress={() => {
+            setShowMusicExpanded(false);
+            setShowSportsExpanded(false);
+            setShowAnimeExpanded(false);
+            setShowPassionExpanded(false);
+            setShowArtsCultureExpanded(false);
+            setShowFoodDrinksExpanded(false);
+            setShowOutdoorsExpanded(false);
+            setShowFitnessExpanded(false);
+            setShowBusinessExpanded(false);
+            setShowVideoGamesExpanded(!showVideoGamesExpanded);
+          }}
+        >
+          <View style={styles.categoryIcon}>
+            <Text style={styles.categoryEmoji}>🎮</Text>
+          </View>
+          <Text style={styles.categoryTitle}>Video Games</Text>
+          <Ionicons 
+            name={showVideoGamesExpanded ? "chevron-up" : "chevron-down"} 
+            size={20} 
+            color="#666" 
+          />
+        </TouchableOpacity>
+        
+        {showVideoGamesExpanded && (
+          <View style={styles.expandedContent}>
+            <View style={styles.genreGrid}>
+              {VIDEO_GAMES.map((game, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.musicGenreButton,
+                    selectedVideoGames.includes(game) && styles.genreButtonActive
+                  ]}
+                  onPress={() => toggleVideoGame(game)}
+                >
+                  <Text style={[
+                    styles.genreText,
+                    selectedVideoGames.includes(game) && styles.genreTextActive
+                  ]}>{game}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+            
+            {/* Display custom video game entries as pills above the input */}
+            {selectedVideoGames.filter(game => !VIDEO_GAMES.includes(game)).length > 0 && (
+              <View style={styles.customMusicSection}>
+                <Text style={styles.subCategoryTitle}>Your Games</Text>
+                <View style={styles.genreGrid}>
+                  {selectedVideoGames
+                    .filter(game => !VIDEO_GAMES.includes(game))
+                    .map((customEntry, index) => (
+                    <TouchableOpacity
+                      key={`game-${index}`}
+                      style={[styles.genreButton, styles.genreButtonActive, styles.customMusicPill]}
+                      onPress={() => {
+                        setSelectedVideoGames(prev => prev.filter(item => item !== customEntry));
+                        setTimeout(() => saveProfileData(), 100);
+                      }}
+                    >
+                      <Text style={[styles.genreText, styles.genreTextActive]}>{customEntry}</Text>
+                      <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            )}
+
+            <View style={styles.customInputContainer}>
+              <TextInput
+                style={styles.customInput}
+                value={customVideoGameInput}
+                onChangeText={setCustomVideoGameInput}
+                placeholder="Add your favorite game"
+                placeholderTextColor="#999"
+                onSubmitEditing={addCustomVideoGame}
+              />
+              <TouchableOpacity 
+                style={styles.addButton}
+                onPress={addCustomVideoGame}
               >
                 <Text style={styles.addButtonText}>Add</Text>
               </TouchableOpacity>
@@ -2143,7 +2649,9 @@ export default function EditProfile() {
         
         {showArtsCultureExpanded && (
           <View style={[styles.expandedContent, { paddingHorizontal: 8 }]}>
-            <View style={[styles.genreGrid, { justifyContent: 'space-between' }]}>
+            {/* Events Section */}
+            <Text style={styles.sectionTitle}>Events</Text>
+            <View style={[styles.genreGrid, { justifyContent: 'space-between', marginBottom: 20 }]}>
               {ARTS_CULTURE_ACTIVITIES.map((activity, index) => (
                 <TouchableOpacity
                   key={index}
@@ -2162,6 +2670,28 @@ export default function EditProfile() {
                 </TouchableOpacity>
               ))}
             </View>
+
+            {/* Mediums Section */}
+            <Text style={styles.sectionTitle}>Mediums</Text>
+            <View style={styles.genreGrid}>
+              {ARTS_CULTURE_MEDIUMS.map((medium, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.musicGenreButton,
+                    selectedArtsMediums.includes(medium) && styles.genreButtonActive,
+                    { paddingHorizontal: 12, paddingVertical: 10, marginBottom: 8, borderRadius: 8 }
+                  ]}
+                  onPress={() => toggleArtsMedium(medium)}
+                >
+                  <Text style={[
+                    styles.genreText,
+                    selectedArtsMediums.includes(medium) && styles.genreTextActive,
+                    { fontSize: 13, fontWeight: '500', textAlign: 'center' }
+                  ]}>{medium}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
         )}
       </View>
@@ -2175,39 +2705,73 @@ export default function EditProfile() {
             setShowAnimeExpanded(false);
             setShowPassionExpanded(false);
             setShowArtsCultureExpanded(false);
+            setShowFoodDrinksExpanded(false);
             setShowOutdoorsExpanded(false);
             setShowFitnessExpanded(false);
             setShowBusinessExpanded(false);
-            setShowFoodDrinksExpanded(!showFoodDrinksExpanded);
+            setShowInfluencesExpanded(!showInfluencesExpanded);
           }}
         >
           <View style={styles.categoryIcon}>
-            <Text style={styles.categoryEmoji}>🍽️</Text>
+            <Text style={styles.categoryEmoji}>👥</Text>
           </View>
-          <Text style={styles.categoryTitle}>Food & Drinks</Text>
+          <Text style={styles.categoryTitle}>Influences</Text>
           <Ionicons 
-            name={showFoodDrinksExpanded ? "chevron-up" : "chevron-down"} 
+            name={showInfluencesExpanded ? "chevron-up" : "chevron-down"} 
             size={20} 
             color="#666" 
           />
         </TouchableOpacity>
         
-        {showFoodDrinksExpanded && (
+        {showInfluencesExpanded && (
           <View style={styles.expandedContent}>
+            <Text style={styles.sectionTitle}>Public Figure</Text>
             <View style={styles.genreGrid}>
-              {FOOD_DRINKS_ACTIVITIES.map((activity, index) => (
+              {INFLUENCES.map((influence, index) => (
                 <TouchableOpacity
                   key={index}
                   style={[
                     styles.musicGenreButton,
-                    selectedFoodDrinks.includes(activity) && styles.genreButtonActive
+                    selectedInfluences.includes(influence) && styles.genreButtonActive
                   ]}
-                  onPress={() => toggleFoodDrinks(activity)}
+                  onPress={() => toggleInfluence(influence)}
                 >
                   <Text style={[
                     styles.genreText,
-                    selectedFoodDrinks.includes(activity) && styles.genreTextActive
-                  ]}>{activity}</Text>
+                    selectedInfluences.includes(influence) && styles.genreTextActive
+                  ]}>
+                    {influence}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+            
+            <View style={styles.customInfluenceContainer}>
+              <View style={styles.customInfluenceInput}>
+                <Text style={styles.customInfluenceText}>Add your favorite influencer</Text>
+              </View>
+              <TouchableOpacity style={styles.addInfluenceButton}>
+                <Text style={styles.addInfluenceButtonText}>Add</Text>
+              </TouchableOpacity>
+            </View>
+            
+            <Text style={[styles.sectionTitle, { marginTop: 24 }]}>Brands I Like</Text>
+            <View style={styles.genreGrid}>
+              {INFLUENCE_BRANDS.map((brand, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.musicGenreButton,
+                    selectedInfluences.includes(brand) && styles.genreButtonActive
+                  ]}
+                  onPress={() => toggleInfluence(brand)}
+                >
+                  <Text style={[
+                    styles.genreText,
+                    selectedInfluences.includes(brand) && styles.genreTextActive
+                  ]}>
+                    {brand}
+                  </Text>
                 </TouchableOpacity>
               ))}
             </View>
@@ -2389,14 +2953,80 @@ export default function EditProfile() {
         )}
       </View>
 
-      <View style={styles.interestCategory}>
-        <TouchableOpacity style={styles.categoryHeader}>
+      <View style={[styles.interestCategory, { marginHorizontal: 4}]}>
+        <TouchableOpacity 
+          style={styles.categoryHeader}
+          onPress={() => {
+            setShowMusicExpanded(false);
+            setShowSportsExpanded(false);
+            setShowAnimeExpanded(false);
+            setShowVideoGamesExpanded(false);
+            setShowPassionExpanded(false);
+            setShowArtsCultureExpanded(false);
+            setShowFoodDrinksExpanded(false);
+            setShowOutdoorsExpanded(false);
+            setShowFitnessExpanded(false);
+            setShowBusinessExpanded(false);
+            setShowTechnologyExpanded(!showTechnologyExpanded);
+          }}
+        >
           <View style={styles.categoryIcon}>
             <Text style={styles.categoryEmoji}>💻</Text>
           </View>
           <Text style={styles.categoryTitle}>Technology</Text>
-          <Ionicons name="chevron-down" size={20} color="#666" />
+          <Ionicons 
+            name={showTechnologyExpanded ? "chevron-up" : "chevron-down"} 
+            size={20} 
+            color="#666" 
+          />
         </TouchableOpacity>
+        
+        {showTechnologyExpanded && (
+          <View style={[styles.expandedContent, { paddingHorizontal: 0 }]}>
+            <View style={styles.genreGrid}>
+              {TECHNOLOGY_EVENTS.map((event, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.musicGenreButton,
+                    { paddingHorizontal: 8 },
+                    selectedTechnology.includes(event) && styles.genreButtonActive
+                  ]}
+                  onPress={() => toggleTechnology(event)}
+                >
+                  <Text style={[
+                    styles.genreText,
+                    selectedTechnology.includes(event) && styles.genreTextActive
+                  ]}>{event}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+            
+            {/* Display custom technology entries as pills above the input */}
+            {selectedTechnology.filter(event => !TECHNOLOGY_EVENTS.includes(event)).length > 0 && (
+              <View style={styles.customMusicSection}>
+                <Text style={styles.subCategoryTitle}>Your Tech Events</Text>
+                <View style={styles.genreGrid}>
+                  {selectedTechnology
+                    .filter(event => !TECHNOLOGY_EVENTS.includes(event))
+                    .map((customEntry, index) => (
+                    <TouchableOpacity
+                      key={`tech-${index}`}
+                      style={[styles.genreButton, styles.genreButtonActive, styles.customMusicPill]}
+                      onPress={() => {
+                        setSelectedTechnology(prev => prev.filter(item => item !== customEntry));
+                        setTimeout(() => saveProfileData(), 100);
+                      }}
+                    >
+                      <Text style={[styles.genreText, styles.genreTextActive]}>{customEntry}</Text>
+                      <Ionicons name="close-circle" size={16} color="#fff" style={styles.removePillIcon} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            )}
+          </View>
+        )}
       </View>
 
       <View style={styles.interestCategory}>
@@ -2470,39 +3100,109 @@ export default function EditProfile() {
       </View>
 
       <View style={styles.interestCategory}>
-        <TouchableOpacity style={styles.categoryHeader}>
+        <TouchableOpacity 
+          style={styles.categoryHeader}
+          onPress={() => {
+            setShowMusicExpanded(false);
+            setShowSportsExpanded(false);
+            setShowAnimeExpanded(false);
+            setShowVideoGamesExpanded(false);
+            setShowPassionExpanded(false);
+            setShowArtsCultureExpanded(false);
+            setShowFoodDrinksExpanded(false);
+            setShowOutdoorsExpanded(false);
+            setShowFitnessExpanded(false);
+            setShowBusinessExpanded(false);
+            setShowTechnologyExpanded(false);
+            setShowFamilyKidsExpanded(!showFamilyKidsExpanded);
+          }}
+        >
           <View style={styles.categoryIcon}>
             <Text style={styles.categoryEmoji}>👨‍👩‍👧‍👦</Text>
           </View>
           <Text style={styles.categoryTitle}>Family & Kids</Text>
-          <Ionicons name="chevron-down" size={20} color="#666" />
+          <Ionicons 
+            name={showFamilyKidsExpanded ? "chevron-up" : "chevron-down"} 
+            size={20} 
+            color="#666" 
+          />
         </TouchableOpacity>
+        
+        {showFamilyKidsExpanded && (
+          <View style={[styles.expandedContent, { paddingHorizontal: 0 }]}>
+            <View style={styles.genreGrid}>
+              {FAMILY_KIDS_EVENTS.map((event, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.musicGenreButton,
+                    selectedFamilyKids.includes(event) && styles.genreButtonActive
+                  ]}
+                  onPress={() => toggleFamilyKids(event)}
+                >
+                  <Text style={[
+                    styles.genreText,
+                    selectedFamilyKids.includes(event) && styles.genreTextActive
+                  ]}>{event}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+        )}
       </View>
 
       <View style={styles.interestCategory}>
-        <TouchableOpacity style={styles.categoryHeader}>
+        <TouchableOpacity 
+          style={styles.categoryHeader}
+          onPress={() => {
+            setShowMusicExpanded(false);
+            setShowSportsExpanded(false);
+            setShowAnimeExpanded(false);
+            setShowVideoGamesExpanded(false);
+            setShowPassionExpanded(false);
+            setShowArtsCultureExpanded(false);
+            setShowFoodDrinksExpanded(false);
+            setShowOutdoorsExpanded(false);
+            setShowFitnessExpanded(false);
+            setShowBusinessExpanded(false);
+            setShowTechnologyExpanded(false);
+            setShowFamilyKidsExpanded(false);
+            setShowComedyEntertainmentExpanded(!showComedyEntertainmentExpanded);
+          }}
+        >
           <View style={styles.categoryIcon}>
             <Text style={styles.categoryEmoji}>😂</Text>
           </View>
           <Text style={styles.categoryTitle}>Comedy & Entertainment</Text>
-          <Ionicons name="chevron-down" size={20} color="#666" />
+          <Ionicons 
+            name={showComedyEntertainmentExpanded ? "chevron-up" : "chevron-down"} 
+            size={20} 
+            color="#666" 
+          />
         </TouchableOpacity>
-      </View>
-
-      <View style={styles.interestCategory}>
-        <TouchableOpacity style={styles.categoryHeader}>
-          <View style={styles.categoryIcon}>
-            <Text style={styles.categoryEmoji}>✈️</Text>
+        
+        {showComedyEntertainmentExpanded && (
+          <View style={[styles.expandedContent, { paddingHorizontal: 0 }]}>
+            <View style={styles.genreGrid}>
+              {COMEDY_ENTERTAINMENT_EVENTS.map((event, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.musicGenreButton,
+                    selectedComedyEntertainment.includes(event) && styles.genreButtonActive
+                  ]}
+                  onPress={() => toggleComedyEntertainment(event)}
+                >
+                  <Text style={[
+                    styles.genreText,
+                    selectedComedyEntertainment.includes(event) && styles.genreTextActive
+                  ]}>{event}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
-          <Text style={styles.categoryTitle}>Travel & Adventures</Text>
-          <Ionicons name="chevron-down" size={20} color="#666" />
-        </TouchableOpacity>
+        )}
       </View>
-
-      <TouchableOpacity style={styles.goalButton}>
-        <Text style={styles.goalButtonText}>Interests</Text>
-        <Ionicons name="chevron-down" size={20} color="#007AFF" />
-      </TouchableOpacity>
     </View>
   );
 
@@ -3188,6 +3888,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#000',
   },
+  sectionTitleSmall: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 12,
+    marginLeft: 4,
+  },
   interestTags: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -3632,6 +4339,36 @@ const styles = StyleSheet.create({
   modalDoneButtonText: {
     color: 'white',
     fontSize: 16,
+    fontWeight: '600',
+  },
+  customInfluenceContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 8,
+  },
+  customInfluenceInput: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#E5E5EA',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    backgroundColor: 'white',
+  },
+  customInfluenceText: {
+    fontSize: 14,
+    color: '#999',
+  },
+  addInfluenceButton: {
+    backgroundColor: '#007AFF',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  addInfluenceButtonText: {
+    color: 'white',
+    fontSize: 14,
     fontWeight: '600',
   },
 });

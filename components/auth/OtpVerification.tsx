@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react'
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native'
-import { useAuth } from '../contexts/AuthContext'
+import React, { useRef, useState } from 'react'
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { useAuth } from '../../contexts/AuthContext'
 
 interface OtpVerificationProps {
   phoneNumber: string
