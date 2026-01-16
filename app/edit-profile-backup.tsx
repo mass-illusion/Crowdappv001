@@ -1,8 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useRouter } from 'expo-router';
-import React, { useCallback, useRef, useState } from 'react';
-import { Image, KeyboardAvoidingView, Modal, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { Image, Modal, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 
 export default function EditProfile() {
   const router = useRouter();
@@ -186,9 +186,6 @@ export default function EditProfile() {
       await AsyncStorage.setItem('selectedComedyEntertainment', JSON.stringify(selectedComedyEntertainment));
       await AsyncStorage.setItem('selectedInfluences', JSON.stringify(selectedInfluences));
       await AsyncStorage.setItem('selectedIdentities', JSON.stringify(selectedIdentities));
-      await AsyncStorage.setItem('selectedFriendGroup', JSON.stringify(selectedFriendGroup));
-      await AsyncStorage.setItem('selectedPrompts', JSON.stringify(selectedPrompts));
-    await AsyncStorage.setItem('promptResponses', JSON.stringify(promptResponses));
       
       // Show success feedback (optional)
       console.log('Profile data saved successfully');
@@ -206,24 +203,13 @@ export default function EditProfile() {
   const [loveLanguage, setLoveLanguage] = useState('');
   const [selectedIdentities, setSelectedIdentities] = useState<string[]>([]);
   const [showIdentitiesExpanded, setShowIdentitiesExpanded] = useState(false);
-  const [selectedFriendGroup, setSelectedFriendGroup] = useState<string[]>([]);
-  const [showFriendGroupExpanded, setShowFriendGroupExpanded] = useState(false);
-  const [selectedPrompts, setSelectedPrompts] = useState<string[]>([]);
-  const [showPromptsExpanded, setShowPromptsExpanded] = useState(false);
-  const [promptResponses, setPromptResponses] = useState<{[key: string]: string}>({});
-  const [expandedPromptInput, setExpandedPromptInput] = useState<string | null>(null);
-  const scrollViewRef = useRef<ScrollView>(null);
 
   // Identity options array
   const IDENTITY_OPTIONS = [
     'Baddie', 'Nerd', 'Creative', 'Gym Rat', 'Music Head', 'Pop Culture Junkie', 'Sober', 'Soft Girl', 'Chronically Inspired', 'Minimal', 'Unhinged', 'Chill Guy', 'ADHD', 'Aware', 'Tomboy',
-    'Career-Focused', 'Entrepreneurial', 'Fashionably Late', 'Sports Fanatic', 'Funny', 'Go-Getter', 'Competitive',
-    'Alternative', 'Shy', 'Confident', 'Finance Bro', 'Stoic', 'Corporate', 'Side Hustler', 'Collector', 'Maybe On The Spectrum',
-    'Vintage Soul', 'Swiftie', 'Fashionista', 'BeyHive', 'E-girl'
-  ];
-
-  const FRIEND_GROUP_OPTIONS = [
-    'The Planner', 'Mom/Dad', 'The Therapist', 'The Joker', 'The Party Animal', 'The Bookworm', 'The Chill One', 'The Overachiever', 'The Outsider', 'The Emotional One'
+    'Career-Focused', 'Entrepreneurial', 'Fashionably Late', 'Burnt-Out But Ambitious', 'Chaos But Effective',
+    'Alternative', 'Shy', 'Confident', 'Finance Bro', 'Tik Tok Brain', 'Corporate',
+    'Side Hustler', 'Vintage Soul', 'Building Something', 'Fashion-Forward'
   ];
   
   // Music expansion states
@@ -798,24 +784,6 @@ export default function EditProfile() {
         setSelectedIdentities(JSON.parse(savedIdentities));
       }
       
-      // Load friend group selections
-      const savedFriendGroup = await AsyncStorage.getItem('selectedFriendGroup');
-      if (savedFriendGroup) {
-        setSelectedFriendGroup(JSON.parse(savedFriendGroup));
-      }
-      
-      // Load selected prompts
-      const savedPrompts = await AsyncStorage.getItem('selectedPrompts');
-      if (savedPrompts) {
-        setSelectedPrompts(JSON.parse(savedPrompts));
-      }
-      
-      // Load prompt responses
-      const savedPromptResponses = await AsyncStorage.getItem('promptResponses');
-      if (savedPromptResponses) {
-        setPromptResponses(JSON.parse(savedPromptResponses));
-      }
-      
       // Load passions from edit profile or from interests.tsx
       const savedPassions = await AsyncStorage.getItem('selectedPassions');
       const savedInterests = await AsyncStorage.getItem('selectedInterests');
@@ -1218,61 +1186,6 @@ export default function EditProfile() {
     });
   };
 
-  const toggleFriendGroup = (role: string) => {
-    setSelectedFriendGroup(prev => {
-      const newRoles = prev.includes(role)
-        ? prev.filter(item => item !== role)
-        : [...prev, role];
-      
-      setTimeout(() => saveProfileData(), 100);
-      return newRoles;
-    });
-  };
-
-  const togglePrompt = (prompt: string) => {
-    console.log('Toggling prompt:', prompt);
-    console.log('Current selectedPrompts:', selectedPrompts);
-    
-    const hasTextContent = promptResponses[prompt]?.trim().length > 0;
-    
-    // If clicking the same prompt that's already expanded, close it
-    if (expandedPromptInput === prompt) {
-      setExpandedPromptInput(null);
-      setTimeout(() => saveProfileData(), 100);
-      return;
-    }
-    
-    // If button has no text content and user clicks it while it's selected, allow them to unselect/clear it
-    if (!hasTextContent && selectedPrompts.includes(prompt) && expandedPromptInput !== prompt) {
-      // Clear the prompt response and remove from selected
-      setPromptResponses(prev => {
-        const newResponses = { ...prev };
-        delete newResponses[prompt];
-        return newResponses;
-      });
-      setSelectedPrompts(prev => prev.filter(p => p !== prompt));
-      setExpandedPromptInput(null);
-      setTimeout(() => saveProfileData(), 100);
-      return;
-    }
-    
-    // Open the input for this prompt
-    console.log('Setting expandedPromptInput to:', prompt);
-    setExpandedPromptInput(prompt);
-    
-    // Enhanced scrolling behavior for better visibility
-    setTimeout(() => {
-      scrollViewRef.current?.scrollToEnd({ animated: true });
-    }, 150);
-    
-    // Additional scroll after keyboard appears (for iOS)
-    setTimeout(() => {
-      scrollViewRef.current?.scrollToEnd({ animated: true });
-    }, 400);
-    
-    setTimeout(() => saveProfileData(), 100);
-  };
-
   const addCustomOutdoors = () => {
     if (customOutdoorsInput.trim() && !selectedOutdoors.includes(customOutdoorsInput.trim())) {
       setSelectedOutdoors(prev => [...prev, customOutdoorsInput.trim()]);
@@ -1362,36 +1275,6 @@ export default function EditProfile() {
 
   // --- End of addCustomOutdoors ---
 
-  // Update prompt response function
-  const updatePromptResponse = (prompt: string, text: string) => {
-    setPromptResponses(prev => {
-      const newResponses = { ...prev, [prompt]: text };
-      setTimeout(() => saveProfileData(), 100);
-      return newResponses;
-    });
-    
-    // Update selectedPrompts based on whether there's text content
-    setSelectedPrompts(prev => {
-      const hasText = text.trim().length > 0;
-      const isCurrentlySelected = prev.includes(prompt);
-      
-      if (hasText && !isCurrentlySelected) {
-        // Add to selected if there's text and not already selected
-        return [...prev, prompt];
-      } else if (!hasText && isCurrentlySelected) {
-        // Remove from selected if no text and currently selected
-        return prev.filter(p => p !== prompt);
-      }
-      
-      return prev;
-    });
-  };
-
-  // Close prompt input handler
-  const closePromptInput = () => {
-    setExpandedPromptInput(null);
-  };
-
   // Toggle function for Outdoors & Adventures activities
   const toggleOutdoors = (activity: string) => {
     setSelectedOutdoors(prev => {
@@ -1448,9 +1331,22 @@ export default function EditProfile() {
             setAboutMe(text);
             saveProfileData();
           }}
-          placeholder="Describe yourself in 1-3 sentences"
+          placeholder="Describe yourself in a way your friends would."
           multiline
           numberOfLines={3}
+        />
+      </View>
+
+      <View style={[styles.fieldGroup, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedField]}>
+        <Text style={[styles.fieldLabel, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedText]}>My dream is...</Text>
+        <TextInput
+          style={[styles.textInput, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedInput]}
+          value={dreamIs}
+          onChangeText={(text) => {
+            setDreamIs(text);
+            saveProfileData();
+          }}
+          placeholder=""
         />
       </View>
 
@@ -1767,16 +1663,7 @@ export default function EditProfile() {
   );
 
   const renderPersonalityTab = () => (
-    <KeyboardAvoidingView 
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      <ScrollView 
-        style={styles.tabContent}
-        ref={scrollViewRef}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
-      >
+    <View style={styles.tabContent}>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Personality</Text>
         <Text style={styles.sectionDescription}>
@@ -1818,76 +1705,6 @@ export default function EditProfile() {
                   </Text>
                 </TouchableOpacity>
               ))}
-            </View>
-          </View>
-        )}
-      </View>
-
-      <View style={styles.fieldGroup}>
-        <TouchableOpacity 
-          style={styles.musicHeader} 
-          onPress={() => setShowFriendGroupExpanded(!showFriendGroupExpanded)}
-        >
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={styles.fieldLabel}>In the Friend Group, I'm</Text>
-            <Ionicons 
-              name={showFriendGroupExpanded ? "chevron-up" : "chevron-down"} 
-              size={20} 
-              color="#666"
-              style={{ marginLeft: 4, marginTop: -2 }}
-            />
-          </View>
-        </TouchableOpacity>
-        
-        {showFriendGroupExpanded && (
-          <View style={[styles.expandedContent, { paddingHorizontal: 8 }]}>
-            <View style={{ flexDirection: 'column' }}>
-              {/* First row */}
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 8 }}>
-                <View style={{ flexDirection: 'row' }}>
-                  {FRIEND_GROUP_OPTIONS.slice(0, Math.ceil(FRIEND_GROUP_OPTIONS.length / 2)).map((role, index) => (
-                    <TouchableOpacity
-                      key={index}
-                      style={[
-                        styles.musicGenreButton,
-                        selectedFriendGroup.includes(role) && styles.genreButtonActive,
-                        { marginRight: 8 }
-                      ]}
-                      onPress={() => toggleFriendGroup(role)}
-                    >
-                      <Text style={[
-                        styles.genreText,
-                        selectedFriendGroup.includes(role) && styles.genreTextActive
-                      ]}>
-                        {role}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </ScrollView>
-              {/* Second row */}
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                <View style={{ flexDirection: 'row' }}>
-                  {FRIEND_GROUP_OPTIONS.slice(Math.ceil(FRIEND_GROUP_OPTIONS.length / 2)).map((role, index) => (
-                    <TouchableOpacity
-                      key={index + Math.ceil(FRIEND_GROUP_OPTIONS.length / 2)}
-                      style={[
-                        styles.musicGenreButton,
-                        selectedFriendGroup.includes(role) && styles.genreButtonActive,
-                        { marginRight: 8 }
-                      ]}
-                      onPress={() => toggleFriendGroup(role)}
-                    >
-                      <Text style={[
-                        styles.genreText,
-                        selectedFriendGroup.includes(role) && styles.genreTextActive
-                      ]}>
-                        {role}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </ScrollView>
             </View>
           </View>
         )}
@@ -2110,172 +1927,8 @@ export default function EditProfile() {
           ))}
         </View>
       </View>
-
-      <View style={styles.interestCategory}>
-        <TouchableOpacity 
-          style={styles.categoryHeader}
-          onPress={() => setShowPromptsExpanded(!showPromptsExpanded)}
-        >
-        <Text style={styles.fieldLabel}>Prompts</Text>
-        <Ionicons 
-          name={showPromptsExpanded ? "chevron-up" : "chevron-down"} 
-          size={20} 
-          color="#666"
-          style={{ marginTop: -6, marginLeft: 4 }}
-        />
-      </TouchableOpacity>
       
-      {showPromptsExpanded && (
-        <View style={[styles.expandedContent, { paddingHorizontal: 8 }]}>
-          <Text style={styles.sectionDescription}>Pick at least 3</Text>
-          <View>
-          {(() => {
-            const prompts = [
-              'Looking for',
-              'Favorite quote',
-              'My dream is',
-              'That one time in Vegas',
-              'My pet peeve',
-              'If I won the lottery',
-              'Favorite movie',
-              'I\'m obsessed with',
-              'Ronaldo or Messi?',
-              'Top travel destinations',
-              'Greatest athlete of all time',
-              'Hot Take',
-              'My idea of a good time is',
-              'I\'m awesome but',
-              'My proudest moment',
-              'My guilty pleasure',
-              'I go to bed at',
-              'My role model',
-              'People would say I\'m',
-              'We\'ll get along if',
-              'My dream job',
-              'Ask me about',
-              'Designated driver?',
-              'One thing people get wrong about me',
-              'I spend way too much time',
-              'Flats or Drums?',
-              'This year, I want to',
-              'A childhood memory',
-              'My therapy is',
-              'Fun Fact',
-              'Top 3 best concerts',
-              'Random shower thought',
-              'I\'m allergic to',
-              'Bucket List',
-              'Favorite pet',
-              'Favorite word/phrase',
-              'Word/phrase I can\'t stand',
-              'Let\'s go'
-            ];
-            
-            // Group prompts into rows of 6 for longer horizontal scroll
-            const rows = [];
-            for (let i = 0; i < prompts.length; i += 6) {
-              rows.push(prompts.slice(i, i + 6));
-            }
-            
-            return rows.map((row, rowIndex) => (
-              <View key={rowIndex}>
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  style={styles.promptRow}
-                  contentContainerStyle={styles.promptRowContent}
-                >
-                  {row.map((prompt, index) => (
-                    <View key={`${rowIndex}-${index}`} style={styles.promptButtonWrapper}>
-                      <TouchableOpacity
-                        style={[
-                          styles.musicGenreButton,
-                          styles.promptButton,
-                          (promptResponses[prompt]?.trim().length > 0) && styles.genreButtonActive
-                        ]}
-                        onPress={() => {
-                          console.log('Button pressed for prompt:', prompt);
-                          console.log('Has text content:', promptResponses[prompt]?.trim().length > 0);
-                          togglePrompt(prompt);
-                        }}
-                      >
-                        <Text style={[
-                          styles.genreText,
-                          (promptResponses[prompt]?.trim().length > 0) && styles.genreTextActive
-                        ]}>
-                          {prompt}
-                        </Text>
-                      </TouchableOpacity>
-                      
-                      {/* Remove button for highlighted prompts */}
-                      {(promptResponses[prompt]?.trim().length > 0) && (
-                        <TouchableOpacity
-                          style={styles.promptRemoveButton}
-                          onPress={() => {
-                            // Clear the text and remove from selected
-                            setPromptResponses(prev => ({ ...prev, [prompt]: '' }));
-                            setSelectedPrompts(prev => prev.filter(p => p !== prompt));
-                            setTimeout(() => saveProfileData(), 100);
-                          }}
-                        >
-                          <Ionicons name="close" size={12} color="#666" />
-                        </TouchableOpacity>
-                      )}
-                    </View>
-                  ))}
-                </ScrollView>
-              </View>
-            ));
-          })()} 
-          </View>
-        </View>
-      )}
     </View>
-      </ScrollView>
-      
-      {/* Modal overlay for prompt input */}
-      {expandedPromptInput && (
-        <Modal
-          visible={true}
-          transparent={true}
-          animationType="fade"
-          onRequestClose={closePromptInput}
-        >
-          <TouchableWithoutFeedback onPress={closePromptInput}>
-            <View style={styles.modalOverlay}>
-              <TouchableWithoutFeedback>
-                <View style={styles.modalContainer}>
-                  <View style={styles.modalHeader}>
-                    <Text style={styles.modalTitle}>{expandedPromptInput}</Text>
-                    <TouchableOpacity 
-                      style={styles.modalCloseButton}
-                      onPress={closePromptInput}
-                    >
-                      <Ionicons name="close" size={24} color="#666" />
-                    </TouchableOpacity>
-                  </View>
-                  <TextInput
-                    style={styles.modalTextInput}
-                    value={promptResponses[expandedPromptInput] || ''}
-                    onChangeText={(text) => updatePromptResponse(expandedPromptInput, text)}
-                    multiline
-                    numberOfLines={6}
-                    autoFocus
-                    textAlignVertical="top"
-                  />
-                  <TouchableOpacity 
-                    style={styles.modalDoneButton}
-                    onPress={closePromptInput}
-                  >
-                    <Text style={styles.modalDoneButtonText}>Done</Text>
-                  </TouchableOpacity>
-                </View>
-              </TouchableWithoutFeedback>
-            </View>
-          </TouchableWithoutFeedback>
-        </Modal>
-      )}
-    </KeyboardAvoidingView>
   );
 
   const renderInterestsTab = () => (
@@ -3553,9 +3206,6 @@ export default function EditProfile() {
     </View>
   );
 
-
-
-
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
@@ -4604,6 +4254,17 @@ const styles = StyleSheet.create({
   removePillIcon: {
     marginLeft: 6,
   },
+  modalOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 9999,
+  },
   modalContent: {
     backgroundColor: 'white',
     borderRadius: 16,
@@ -4614,6 +4275,23 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 8,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E5EA',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#000',
+  },
+  modalCloseButton: {
+    padding: 4,
   },
   modalScrollView: {
     paddingHorizontal: 20,
@@ -4652,6 +4330,17 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#E5E5EA',
   },
+  modalDoneButton: {
+    backgroundColor: '#007AFF',
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  modalDoneButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+  },
   customInfluenceContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -4681,124 +4370,5 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 14,
     fontWeight: '600',
-  },
-  promptRow: {
-    marginBottom: 12,
-    height: 50,
-  },
-  promptRowContent: {
-    paddingHorizontal: 4,
-    alignItems: 'center',
-  },
-  promptButton: {
-    marginRight: 8,
-    minWidth: 120,
-  },
-  promptButtonWrapper: {
-    position: 'relative',
-    marginRight: 8,
-  },
-  promptRemoveButton: {
-    position: 'absolute',
-    top: 0,
-    right: 4,
-    width: 16,
-    height: 16,
-    borderRadius: 8,
-    backgroundColor: 'white',
-    borderWidth: 1,
-    borderColor: '#E5E5EA',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 3,
-  },
-  promptInputContainer: {
-    marginTop: 12,
-    marginBottom: 8,
-    paddingHorizontal: 4,
-  },
-  promptInputLabel: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 8,
-  },
-  promptTextInput: {
-    borderWidth: 1,
-    borderColor: '#E5E5EA',
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: 'white',
-    fontSize: 16,
-    color: '#333',
-    textAlignVertical: 'top',
-    minHeight: 80,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 100,
-  },
-  modalContainer: {
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 20,
-    width: '100%',
-    maxWidth: 400,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.25,
-    shadowRadius: 20,
-    elevation: 10,
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#333',
-    flex: 1,
-  },
-  modalCloseButton: {
-    padding: 4,
-  },
-  modalTextInput: {
-    borderWidth: 1,
-    borderColor: '#E5E5EA',
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    backgroundColor: '#F9F9F9',
-    fontSize: 16,
-    color: '#333',
-    textAlignVertical: 'top',
-    minHeight: 120,
-    marginBottom: 20,
-  },
-  modalDoneButton: {
-    backgroundColor: '#007AFF',
-    borderRadius: 12,
-    paddingVertical: 14,
-    paddingHorizontal: 32,
-    alignSelf: 'center',
-    minWidth: 100,
-  },
-  modalDoneButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '600',
-    textAlign: 'center',
   },
 });
