@@ -1825,7 +1825,7 @@ export default function EditProfile() {
 
       <View style={styles.fieldGroup}>
         <TouchableOpacity 
-          style={styles.musicHeader} 
+          style={styles.categoryHeader} 
           onPress={() => setShowFriendGroupExpanded(!showFriendGroupExpanded)}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
