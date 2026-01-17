@@ -1,8 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Location from 'expo-location';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
+  Alert,
   Image,
   ImageBackground,
   Modal,
@@ -13,15 +15,13 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View,
-  Alert
+  View
 } from 'react-native';
 import BeerSVG from '../assets/images/beer.svg';
 import BobaSVG from '../assets/images/boba.svg';
 import PlateSVG from '../assets/images/plate.svg';
 import { useStarredProfiles } from '../contexts/StarredProfilesContext';
 import CoffeeSVG from '../Map/Coffee.svg';
-import * as Location from 'expo-location';
 
 // Types for business places
 interface Business {
@@ -388,13 +388,13 @@ export default function MapScreen() {
           {filteredSpots.map((spot) => (
             <View key={spot.id.toString()} style={styles.listItem}>
               <View style={styles.listItemIcon}>
-                {spot.icon === "plate" ? (
+                {spot.type === "plate" ? (
                   <PlateSVG width={62} height={62} />
-                ) : spot.icon === "beer" ? (
+                ) : spot.type === "beer" ? (
                   <BeerSVG width={62} height={62} />
-                ) : spot.icon === "boba" ? (
+                ) : spot.type === "boba" ? (
                   <BobaSVG width={72} height={72} />
-                ) : spot.icon === "coffee" ? (
+                ) : spot.type === "coffee" ? (
                   <CoffeeSVG width={62} height={62} />
                 ) : null}
               </View>
@@ -440,13 +440,13 @@ export default function MapScreen() {
                   <View key={spot.id} style={styles.modalItem}>
                     <View style={styles.modalItemLeft}>
                       <View style={styles.modalItemIcon}>
-                        {spot.icon === "plate" ? (
+                        {spot.type === "plate" ? (
                           <PlateSVG width={40} height={40} />
-                        ) : spot.icon === "beer" ? (
+                        ) : spot.type === "beer" ? (
                           <BeerSVG width={40} height={40} />
-                        ) : spot.icon === "boba" ? (
+                        ) : spot.type === "boba" ? (
                           <BobaSVG width={46} height={46} />
-                        ) : spot.icon === "coffee" ? (
+                        ) : spot.type === "coffee" ? (
                           <CoffeeSVG width={40} height={40} />
                         ) : null}
                       </View>

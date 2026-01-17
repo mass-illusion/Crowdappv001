@@ -9,17 +9,18 @@ interface RegistrationScreenProps {
   onTermsPress?: () => void;
   onPrivacyPress?: () => void;
   onSendCode?: (phoneNumber: string) => void;
+  onComplete?: () => void;
 }
 
-export default function RegistrationScreen({ onBack, onTermsPress, onPrivacyPress, onSendCode }: RegistrationScreenProps) {
+// Removed duplicate export default
+
+export default function RegistrationScreen({ onBack, onTermsPress, onPrivacyPress, onSendCode, onComplete }: RegistrationScreenProps) {
   const router = useRouter();
   const [phoneNumber, setPhoneNumber] = useState('');
   const isValidPhone = phoneNumber.replace(/\D/g, '').length === 10;
 
   const formatPhoneNumber = (text: string) => {
-    // Remove all non-numeric characters
     const cleaned = text.replace(/\D/g, '');
-    // Format as XXX-XXX-XXXX
     let formatted = cleaned;
     if (cleaned.length > 3 && cleaned.length <= 6) {
       formatted = `${cleaned.slice(0, 3)}-${cleaned.slice(3)}`;
@@ -38,6 +39,9 @@ export default function RegistrationScreen({ onBack, onTermsPress, onPrivacyPres
     if (isValidPhone) {
       if (onSendCode) {
         onSendCode(phoneNumber);
+      }
+      if (onComplete) {
+        onComplete();
       }
       router.replace('/profile');
     }
@@ -91,9 +95,9 @@ By entering your number, you agree to Crowd's{'\n'}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
-    paddingHorizontal: 30,
-    paddingTop: 200,
+  backgroundColor: '#FFFFFF',
+  paddingHorizontal: 30,
+  paddingTop: 200,
   },
   titleContainer: {
     alignItems: 'center',

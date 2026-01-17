@@ -5,7 +5,11 @@ import React, { useRef, useState } from 'react';
 import { Alert, FlatList, Keyboard, Modal, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, useWindowDimensions, View } from 'react-native';
 import SvgFindMyCrowdWhite from '../assets/images/findmycrowdwhite.svg';
 
-const Also: React.FC = () => {
+interface AlsoProps {
+  onComplete?: () => void;
+}
+
+const Also: React.FC<AlsoProps> = ({ onComplete }) => {
   const { width } = useWindowDimensions();
   const router = useRouter();
   const [selectedTab, setSelectedTab] = useState('Girl Friends');
@@ -259,6 +263,9 @@ const Also: React.FC = () => {
         <Text style={styles.backArrowText}>←</Text>
       </TouchableOpacity>
       <Text style={styles.header}>I'm looking for...</Text>
+      <TouchableOpacity onPress={() => { if (onComplete) onComplete(); }}>
+        <Text>Continue</Text>
+      </TouchableOpacity>
       <Text style={styles.subtext}>Get specific! You can always change this later.</Text>
       <View style={styles.tabContainer}>
         {['Girl Friends', 'Guy Friends', 'Both'].map(tab => (

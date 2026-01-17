@@ -10,7 +10,12 @@ const EMPTY_AVATAR = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
 
 import { useRouter } from 'expo-router';
 
-const UploadScreen: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
+interface UploadScreenProps {
+  onBack?: () => void;
+  onComplete?: () => void;
+}
+
+const UploadScreen: React.FC<UploadScreenProps> = ({ onBack, onComplete }) => {
   const router = useRouter();
   const [photos, setPhotos] = useState<(string | null)[]>([null, null, null, null, null, null]);
 
@@ -40,6 +45,7 @@ const UploadScreen: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
         }
         return updated;
       });
+      if (onComplete) onComplete(); // Call after upload or next action
     }
   };
 
@@ -66,6 +72,7 @@ const UploadScreen: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
         }
         return updated;
       });
+      if (onComplete) onComplete(); // Call after upload or next action
     }
   };
 

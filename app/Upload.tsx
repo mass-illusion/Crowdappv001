@@ -8,7 +8,11 @@ import { ActionSheetIOS, Alert, Image, KeyboardAvoidingView, Platform, StyleShee
 
 const EMPTY_AVATAR = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
 
-const UploadScreen: React.FC = () => {
+interface UploadProps {
+  onComplete?: () => void;
+}
+
+const Upload: React.FC<UploadProps> = ({ onComplete }) => {
   const router = useRouter();
   const [photos, setPhotos] = useState<(string | null)[]>([null, null, null, null, null, null]);
 
@@ -273,4 +277,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UploadScreen;
+export default Upload;

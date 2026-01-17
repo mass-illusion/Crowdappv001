@@ -1,6 +1,6 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useRef } from "react";
-import { StyleSheet, Text, TouchableOpacity, View, Animated } from "react-native";
+import { Animated, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const WelcomeModal: React.FC = () => {
   const router = useRouter();
@@ -40,14 +40,16 @@ const WelcomeModal: React.FC = () => {
   return (
     <View style={styles.overlay}>
       <View style={styles.modalBox}>
-        <Animated.Text 
-          style={[
-            styles.emoji, 
-            { transform: [{ rotate: waveRotation }] }
-          ]}
-        >
-          🖐️
-        </Animated.Text>
+        <TouchableOpacity onPress={() => router.replace('/gender')} activeOpacity={0.7}>
+          <Animated.Text 
+            style={[
+              styles.emoji, 
+              { transform: [{ rotate: waveRotation }] }
+            ]}
+          >
+            🖐️
+          </Animated.Text>
+        </TouchableOpacity>
         <Text style={styles.title}>Welcome {name || 'there'}!</Text>
         <Text style={styles.subtitle}>
           There's a lot to discover, but let's get your profile set up first.

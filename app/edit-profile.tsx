@@ -119,16 +119,25 @@ export default function EditProfile() {
   const idealHangoutsOptions = [
     '☕ Coffee',
     '🎵 Concerts',
+    '💅 Nails',
     '💪 Workouts',
     '🎮 Game nights',
+    '🌿 420',
+    '🔥 BBQ',
     '🎨 Creative',
-    '🛍️ Shop',
     '🏔️ Outdoors',
+    '🛠️ Building something',
+    '🎣 Fishing',
     '🍽️ Food & Drinks',
     '🕺 Club',
-    '📚 Study',
-    '🌿 420',
     '🎬 Movies',
+    '🍻 Sports bar',
+    '🧳 Weekend getaway',
+    '🚙 Offroading',
+    '💆‍♀️ Spa Day',
+    '🛍️ Shop',
+    '🤱 Mom Hangs',
+    '🏟️ Sports Game',
     '🍄 Psychedelics',
     '📱 Make Content',
     '🏠 Stay In'
@@ -1411,6 +1420,7 @@ export default function EditProfile() {
         <Text style={styles.sectionDescription}>
           Sharing help us improve compatibility and personalize matches! Not all details are visible on your profile. Preview and manage visibility at anytime.
         </Text>
+        <View style={{ height: 20 }} />
       </View>
 
       <View style={[styles.fieldGroup, (showEthnicityDropdown || showIndustryDropdown || showReligionDropdown || showGenderDropdown) && styles.dimmedField]}>
@@ -1750,7 +1760,11 @@ export default function EditProfile() {
                     <Text style={[
                       styles.enhancedGoalButtonText,
                       isSelected && styles.enhancedGoalButtonTextActive
-                    ]}>{goal}</Text>
+                    ]}>
+                      {goal === 'Find friends in my city'
+                        ? 'Find friends in\nmy city'
+                        : goal}
+                    </Text>
                   </View>
                   {isSelected && (
                     <View style={styles.selectedIndicator}>
@@ -1760,6 +1774,17 @@ export default function EditProfile() {
                 </TouchableOpacity>
               );
             })}
+            {/* Specifically looking for... subheader and text box */}
+            <View style={{ marginTop: 16 }}>
+              <Text style={[styles.sectionTitle, { color: '#000' }]}>Specifically looking for...</Text>
+              <TextInput
+                style={[styles.textInput, styles.textArea, { width: '100%', minHeight: 60 }]}
+                placeholder="Ex: Girlfriends to go on weekend getaways"
+                placeholderTextColor="#999"
+                multiline
+                numberOfLines={2}
+              />
+            </View>
           </View>
         </View>
       </View>
@@ -1782,11 +1807,12 @@ export default function EditProfile() {
         <Text style={styles.sectionDescription}>
           Share your personality so we can connect you with like-minded friends and communities.
         </Text>
+        <View style={{ height: 12 }} />
       </View>
 
       <View style={styles.interestCategory}>
         <TouchableOpacity 
-          style={styles.categoryHeader}
+          style={styles.musicHeader}
           onPress={() => setShowIdentitiesExpanded(!showIdentitiesExpanded)}
         >
           <Text style={styles.fieldLabel}>Identify As</Text>
@@ -1799,7 +1825,8 @@ export default function EditProfile() {
         </TouchableOpacity>
         
         {showIdentitiesExpanded && (
-          <View style={[styles.expandedContent, { paddingHorizontal: 8 }]}>
+          <View style={[styles.expandedContent, { paddingHorizontal: 8 }]}> 
+            <View style={{ height: 12 }} />
             <View style={styles.genreGrid}>
               {IDENTITY_OPTIONS.map((identity, index) => (
                 <TouchableOpacity
@@ -1823,12 +1850,13 @@ export default function EditProfile() {
         )}
       </View>
 
+      <View style={{ height: 0 }} />
       <View style={styles.fieldGroup}>
         <TouchableOpacity 
-          style={styles.categoryHeader} 
+          style={styles.musicHeader}
           onPress={() => setShowFriendGroupExpanded(!showFriendGroupExpanded)}
         >
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
             <Text style={styles.fieldLabel}>In the Friend Group, I'm</Text>
             <Ionicons 
               name={showFriendGroupExpanded ? "chevron-up" : "chevron-down"} 
@@ -1840,52 +1868,82 @@ export default function EditProfile() {
         </TouchableOpacity>
         
         {showFriendGroupExpanded && (
-          <View style={[styles.expandedContent, { paddingHorizontal: 8 }]}>
+          <View style={[styles.expandedContent, { paddingHorizontal: 8, marginTop: 12 }]}> 
             <View style={{ flexDirection: 'column' }}>
               {/* First row */}
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 8 }}>
                 <View style={{ flexDirection: 'row' }}>
-                  {FRIEND_GROUP_OPTIONS.slice(0, Math.ceil(FRIEND_GROUP_OPTIONS.length / 2)).map((role, index) => (
-                    <TouchableOpacity
-                      key={index}
-                      style={[
-                        styles.musicGenreButton,
-                        selectedFriendGroup.includes(role) && styles.genreButtonActive,
-                        { marginRight: 8 }
-                      ]}
-                      onPress={() => toggleFriendGroup(role)}
-                    >
-                      <Text style={[
-                        styles.genreText,
-                        selectedFriendGroup.includes(role) && styles.genreTextActive
-                      ]}>
-                        {role}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
+                  {FRIEND_GROUP_OPTIONS.slice(0, Math.ceil(FRIEND_GROUP_OPTIONS.length / 2)).map((role, index) => {
+                    const roleEmojis: Record<typeof FRIEND_GROUP_OPTIONS[number], string> = {
+                      'The Planner': '🗓️',
+                      'Mom/Dad': '🧑‍🍼',
+                      'The Therapist': '🧠',
+                      'The Joker': '🤣',
+                      'The Party Animal': '🍻',
+                      'The Bookworm': '📚',
+                      'The Chill One': '😎',
+                      'The Overachiever': '🏆',
+                      'The Outsider': '👤',
+                      'The Emotional One': '😭'
+                    };
+                    return (
+                      <TouchableOpacity
+                        key={index}
+                        style={[
+                          styles.musicGenreButton,
+                          selectedFriendGroup.includes(role) && styles.genreButtonActive,
+                          { marginRight: 12, marginBottom: 10 }
+                        ]}
+                        onPress={() => toggleFriendGroup(role)}
+                      >
+                        <Text style={[
+                          styles.genreText,
+                          selectedFriendGroup.includes(role) && styles.genreTextActive
+                        ]}>
+                          {roleEmojis[role as keyof typeof roleEmojis] ? `${roleEmojis[role as keyof typeof roleEmojis]} ` : ''}{role}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
                 </View>
               </ScrollView>
               {/* Second row */}
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View style={{ flexDirection: 'row' }}>
-                  {FRIEND_GROUP_OPTIONS.slice(Math.ceil(FRIEND_GROUP_OPTIONS.length / 2)).map((role, index) => (
-                    <TouchableOpacity
-                      key={index + Math.ceil(FRIEND_GROUP_OPTIONS.length / 2)}
-                      style={[
-                        styles.musicGenreButton,
-                        selectedFriendGroup.includes(role) && styles.genreButtonActive,
-                        { marginRight: 8 }
-                      ]}
-                      onPress={() => toggleFriendGroup(role)}
-                    >
-                      <Text style={[
-                        styles.genreText,
-                        selectedFriendGroup.includes(role) && styles.genreTextActive
-                      ]}>
-                        {role}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
+                  {FRIEND_GROUP_OPTIONS.slice(Math.ceil(FRIEND_GROUP_OPTIONS.length / 2)).map((role, index) => {
+                    const roleEmojis = {
+                      'The Planner': '🗓️',
+                      'Mom/Dad': '🧑‍🍼',
+                      'The Therapist': '🧠',
+                      'The Joker': '🤣',
+                      'The Party Animal': '🍻',
+                      'The Bookworm': '📚',
+                      'The Chill One': '😎',
+                      'The Overachiever': '🏆',
+                      'The Outsider': '👤',
+                      'The Emotional One': '🥹'
+                    } as const;
+                    type RoleKey = keyof typeof roleEmojis;
+                    const emoji = roleEmojis[role as RoleKey];
+                    return (
+                      <TouchableOpacity
+                        key={index + Math.ceil(FRIEND_GROUP_OPTIONS.length / 2)}
+                        style={[
+                          styles.musicGenreButton,
+                          selectedFriendGroup.includes(role) && styles.genreButtonActive,
+                          { marginRight: 12, marginBottom: 8 }
+                        ]}
+                        onPress={() => toggleFriendGroup(role)}
+                      >
+                        <Text style={[
+                          styles.genreText,
+                          selectedFriendGroup.includes(role) && styles.genreTextActive
+                        ]}>
+                          {emoji ? `${emoji} ` : ''}{role}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
                 </View>
               </ScrollView>
             </View>
@@ -1895,6 +1953,7 @@ export default function EditProfile() {
 
       <View style={styles.fieldGroup}>
         <Text style={styles.fieldLabel}>Social Energy</Text>
+        <View style={{ height: 6}} />
         <View style={styles.optionGroup}>
           {['Introvert', 'Ambivert', 'Extrovert'].map((option) => (
             <TouchableOpacity
@@ -1912,6 +1971,7 @@ export default function EditProfile() {
 
       <View style={styles.fieldGroup}>
         <Text style={styles.fieldLabel}>Weekend Mood</Text>
+        <View style={{ height: 2 }} />
         <View style={styles.optionGroup}>
           {[
             { key: 'chill', label: 'Chill', icon: '❄️' },
@@ -1934,21 +1994,24 @@ export default function EditProfile() {
 
       <View style={styles.socialSection}>
         <TouchableOpacity 
-          style={styles.categoryHeader}
+          style={styles.musicHeader}
           onPress={() => setShowIdealHangoutsExpanded(!showIdealHangoutsExpanded)}
         >
-          <Text style={styles.fieldLabel}>Ideal Hangouts</Text>
-          <Ionicons 
-            name={showIdealHangoutsExpanded ? "chevron-up" : "chevron-down"} 
-            size={20} 
-            color="#666"
-            style={{ marginTop: -6, marginLeft: 4 }}
-          />
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+            <Text style={styles.fieldLabel}>Ideal Hangouts</Text>
+            <Ionicons 
+              name={showIdealHangoutsExpanded ? "chevron-up" : "chevron-down"} 
+              size={20} 
+              color="#666"
+              style={{ marginLeft: 4, marginTop: -6 }}
+            />
+          </View>
         </TouchableOpacity>
         
         {showIdealHangoutsExpanded && (
-          <View style={[styles.expandedContent, { paddingHorizontal: 0 }]}>
-            <View style={styles.hangoutGrid}>
+          <View style={[styles.expandedContent, { paddingHorizontal: 0 }]}> 
+            <View style={{ height: 20 }} />
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
               {idealHangoutsOptions.map((hangout, index) => (
                 <TouchableOpacity
                   key={index}
@@ -1969,7 +2032,6 @@ export default function EditProfile() {
             {/* Display custom hangout entries as pills above the input */}
             {idealHangouts.filter(hangout => !idealHangoutsOptions.includes(hangout)).length > 0 && (
               <View style={styles.customMusicSection}>
-                <Text style={styles.subCategoryTitle}>Your Hangouts</Text>
                 <View style={styles.genreGrid}>
                   {idealHangouts
                     .filter(hangout => !idealHangoutsOptions.includes(hangout))
@@ -2113,29 +2175,29 @@ export default function EditProfile() {
 
       <View style={styles.interestCategory}>
         <TouchableOpacity 
-          style={styles.categoryHeader}
+          style={styles.musicHeader}
           onPress={() => setShowPromptsExpanded(!showPromptsExpanded)}
         >
-        <Text style={styles.fieldLabel}>Prompts</Text>
-        <Ionicons 
-          name={showPromptsExpanded ? "chevron-up" : "chevron-down"} 
-          size={20} 
-          color="#666"
-          style={{ marginTop: -6, marginLeft: 4 }}
-        />
-      </TouchableOpacity>
+          <Text style={styles.fieldLabel}>Prompts</Text>
+          <Ionicons 
+            name={showPromptsExpanded ? "chevron-up" : "chevron-down"} 
+            size={20} 
+            color="#666"
+            style={{ marginTop: -6, marginLeft: 4 }}
+          />
+        </TouchableOpacity>
       
       {showPromptsExpanded && (
-        <View style={[styles.expandedContent, { paddingHorizontal: 8 }]}>
-          <Text style={styles.sectionDescription}>Pick at least 3</Text>
+        <View style={[styles.expandedContent, { paddingHorizontal: 0 }]}> 
+          <Text style={[styles.sectionDescription, { marginLeft: 7, marginBottom: 16 }]}>Pick at least 3</Text>
           <View>
           {(() => {
             const prompts = [
-              'Looking for',
-              'Favorite quote',
-              'My dream is',
+              "All I want is",
+              'I can make a mean',
+              'My dream is to',
               'That one time in Vegas',
-              'My pet peeve',
+              'A pet peeve',
               'If I won the lottery',
               'Favorite movie',
               'I\'m obsessed with',
@@ -2144,7 +2206,7 @@ export default function EditProfile() {
               'Greatest athlete of all time',
               'Hot Take',
               'My idea of a good time is',
-              'I\'m awesome but',
+              'I\'m awesome at',
               'My proudest moment',
               'My guilty pleasure',
               'I go to bed at',
@@ -2312,9 +2374,10 @@ export default function EditProfile() {
               color="#666" 
             />
           </TouchableOpacity>
-          
+
           {showSportsExpanded && (
             <View style={styles.expandedContent}>
+              <View style={{ height:-2 }} />
               <Text style={styles.subCategoryTitle}>Leagues</Text>
               <View style={styles.genreGrid}>
                 {SPORTS_CATEGORIES.map((sport, index) => (
@@ -3629,35 +3692,43 @@ export default function EditProfile() {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>🏈 NFL Teams</Text>
-              <TouchableOpacity
-                style={styles.modalCloseButton}
-                onPress={() => setShowNFLModal(false)}
-              >
-                <Ionicons name="close" size={24} color="#666" />
-              </TouchableOpacity>
+            <View style={[styles.modalHeader, { justifyContent: 'center' }]}> 
+              <View style={styles.sportsModalHeader}>
+                <Text style={styles.sportsModalTitle}>🏈 NFL Teams</Text>
+                <TouchableOpacity
+                  style={styles.sportsModalCloseButton}
+                  onPress={() => setShowNFLModal(false)}
+                >
+                  <Ionicons name="close" size={24} color="#666" />
+                </TouchableOpacity>
+              </View>
+            // --- Sports Modal Header Styles ---
             </View>
             
             <ScrollView style={styles.modalScrollView}>
               <View style={styles.teamsGrid}>
-                {NFL_TEAMS.map((team, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={[
-                      styles.teamButton,
-                      selectedNFLTeams.includes(team) && styles.teamButtonActive
-                    ]}
-                    onPress={() => toggleNFLTeam(team)}
-                  >
-                    <Text style={[
-                      styles.teamButtonText,
-                      selectedNFLTeams.includes(team) && styles.teamButtonTextActive
-                    ]}>
-                      {team}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
+                <View style={styles.nflGridWrapper}>
+                  {NFL_TEAMS.map((team, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      style={[
+                        styles.nflRectangle,
+                        selectedNFLTeams.includes(team) && styles.nflRectangleActive,
+                        // 2-column grid
+                        { marginRight: index % 2 === 0 ? 8 : 0 }
+                      ]}
+                      onPress={() => toggleNFLTeam(team)}
+                    >
+                      <Text style={[
+                        styles.nflRectangleText,
+                        selectedNFLTeams.includes(team) && styles.nflRectangleTextActive
+                      ]} numberOfLines={2}>
+                        {team}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              // --- NFL Rectangle Grid Styles ---
               </View>
             </ScrollView>
             
@@ -3682,10 +3753,10 @@ export default function EditProfile() {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>🏀 NBA Teams</Text>
+            <View style={styles.sportsModalHeader}>
+              <Text style={styles.sportsModalTitle}>🏀 NBA Teams</Text>
               <TouchableOpacity
-                style={styles.modalCloseButton}
+                style={styles.sportsModalCloseButton}
                 onPress={() => setShowNBAModal(false)}
               >
                 <Ionicons name="close" size={24} color="#666" />
@@ -3693,20 +3764,21 @@ export default function EditProfile() {
             </View>
             
             <ScrollView style={styles.modalScrollView}>
-              <View style={styles.teamsGrid}>
+              <View style={styles.nflGridWrapper}>
                 {NBA_TEAMS.map((team, index) => (
                   <TouchableOpacity
                     key={index}
                     style={[
-                      styles.teamButton,
-                      selectedNBATeams.includes(team) && styles.teamButtonActive
+                      styles.nflRectangle,
+                      selectedNBATeams.includes(team) && styles.nflRectangleActive,
+                      { marginRight: index % 2 === 0 ? 8 : 0 }
                     ]}
                     onPress={() => toggleNBATeam(team)}
                   >
                     <Text style={[
-                      styles.teamButtonText,
-                      selectedNBATeams.includes(team) && styles.teamButtonTextActive
-                    ]}>
+                      styles.nflRectangleText,
+                      selectedNBATeams.includes(team) && styles.nflRectangleTextActive
+                    ]} numberOfLines={2}>
                       {team}
                     </Text>
                   </TouchableOpacity>
@@ -3735,10 +3807,10 @@ export default function EditProfile() {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>⚾ MLB Teams</Text>
+            <View style={styles.sportsModalHeader}>
+              <Text style={styles.sportsModalTitle}>⚾ MLB Teams</Text>
               <TouchableOpacity
-                style={styles.modalCloseButton}
+                style={styles.sportsModalCloseButton}
                 onPress={() => setShowMLBModal(false)}
               >
                 <Ionicons name="close" size={24} color="#666" />
@@ -3746,20 +3818,21 @@ export default function EditProfile() {
             </View>
             
             <ScrollView style={styles.modalScrollView}>
-              <View style={styles.teamsGrid}>
+              <View style={styles.nflGridWrapper}>
                 {MLB_TEAMS.map((team, index) => (
                   <TouchableOpacity
                     key={index}
                     style={[
-                      styles.teamButton,
-                      selectedMLBTeams.includes(team) && styles.teamButtonActive
+                      styles.nflRectangle,
+                      selectedMLBTeams.includes(team) && styles.nflRectangleActive,
+                      { marginRight: index % 2 === 0 ? 8 : 0 }
                     ]}
                     onPress={() => toggleMLBTeam(team)}
                   >
                     <Text style={[
-                      styles.teamButtonText,
-                      selectedMLBTeams.includes(team) && styles.teamButtonTextActive
-                    ]}>
+                      styles.nflRectangleText,
+                      selectedMLBTeams.includes(team) && styles.nflRectangleTextActive
+                    ]} numberOfLines={2}>
                       {team}
                     </Text>
                   </TouchableOpacity>
@@ -3788,10 +3861,10 @@ export default function EditProfile() {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>🏒 NHL Teams</Text>
+            <View style={styles.sportsModalHeader}>
+              <Text style={styles.sportsModalTitle}>🏒 NHL Teams</Text>
               <TouchableOpacity
-                style={styles.modalCloseButton}
+                style={styles.sportsModalCloseButton}
                 onPress={() => setShowNHLModal(false)}
               >
                 <Ionicons name="close" size={24} color="#666" />
@@ -3799,20 +3872,21 @@ export default function EditProfile() {
             </View>
             
             <ScrollView style={styles.modalScrollView}>
-              <View style={styles.teamsGrid}>
+              <View style={styles.nflGridWrapper}>
                 {NHL_TEAMS.map((team, index) => (
                   <TouchableOpacity
                     key={index}
                     style={[
-                      styles.teamButton,
-                      selectedNHLTeams.includes(team) && styles.teamButtonActive
+                      styles.nflRectangle,
+                      selectedNHLTeams.includes(team) && styles.nflRectangleActive,
+                      { marginRight: index % 2 === 0 ? 8 : 0 }
                     ]}
                     onPress={() => toggleNHLTeam(team)}
                   >
                     <Text style={[
-                      styles.teamButtonText,
-                      selectedNHLTeams.includes(team) && styles.teamButtonTextActive
-                    ]}>
+                      styles.nflRectangleText,
+                      selectedNHLTeams.includes(team) && styles.nflRectangleTextActive
+                    ]} numberOfLines={2}>
                       {team}
                     </Text>
                   </TouchableOpacity>
@@ -3836,13 +3910,83 @@ export default function EditProfile() {
 }
 
 const styles = StyleSheet.create({
+      nflGridWrapper: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        marginHorizontal: 0,
+        marginTop: 0,
+        marginBottom: 0,
+      },
+      nflRectangle: {
+        width: '47%',
+        minHeight: 44,
+        backgroundColor: '#F5F5F7',
+        borderRadius: 12,
+        marginBottom: 12,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 6,
+        paddingVertical: 8,
+      },
+      nflRectangleActive: {
+        backgroundColor: '#007AFF',
+      },
+      nflRectangleText: {
+        fontSize: 13,
+        color: '#222',
+        textAlign: 'center',
+        fontWeight: '500',
+      },
+      nflRectangleTextActive: {
+        color: '#fff',
+        fontWeight: '700',
+      },
+    sportsModalHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: 18,
+      paddingHorizontal: 20,
+      borderBottomWidth: 1,
+      borderBottomColor: '#e0e0e0',
+      marginBottom: 16,
+      backgroundColor: '#fff',
+      position: 'relative',
+    },
+    sportsModalTitle: {
+      flex: 1,
+      fontSize: 22,
+      fontWeight: 'bold',
+      color: '#222',
+      textAlign: 'center',
+      letterSpacing: 0.5,
+      paddingLeft: 0,
+    },
+    sportsModalCloseButton: {
+      position: 'absolute',
+      right: 16,
+      top: 12,
+      padding: 4,
+      zIndex: 1,
+    },
+  musicHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E5EA',
+    backgroundColor: '#F8F8F8',
+  },
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
   customMusicSection: {
     marginTop: 8,
-    marginBottom: 4,
+    marginBottom: -4,
   },
   header: {
     flexDirection: 'row',
@@ -3867,7 +4011,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   previewButton: {
-    padding: 8,
+    padding: 16,
   },
   saveButton: {
     backgroundColor: '#007AFF',
@@ -3963,7 +4107,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#000',
-    marginBottom: 8,
+    marginBottom: 2,
   },
   fieldSubtext: {
     fontSize: 14,
@@ -4064,7 +4208,7 @@ const styles = StyleSheet.create({
     zIndex: 2002,
   },
   dropdownItem: {
-    padding: 16,
+    padding: 8,
     borderBottomWidth: 1,
     borderBottomColor: '#E5E5EA',
     backgroundColor: '#FFFFFF',
@@ -4192,7 +4336,7 @@ const styles = StyleSheet.create({
   },
   moodIcon: {
     fontSize: 24,
-    marginBottom: 4,
+    marginBottom: 2,
   },
   moodText: {
     fontSize: 12,
@@ -4214,7 +4358,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   interestCategory: {
-    marginBottom: 16,
+    marginBottom: 4,
   },
   categoryHeader: {
     flexDirection: 'row',
@@ -4242,7 +4386,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: '#333',
-    marginBottom: 12,
+    marginBottom: 2,
     marginLeft: 4,
   },
   interestTags: {
@@ -4344,7 +4488,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 12,
+    paddingHorizontal: 4,
     paddingVertical: 10,
     borderWidth: 1.5,
     borderColor: '#E5E5EA',
@@ -4374,7 +4518,8 @@ const styles = StyleSheet.create({
   },
   goalButtonIcon: {
     fontSize: 16,
-    marginRight: 8,
+    marginRight: 14,
+    marginLeft: 6,
   },
   goalButtonIconActive: {
     opacity: 0.9,
@@ -4413,7 +4558,7 @@ const styles = StyleSheet.create({
   socialSectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 4,
   },
   socialSectionTitleContainer: {
     flexDirection: 'row',
@@ -4494,7 +4639,7 @@ const styles = StyleSheet.create({
   hangoutGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 16,
   },
   hangoutButton: {
     paddingHorizontal: 16,
@@ -4503,6 +4648,8 @@ const styles = StyleSheet.create({
     borderColor: '#E5E5EA',
     borderRadius: 8,
     backgroundColor: '#F8F9FA',
+    marginBottom: 12,
+    marginRight: 12,
   },
   hangoutButtonActive: {
     backgroundColor: '#007AFF',
@@ -4691,12 +4838,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   promptButton: {
-    marginRight: 8,
+      marginRight: 4,
     minWidth: 120,
   },
   promptButtonWrapper: {
     position: 'relative',
-    marginRight: 8,
+      marginRight: 4,
   },
   promptRemoveButton: {
     position: 'absolute',
@@ -4802,3 +4949,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+

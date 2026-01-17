@@ -1,15 +1,14 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Pressable } from "react-native";
 import { useRouter } from 'expo-router';
-import SvgRealfriends from '../assets/images/realfriends.svg';
+import React, { useState } from "react";
+import { Pressable, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from "react-native";
 import SvgEventbuddies from '../assets/images/eventbuddies.svg';
-import SvgIndustrypeers from '../assets/images/industrypeers.svg';
-import SvgSharedpassion from '../assets/images/sharedpassion.svg';
-import SvgFriendgroup from '../assets/images/friendgroup.svg';
-import SvgMicrocommunity from '../assets/images/microcommunity.svg';
 import SvgFindMyCrowdWhite from '../assets/images/findmycrowdwhite.svg';
+import SvgFriendgroup from '../assets/images/friendgroup.svg';
+import SvgIndustrypeers from '../assets/images/industrypeers.svg';
+import SvgMicrocommunity from '../assets/images/microcommunity.svg';
 import SvgPineapple2 from '../assets/images/pineapple2.svg';
-import { useWindowDimensions } from 'react-native';
+import SvgRealfriends from '../assets/images/realfriends.svg';
+import SvgSharedpassion from '../assets/images/sharedpassion.svg';
 
 const PREFERENCES = [
   { key: 'realFriends', label: 'Real Friends', icon: SvgRealfriends },
@@ -20,7 +19,11 @@ const PREFERENCES = [
   { key: 'microCommunity', label: 'Micro Community', icon: SvgMicrocommunity },
 ];
 
-const LookingForScreen: React.FC = () => {
+interface LookingForScreenProps {
+  onComplete?: () => void;
+}
+
+const LookingForScreen: React.FC<LookingForScreenProps> = ({ onComplete }) => {
   const router = useRouter();
   const [selected, setSelected] = useState<{ [key: string]: boolean }>({});
 
@@ -104,6 +107,7 @@ const LookingForScreen: React.FC = () => {
   );
 };
 
+// Removed duplicate export default
 const styles = StyleSheet.create({
   backArrowButton: {
     position: 'absolute',

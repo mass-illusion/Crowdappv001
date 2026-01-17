@@ -78,7 +78,11 @@ const SPORTS_TEAMS = [
   { id: 'ufc', label: 'UFC', emoji: '🥊' }
 ];
 
-const InterestsScreen: React.FC = () => {
+interface InterestsProps {
+  onComplete?: () => void;
+}
+
+const Interests: React.FC<InterestsProps> = ({ onComplete }) => {
   const { width } = useWindowDimensions();
   const router = useRouter();
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
@@ -887,4 +891,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InterestsScreen;
+export default Interests;

@@ -7,7 +7,11 @@ import Onboarding3 from '../assets/onboarding3.svg';
 
 const { width, height } = Dimensions.get('window');
 
-export default function OnboardingCarousel() {
+interface OnboardingCarouselProps {
+  onComplete?: () => void;
+}
+
+export default function OnboardingCarousel({ onComplete }: OnboardingCarouselProps) {
   const [currentPage, setCurrentPage] = useState(0);
 
   const onboardingData = [
@@ -34,7 +38,11 @@ export default function OnboardingCarousel() {
     if (currentPage < 2) {
       setCurrentPage(currentPage + 1);
     } else {
-      router.replace('/registration');
+      if (onComplete) {
+        onComplete();
+      } else {
+        router.replace('/registration');
+      }
     }
   };
 

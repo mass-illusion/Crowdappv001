@@ -21,13 +21,10 @@ const GenderScreen: React.FC = () => {
     } catch (e) {
       console.warn('Failed to save gender:', e);
     }
-    // Navigate to age screen
     router.replace('/age');
   };
 
-  const handleMascotPress = () => {
-    // Optional mascot interaction
-  };
+
 
   const handleSwipeRight = () => {
     handleNext();

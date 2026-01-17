@@ -30,7 +30,11 @@ const PUBLIC_FIGURES = [
   { name: 'Blue Face', emoji: '🔹' },
 ];
 
-const PublicFiguresScreen: React.FC = () => {
+interface PublicFiguresProps {
+  onComplete?: () => void;
+}
+
+const PublicFigures: React.FC<PublicFiguresProps> = ({ onComplete }) => {
   const router = useRouter();
   const [selectedFigures, setSelectedFigures] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -246,4 +250,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PublicFiguresScreen;
+export default PublicFigures;

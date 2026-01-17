@@ -1,3 +1,4 @@
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import SvgEventbuddies from '../assets/images/eventbuddies.svg';
@@ -5,7 +6,6 @@ import SvgFriendgroup from '../assets/images/friendgroup.svg';
 import SvgMicrocommunity from '../assets/images/microcommunity.svg';
 import SvgRealfriends from '../assets/images/realfriends.svg';
 import SvgSharedpassion from '../assets/images/sharedpassion.svg';
-import { useRouter } from "expo-router";
 
 const PREFERENCES = [
   { key: 'realFriends', label: 'Real\nFriends', icon: SvgRealfriends },
@@ -16,10 +16,13 @@ const PREFERENCES = [
   { key: 'microCommunity', label: 'Micro\nCommunity', icon: SvgMicrocommunity },
 ];
 
-const LookingForScreen: React.FC = () => {
+interface LookingForScreenProps {
+  onComplete?: () => void;
+}
+
+const LookingForScreen: React.FC<LookingForScreenProps> = ({ onComplete }) => {
   const router = useRouter();
   const [selected, setSelected] = useState<{ [key: string]: boolean }>({});
-
   const toggle = (key: string) => {
     setSelected(prev => ({ ...prev, [key]: !prev[key] }));
   };
@@ -43,7 +46,6 @@ const LookingForScreen: React.FC = () => {
               </Pressable>
             ))}
           </View>
-          <View style={styles.divider} />
           <View style={styles.prefRow}>
             {PREFERENCES.slice(3).map((item, idx) => (
               <Pressable
@@ -59,6 +61,9 @@ const LookingForScreen: React.FC = () => {
           </View>
         </View>
       </View>
+      <TouchableOpacity onPress={() => { if (onComplete) onComplete(); }} style={{marginTop: 32}}>
+        <Text style={{fontSize: 20, color: '#5A90D8'}}>Continue</Text>
+      </TouchableOpacity>
       <TouchableOpacity style={styles.backArrowButton} onPress={() => router.replace('/Upload')}>
         <Text style={styles.backArrowText}>←</Text>
       </TouchableOpacity>

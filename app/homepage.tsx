@@ -72,7 +72,7 @@ const Homepage = () => {
         </View>
 
         {/* Category Cards */}
-        <View style={styles.categoryGrid}>
+        <View style={[styles.categoryGrid, { marginTop: -12 }]}> 
           <TouchableOpacity style={[styles.categoryCard, styles.liveEventsCard]} onPress={handleLiveEventsPress}>
             <Image
               source={require('../assets/images/liveevent4.webp')}

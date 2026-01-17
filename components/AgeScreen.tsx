@@ -23,7 +23,6 @@ const AgeScreen: React.FC = () => {
     } catch (e) {
       console.warn('Failed to save age:', e);
     }
-    // Navigate to upload screen
     router.replace('/Upload');
   };
 
@@ -31,9 +30,7 @@ const AgeScreen: React.FC = () => {
     router.replace('/gender');
   };
 
-  const handleMascotPress = () => {
-    handleNext();
-  };
+
 
 
 
@@ -96,7 +93,7 @@ const AgeScreen: React.FC = () => {
         </View>
         <Text style={styles.ageLabel}>Age</Text>
       </View>
-      <TouchableOpacity onPress={handleMascotPress} activeOpacity={0.7}>
+      <TouchableOpacity onPress={handleNext} activeOpacity={0.7}>
         <SittingMascot width={275} height={275} style={styles.mascot} />
       </TouchableOpacity>
     </View>

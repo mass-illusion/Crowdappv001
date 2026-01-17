@@ -6,7 +6,7 @@ import NextButtonSvg from '../assets/images/nextbutton.svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 
-const ProfileScreen = () => {
+const ProfileScreen: React.FC = () => {
   const [fullName, setFullName] = useState("");
   const [userName, setUserName] = useState("");
   const router = useRouter();
@@ -54,59 +54,56 @@ const ProfileScreen = () => {
       </View>
     </TouchableWithoutFeedback>
   );
-};
+  };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    paddingHorizontal: 24,
-    paddingBottom: 120, // Add padding to prevent overlap with button
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginTop: 140,
-  },
-  title: {
-    fontSize: 60,
-    fontWeight: "bold",
-    color: '#E6E9ED',
-    marginBottom: 20,
-    alignSelf: 'center',
-    letterSpacing: 0.1,
-  },
-  nextButton: {
-    marginTop: 32,
-    width: '100%',
-    height: 80,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  inputContainer: {
-    width: '100%',
-    marginBottom: 32,
-    alignItems: 'center',
-  },
-  label: {
-    fontSize: 14,
-    color: "#000000",
-    marginBottom: 1,
-    fontWeight: '500',
-    alignSelf: "flex-start",
-    marginLeft: '5%',
-    width: '90%',
-    textAlign: 'left',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#CCCCCC",
-    borderRadius: 8,
-    paddingHorizontal: 15,
-    paddingVertical: 15,
-    fontSize: 16,
-    marginBottom: 24,
-    width: '90%',
-    backgroundColor: '#fff',
-  },
-});
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#fff',
+      alignItems: 'center',
+      marginTop: 140,
+    },
+    title: {
+      fontSize: 60,
+      fontWeight: "bold",
+      color: '#E6E9ED',
+      marginBottom: 20,
+      alignSelf: 'center',
+      letterSpacing: 0.1,
+    },
+    nextButton: {
+      marginTop: 32,
+      width: '100%',
+      height: 80,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    inputContainer: {
+      width: '100%',
+      marginBottom: 32,
+      alignItems: 'center',
+    },
+    label: {
+      fontSize: 14,
+      color: "#000000",
+      marginBottom: 1,
+      fontWeight: '500',
+      alignSelf: "flex-start",
+      marginLeft: '5%',
+      width: '90%',
+      textAlign: 'left',
+    },
+    input: {
+      borderWidth: 1,
+      borderColor: "#CCCCCC",
+      borderRadius: 8,
+      paddingHorizontal: 15,
+      paddingVertical: 15,
+      fontSize: 16,
+      marginBottom: 24,
+      width: '90%',
+      backgroundColor: '#fff',
+    },
+  });
 
 export default ProfileScreen;
