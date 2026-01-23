@@ -133,7 +133,7 @@ const Interests: React.FC<InterestsProps> = ({ onComplete }) => {
     loadSavedSelections();
   }, []);
 
-  const toggleInterest = (interestId: string) => {
+  const toggleInterest = async (interestId: string) => {
     if (interestId === 'music') {
       setShowMusicModal(true);
       return;
@@ -149,11 +149,14 @@ const Interests: React.FC<InterestsProps> = ({ onComplete }) => {
       return;
     }
     
-    setSelectedInterests(prev => 
-      prev.includes(interestId) 
+    setSelectedInterests(prev => {
+      const updated = prev.includes(interestId)
         ? prev.filter(id => id !== interestId)
-        : [...prev, interestId]
-    );
+        : [...prev, interestId];
+      // Save to AsyncStorage for cross-screen sync
+      AsyncStorage.setItem('selectedInterests', JSON.stringify(updated));
+      return updated;
+    });
   };
 
   const toggleMusicCategory = async (category: string) => {

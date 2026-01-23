@@ -21,13 +21,13 @@ export default function EditProfile() {
   const [showEthnicityDropdown, setShowEthnicityDropdown] = useState(false);
   const [importantCulture, setImportantCulture] = useState(false);
   const ethnicityOptions = [
-    'White/Caucasian',
-    'Hispanic/Latino',
-    'Black/African American',
+    'Caucasian',
+    'Latino',
+    'African American',
     'Asian',
     'Native American',
     'Middle Eastern',
-    'Mixed/Multiracial',
+    'Multiracial',
     'Other',
     'Prefer not to say'
   ];
@@ -39,10 +39,11 @@ export default function EditProfile() {
     'Healthcare & Medicine',
     'Finance & Banking',
     'Education',
-    'Retail & Consumer Goods',
+    'Retail',
+    'Customer Service',
     'Manufacturing',
     'Real Estate',
-    'Professional Services',
+    'Sales',
     'Media & Entertainment',
     'Transportation & Logistics',
     'Food & Beverage',
@@ -67,12 +68,11 @@ export default function EditProfile() {
   const religionOptions = [
     'Christianity',
     'Catholic',
-    'Baptist',
     'Judaism',
     'Islam',
     'Buddhism',
     'Hinduism',
-    'Mormon/LDS',
+    'Mormon',
     'Jehovah\'s Witness',
     'Agnostic',
     'Atheist',
@@ -140,7 +140,8 @@ export default function EditProfile() {
     '🏟️ Sports Game',
     '🍄 Psychedelics',
     '📱 Make Content',
-    '🏠 Stay In'
+    '🏠 Stay In',
+    '💻 Online',
   ];
   const [showOnProfile, setShowOnProfile] = useState(true);
 
@@ -167,6 +168,7 @@ export default function EditProfile() {
       await AsyncStorage.setItem('industry', industry);
       await AsyncStorage.setItem('religion', religion);
       await AsyncStorage.setItem('relationshipStatus', relationshipStatus);
+      await AsyncStorage.setItem('userProfileImage', userProfileImage);
       await AsyncStorage.setItem('primaryGoals', JSON.stringify(primaryGoals));
       await AsyncStorage.setItem('socialStyle', socialStyle);
       await AsyncStorage.setItem('idealHangouts', JSON.stringify(idealHangouts));
@@ -3628,7 +3630,7 @@ export default function EditProfile() {
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Edit Profile</Text>
         <View style={styles.headerActions}>
-          <TouchableOpacity style={styles.previewButton} onPress={() => router.push('/profile')}>
+          <TouchableOpacity style={styles.previewButton} onPress={async () => { await saveProfileData(); router.push('/profile-preview'); }}>
             <Ionicons name="eye-outline" size={20} color="#007AFF" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.saveButton} onPress={saveProfile}>
@@ -3702,7 +3704,6 @@ export default function EditProfile() {
                   <Ionicons name="close" size={24} color="#666" />
                 </TouchableOpacity>
               </View>
-            // --- Sports Modal Header Styles ---
             </View>
             
             <ScrollView style={styles.modalScrollView}>
@@ -4949,4 +4950,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
 

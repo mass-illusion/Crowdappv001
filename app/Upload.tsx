@@ -3,8 +3,8 @@ import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
-import React, { useState } from "react";
-import { ActionSheetIOS, Alert, Image, KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { ActionSheetIOS, Alert, Image, KeyboardAvoidingView, Linking, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const EMPTY_AVATAR = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
 
@@ -15,6 +15,14 @@ interface UploadProps {
 const Upload: React.FC<UploadProps> = ({ onComplete }) => {
   const router = useRouter();
   const [photos, setPhotos] = useState<(string | null)[]>([null, null, null, null, null, null]);
+
+  // Pre-request permissions on mount
+  useEffect(() => {
+    (async () => {
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+      await ImagePicker.requestCameraPermissionsAsync();
+    })();
+  }, []);
 
   const handleChoosePhoto = async (index: number) => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -29,8 +37,9 @@ const Upload: React.FC<UploadProps> = ({ onComplete }) => {
     });
     if (!result.canceled && result.assets && result.assets.length > 0) {
       const uri = result.assets[0].uri;
+      let updated: (string | null)[] = [];
       setPhotos(prev => {
-        const updated = [...prev];
+        updated = [...prev];
         if (index >= 0 && index < updated.length) {
           updated[index] = uri;
         } else {
@@ -39,12 +48,15 @@ const Upload: React.FC<UploadProps> = ({ onComplete }) => {
         }
         return updated;
       });
-      if (index === 0) {
-        try {
+      try {
+        // Save primary profile photo and full carousel list
+        if (index === 0) {
           await AsyncStorage.setItem('profilePhoto', uri);
-        } catch (e) {
-          console.warn('Failed saving profile photo', e);
         }
+        const filtered = (updated || []).filter(Boolean) as string[];
+        await AsyncStorage.setItem('profilePhotos', JSON.stringify(filtered));
+      } catch (e) {
+        console.warn('Failed saving photos', e);
       }
     }
   };
@@ -52,7 +64,19 @@ const Upload: React.FC<UploadProps> = ({ onComplete }) => {
   const handleTakePhoto = async (index: number) => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== 'granted') {
-      Alert.alert('Permission required', 'Permission to access camera is required!');
+      Alert.alert(
+        'Permission required',
+        'Permission to access camera is required!',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Open Settings', onPress: () => {
+              if (Platform.OS !== 'web') {
+                Linking.openSettings();
+              }
+            }
+          }
+        ]
+      );
       return;
     }
     let result = await ImagePicker.launchCameraAsync({
@@ -61,8 +85,9 @@ const Upload: React.FC<UploadProps> = ({ onComplete }) => {
     });
     if (!result.canceled && result.assets && result.assets.length > 0) {
       const uri = result.assets[0].uri;
+      let updated: (string | null)[] = [];
       setPhotos(prev => {
-        const updated = [...prev];
+        updated = [...prev];
         if (index >= 0 && index < updated.length) {
           updated[index] = uri;
         } else {
@@ -71,6 +96,12 @@ const Upload: React.FC<UploadProps> = ({ onComplete }) => {
         }
         return updated;
       });
+      try {
+        const filtered = (updated || []).filter(Boolean) as string[];
+        await AsyncStorage.setItem('profilePhotos', JSON.stringify(filtered));
+      } catch (e) {
+        console.warn('Failed saving photos', e);
+      }
     }
   };
 
@@ -130,13 +161,8 @@ const Upload: React.FC<UploadProps> = ({ onComplete }) => {
           ))}
         </View>
       </View>
-      <TouchableOpacity style={styles.button} onPress={() => handleChoosePhoto(-1)}>
-        <Ionicons name="image" size={22} color="#222" style={{ marginRight: 8 }} />
-        <Text style={styles.buttonText}>Choose a photo</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => handleTakePhoto(-1)}>
-        <Ionicons name="camera" size={22} color="#222" style={{ marginRight: 8 }} />
-        <Text style={styles.buttonText}>Take photo</Text>
+      <TouchableOpacity style={[styles.button, { marginTop: 48 }]} onPress={() => router.replace('/LookingForScreen')}>
+        <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>
   );

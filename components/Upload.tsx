@@ -1,5 +1,6 @@
 
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useState } from "react";
 import { ActionSheetIOS, Alert, Image, KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -34,8 +35,9 @@ const UploadScreen: React.FC<UploadScreenProps> = ({ onBack, onComplete }) => {
     });
     if (!result.canceled && result.assets && result.assets.length > 0) {
       const uri = result.assets[0].uri;
+      let updated: (string | null)[] = [];
       setPhotos(prev => {
-        const updated = [...prev];
+        updated = [...prev];
         if (index >= 0 && index < updated.length) {
           updated[index] = uri;
         } else {
@@ -45,6 +47,15 @@ const UploadScreen: React.FC<UploadScreenProps> = ({ onBack, onComplete }) => {
         }
         return updated;
       });
+      try {
+        if (index === 0) {
+          await AsyncStorage.setItem('profilePhoto', uri);
+        }
+        const filtered = (updated || []).filter(Boolean) as string[];
+        await AsyncStorage.setItem('profilePhotos', JSON.stringify(filtered));
+      } catch (e) {
+        console.warn('Failed saving photos', e);
+      }
       if (onComplete) onComplete(); // Call after upload or next action
     }
   };
@@ -61,8 +72,9 @@ const UploadScreen: React.FC<UploadScreenProps> = ({ onBack, onComplete }) => {
     });
     if (!result.canceled && result.assets && result.assets.length > 0) {
       const uri = result.assets[0].uri;
+      let updated: (string | null)[] = [];
       setPhotos(prev => {
-        const updated = [...prev];
+        updated = [...prev];
         if (index >= 0 && index < updated.length) {
           updated[index] = uri;
         } else {
@@ -72,6 +84,12 @@ const UploadScreen: React.FC<UploadScreenProps> = ({ onBack, onComplete }) => {
         }
         return updated;
       });
+      try {
+        const filtered = (updated || []).filter(Boolean) as string[];
+        await AsyncStorage.setItem('profilePhotos', JSON.stringify(filtered));
+      } catch (e) {
+        console.warn('Failed saving photos', e);
+      }
       if (onComplete) onComplete(); // Call after upload or next action
     }
   };

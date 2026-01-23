@@ -263,9 +263,6 @@ const Also: React.FC<AlsoProps> = ({ onComplete }) => {
         <Text style={styles.backArrowText}>←</Text>
       </TouchableOpacity>
       <Text style={styles.header}>I'm looking for...</Text>
-      <TouchableOpacity onPress={() => { if (onComplete) onComplete(); }}>
-        <Text>Continue</Text>
-      </TouchableOpacity>
       <Text style={styles.subtext}>Get specific! You can always change this later.</Text>
       <View style={styles.tabContainer}>
         {['Girl Friends', 'Guy Friends', 'Both'].map(tab => (
