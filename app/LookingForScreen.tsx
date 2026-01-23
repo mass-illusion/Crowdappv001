@@ -38,7 +38,7 @@ const LookingForScreen: React.FC<LookingForScreenProps> = ({ onComplete }) => {
         <Text style={styles.backArrowText}>←</Text>
       </TouchableOpacity>
       <Text style={styles.header}>I'm looking for...</Text>
-      <Text style={styles.subtext}>Get specific! This is not displayed on your profile.</Text>
+      <Text style={styles.subtext}>Get specific! This is not displayed on your profile, but helps us optimize your matches.</Text>
       <View style={styles.boxShadowWrap}>
         <View style={styles.prefBox}>
           <View style={styles.prefRow}>
@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginLeft: 32,
     marginRight: 32,
+    lineHeight: 22,
   },
   boxShadowWrap: {
     marginTop: 8,

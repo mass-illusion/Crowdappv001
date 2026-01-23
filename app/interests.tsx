@@ -290,8 +290,8 @@ const Interests: React.FC<InterestsProps> = ({ onComplete }) => {
         console.error('Error saving interests data:', error);
       }
       
-      // Navigate to public figures screen
-      router.replace('/public-figures');
+      // Navigate to ideal hangouts screen
+      router.replace('/ideal-hangouts' as any);
       console.log('Selected interests:', selectedInterests);
     }
   };

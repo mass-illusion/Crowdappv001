@@ -3,40 +3,41 @@ import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import FindMyCrowdWhite from '../assets/images/findmycrowdwhite.svg';
 
-const PUBLIC_FIGURES = [
-  { name: 'Alex Hormozi', emoji: '📈' },
-  { name: 'Theo Von', emoji: '🤣' },
-  { name: 'Cardi B', emoji: '👜' },
-  { name: 'Gary Vee', emoji: '📱' },
-  { name: 'Alex Earl', emoji: '🎙️' },
-  { name: 'Joe Rogan', emoji: '🦬' },
-  { name: 'Ryan Trahan', emoji: '🚗' },
-  { name: 'Ralph Barbosa', emoji: '😂' },
-  { name: 'Kardashians', emoji: '💄' },
-  { name: 'Tom Holland', emoji: '🎭' },
-  { name: 'Sam Sulek', emoji: '🏋️' },
-  { name: 'Chloe Shih', emoji: '💻' },
-  { name: 'Emma Chamberlin', emoji: '☕' },
-  { name: 'Daniel Mac', emoji: '🕶️' },
-  { name: 'garbo.zhu', emoji: '🎨' },
-  { name: 'Kristy Sarah', emoji: '😊' },
-  { name: 'IShowSpeed', emoji: '🏎️' },
-  { name: 'rafaeltats', emoji: '🖼️' },
-  { name: 'Steven Bartlett', emoji: '🎙️' },
-  { name: 'POV Husband', emoji: '🥘' },
-  { name: 'Jake Paul', emoji: '🥊' },
-  { name: 'Kai Cenat', emoji: '📹' },
-  { name: 'Vanilla Mace', emoji: '💅' },
-  { name: 'Blue Face', emoji: '🔹' },
+const IDEAL_HANGOUTS = [
+  { name: 'Coffee', emoji: '☕️' },
+  { name: 'Online', emoji: '💻' },
+  { name: 'Concerts', emoji: '🎵' },
+  { name: 'Workouts', emoji: '💪' },
+  { name: 'Spa Day', emoji: '💆‍♀️' },
+  { name: 'Game Night', emoji: '🎮' },
+  { name: '420', emoji: '🌿' },
+  { name: 'BBQ', emoji: '🔥' },
+  { name: 'Outdoors', emoji: '🏔️' },
+  { name: 'Build Something', emoji: '🛠️' },
+  { name: 'Fishing', emoji: '🎣' },
+  { name: 'Food & Drinks', emoji: '🍽️' },
+  { name: 'Clubbing', emoji: '🕺'},
+  { name: 'Movies', emoji: '🎬' },
+  { name: 'Sports bar', emoji: '🍻' },
+  { name: 'Weekend Getaway' , emoji: '🧳' },
+  { name: 'Offroading', emoji: '🏎️' },
+  { name: 'Nails', emoji: '💅' },
+  { name: 'Shopping', emoji: '🛍️' },
+  { name: 'Mommy Hangouts', emoji: '🤱' },
+  { name: 'Sports Games', emoji: '🏟️' },
+  { name: 'Streaming', emoji: '🎥' },
+  { name: 'Making Content', emoji: '💅' },
+  { name: 'Staying In', emoji: '🏡' },
 ];
 
-interface PublicFiguresProps {
-  onComplete?: () => void;
+interface IdealHangoutsProps {
+  initialSelected?: string[];
+  onComplete?: (selected: string[]) => void;
 }
 
-const PublicFigures: React.FC<PublicFiguresProps> = ({ onComplete }) => {
+const IdealHangouts: React.FC<IdealHangoutsProps> = ({ initialSelected = [], onComplete }) => {
   const router = useRouter();
-  const [selectedFigures, setSelectedFigures] = useState<string[]>([]);
+  const [selectedFigures, setSelectedFigures] = useState<string[]>(initialSelected);
   const [searchQuery, setSearchQuery] = useState('');
 
   const toggleFigure = (figureName: string) => {
@@ -47,14 +48,17 @@ const PublicFigures: React.FC<PublicFiguresProps> = ({ onComplete }) => {
     );
   };
 
-  const filteredFigures = PUBLIC_FIGURES.filter(figure =>
+  const filteredFigures = IDEAL_HANGOUTS.filter(figure =>
     figure.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleNext = () => {
     if (selectedFigures.length >= 1) {
-      // Navigate to homepage
-      router.replace('/homepage');
+      if (onComplete) {
+        onComplete(selectedFigures);
+      } else {
+        router.replace('/homepage');
+      }
       console.log('Selected figures:', selectedFigures);
     }
   };
@@ -68,9 +72,9 @@ const PublicFigures: React.FC<PublicFiguresProps> = ({ onComplete }) => {
       >
         <Text style={styles.backArrow}>←</Text>
       </TouchableOpacity>
-      <Text style={styles.header}>Public Figures</Text>
+      <Text style={styles.header}>Ideal Hangouts</Text>
       <Text style={styles.subtext}>
-        Share people you follow. We'll get an idea of content you enjoy and find people to share it with.
+        Share how you like to spend your time. We'll get an idea of what you enjoy and find people to share it with.
       </Text>
 
       <View style={styles.searchContainer}>
@@ -78,7 +82,7 @@ const PublicFigures: React.FC<PublicFiguresProps> = ({ onComplete }) => {
           <Text style={styles.searchIcon}>🔍</Text>
           <TextInput
             style={styles.searchInput}
-            placeholder="Search public figure"
+            placeholder="Search ideal hangout"
             value={searchQuery}
             onChangeText={setSearchQuery}
             placeholderTextColor="#C7C7CC"
@@ -158,7 +162,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#8E8E93',
     lineHeight: 22,
-    marginBottom: 32,
+    marginBottom: 22,
   },
   searchContainer: {
     marginBottom: 32,
@@ -250,4 +254,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PublicFigures;
+export default IdealHangouts;
