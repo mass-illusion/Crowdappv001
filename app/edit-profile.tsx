@@ -22,7 +22,7 @@ export default function EditProfile() {
   const [importantCulture, setImportantCulture] = useState(false);
   const ethnicityOptions = [
     'Caucasian',
-    'Latino',
+    'Hispanic',
     'African American',
     'Asian',
     'Native American',
@@ -156,6 +156,25 @@ export default function EditProfile() {
   const saveProfileData = async () => {
     try {
       // Save all profile data to AsyncStorage with correct keys
+
+      // Save personality slider values as normalized numbers for profile-preview
+      // Social Energy: Introvert (0), Ambivert (0.5), Extrovert (1)
+      let sliderIntroExtro = 0.5;
+      if (socialEnergy === 'Introvert') sliderIntroExtro = 0;
+      else if (socialEnergy === 'Extrovert') sliderIntroExtro = 1;
+      await AsyncStorage.setItem('sliderIntroExtro', String(sliderIntroExtro));
+
+      // Personality Type: Type A (0), Type B (1)
+      let sliderTypeAB = 0.5;
+      if (personalityType === 'Type A') sliderTypeAB = 0;
+      else if (personalityType === 'Type B') sliderTypeAB = 1;
+      await AsyncStorage.setItem('sliderTypeAB', String(sliderTypeAB));
+
+      // Weekend Mood: Chill (0), Spontaneous (0.5), Adventure (1)
+      let sliderChillParty = 0.5;
+      if (weekendMood === 'Chill') sliderChillParty = 0;
+      else if (weekendMood === 'Adventure') sliderChillParty = 1;
+      await AsyncStorage.setItem('sliderChillParty', String(sliderChillParty));
       await AsyncStorage.setItem('fullName', firstName); // Save full name
       await AsyncStorage.setItem('firstName', firstName.split(' ')[0] || firstName); // Save first name for compatibility
       await AsyncStorage.setItem('userName', userName);
@@ -211,11 +230,13 @@ export default function EditProfile() {
 
   // Personality tab states
   const [socialEnergy, setSocialEnergy] = useState('Ambivert');
+  const [personalityType, setPersonalityType] = useState('');
   const [weekendMood, setWeekendMood] = useState('Chill');
   const [energyLevel, setEnergyLevel] = useState('');
   const [socialBattery, setSocialBattery] = useState('');
   const [conversationStyle, setConversationStyle] = useState('');
   const [loveLanguage, setLoveLanguage] = useState('');
+  // Removed duplicate personalityType declaration
   const [selectedIdentities, setSelectedIdentities] = useState<string[]>([]);
   const [showIdentitiesExpanded, setShowIdentitiesExpanded] = useState(false);
   const [selectedFriendGroup, setSelectedFriendGroup] = useState<string[]>([]);
@@ -1954,6 +1975,7 @@ export default function EditProfile() {
         )}
       </View>
 
+
       <View style={styles.fieldGroup}>
         <Text style={styles.fieldLabel}>Social Energy</Text>
         <View style={{ height: 6}} />
@@ -1969,6 +1991,25 @@ export default function EditProfile() {
               </Text>
             </TouchableOpacity>
           ))}
+        </View>
+      </View>
+
+      {/* Type A / Type B Personality Section */}
+      <View style={styles.fieldGroup}>
+        <Text style={styles.fieldLabel}>Personality Type</Text>
+        <View style={{ flexDirection: 'row', marginTop: 8 }}>
+          <TouchableOpacity
+            style={[styles.optionButton, personalityType === 'Type A' && styles.optionButtonActive]}
+            onPress={() => setPersonalityType('Type A')}
+          >
+            <Text style={[styles.optionText, personalityType === 'Type A' && styles.optionTextActive]}>Type A</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.optionButton, personalityType === 'Type B' && styles.optionButtonActive, { marginLeft: 16 }]}
+            onPress={() => setPersonalityType('Type B')}
+          >
+            <Text style={[styles.optionText, personalityType === 'Type B' && styles.optionTextActive]}>Type B</Text>
+          </TouchableOpacity>
         </View>
       </View>
 

@@ -10,13 +10,13 @@ const IDEAL_HANGOUTS = [
   { name: 'Workouts', emoji: '💪' },
   { name: 'Spa Day', emoji: '💆‍♀️' },
   { name: 'Game Night', emoji: '🎮' },
-  { name: '420', emoji: '🌿' },
+  { name: 'Creative', emoji: '🎨' },
   { name: 'BBQ', emoji: '🔥' },
   { name: 'Outdoors', emoji: '🏔️' },
   { name: 'Build Something', emoji: '🛠️' },
   { name: 'Fishing', emoji: '🎣' },
   { name: 'Food & Drinks', emoji: '🍽️' },
-  { name: 'Clubbing', emoji: '🕺'},
+   { name: '420', emoji: '🌿' },
   { name: 'Movies', emoji: '🎬' },
   { name: 'Sports bar', emoji: '🍻' },
   { name: 'Weekend Getaway' , emoji: '🧳' },
@@ -26,8 +26,11 @@ const IDEAL_HANGOUTS = [
   { name: 'Mommy Hangouts', emoji: '🤱' },
   { name: 'Sports Games', emoji: '🏟️' },
   { name: 'Streaming', emoji: '🎥' },
-  { name: 'Making Content', emoji: '💅' },
+  { name: 'Making Content', emoji: '📱' },
   { name: 'Staying In', emoji: '🏡' },
+  { name: 'Clubbing', emoji: '🕺'},
+  { name: 'Psychedelics', emoji: '🍄' },
+  
 ];
 
 interface IdealHangoutsProps {

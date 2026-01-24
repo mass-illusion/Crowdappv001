@@ -57,9 +57,9 @@ const [data, setData] = useState<any>({});
 const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
 const [heroWidth, setHeroWidth] = useState(0);
 const { width: screenWidth } = useWindowDimensions();
-const [introExtro, setIntroExtro] = useState(0.4); // 0 = introvert, 1 = extrovert
-const [typeAB, setTypeAB] = useState(0.6); // 0 = type A, 1 = type B
-const [chillParty, setChillParty] = useState(0.65); // 0 = chill, 1 = party
+const [introExtro, setIntroExtro] = useState<number>(0.5);
+const [typeAB, setTypeAB] = useState<number>(0.5);
+const [chillParty, setChillParty] = useState<number>(0.5);
 
 // Manual refresh state
 const [refreshing, setRefreshing] = useState(false);
@@ -72,15 +72,16 @@ const load = useCallback(async () => {
   try {
     const keys = [
       'fullName','firstName','userName','aboutMe','dreamIs','userLocation','age','gender','occupation','relationshipStatus',
-      'selectedIdentities','selectedPassions','idealHangouts','selectedMusicGenres','selectedRavingPrefs','userProfileImage','profilePhotos','profilePhoto'
+      'selectedIdentities','selectedPassions','idealHangouts','selectedMusicGenres','selectedRavingPrefs','userProfileImage','profilePhotos','profilePhoto',
+      'sliderIntroExtro','sliderTypeAB','sliderChillParty'
     ];
     const entries = await AsyncStorage.multiGet(keys);
     m = {};
     entries.forEach(([k, v]) => { if (v != null) m[k] = v; });
-    // Load sliders if present
-    if (m.sliderIntroExtro) setIntroExtro(Number(m.sliderIntroExtro));
-    if (m.sliderTypeAB) setTypeAB(Number(m.sliderTypeAB));
-    if (m.sliderChillParty) setChillParty(Number(m.sliderChillParty));
+    // Always set slider values from storage (default to middle if missing)
+    setIntroExtro(m.sliderIntroExtro !== undefined ? Number(m.sliderIntroExtro) : 0.5);
+    setTypeAB(m.sliderTypeAB !== undefined ? Number(m.sliderTypeAB) : 0.5);
+    setChillParty(m.sliderChillParty !== undefined ? Number(m.sliderChillParty) : 0.5);
     const identities = m.selectedIdentities ? JSON.parse(m.selectedIdentities) : [];
     const passions = m.selectedPassions ? JSON.parse(m.selectedPassions) : [];
     const hangouts = m.idealHangouts ? JSON.parse(m.idealHangouts) : [];
@@ -270,11 +271,8 @@ return (
        <View style={styles.sliderRow}>
          <Text style={styles.sliderLabel}>Introvert</Text>
          <PillSlider
-           value={introExtro}
+           value={introExtro ?? 0.5}
            onValueChange={setIntroExtro}
-           onSlidingComplete={async (v) => {
-             await AsyncStorage.setItem('sliderIntroExtro', String(v));
-           }}
            minimumValue={0}
            maximumValue={1}
            step={0.01}
@@ -290,11 +288,8 @@ return (
        <View style={styles.sliderRow}>
          <Text style={styles.sliderLabel}>Type A</Text>
          <PillSlider
-           value={typeAB}
+           value={typeAB ?? 0.5}
            onValueChange={setTypeAB}
-           onSlidingComplete={async (v) => {
-             await AsyncStorage.setItem('sliderTypeAB', String(v));
-           }}
            minimumValue={0}
            maximumValue={1}
            step={0.01}
@@ -310,11 +305,8 @@ return (
        <View style={styles.sliderRow}>
          <Text style={styles.sliderLabel}>Chill</Text>
          <PillSlider
-           value={chillParty}
+           value={chillParty ?? 0.5}
            onValueChange={setChillParty}
-           onSlidingComplete={async (v) => {
-             await AsyncStorage.setItem('sliderChillParty', String(v));
-           }}
            minimumValue={0}
            maximumValue={1}
            step={0.01}
