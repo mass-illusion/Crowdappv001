@@ -57,7 +57,7 @@ const Homepage = () => {
                 <Ionicons name="notifications" size={32} color="#8E8E93" style={styles.bellIcon} />
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuButton}>
+            <TouchableOpacity style={styles.menuButton} onPress={() => navigation.navigate('settings' as never)}>
               <Ionicons name="options" size={28} color="#8E8E93" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.profileButton} onPress={() => navigation.navigate('edit-profile' as never)}>
