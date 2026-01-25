@@ -1,12 +1,21 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
-import { Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { Image, Modal, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 
-export default function Settings() {
+
+function SettingsScreen() {
   const navigation = useNavigation();
-  const [pushNotifications, setPushNotifications] = React.useState(true);
-  const [darkMode, setDarkMode] = React.useState(false);
+  const [pushNotifications, setPushNotifications] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  // Replace this with your actual log out logic
+  const handleLogout = () => {
+    setShowLogoutModal(false);
+    // TODO: Add your real log out logic here (e.g., clear tokens, navigate to login)
+    // Example: navigation.reset({ index: 0, routes: [{ name: 'welcome' }] });
+  };
 
   return (
     <View style={styles.container}>
@@ -63,13 +72,40 @@ export default function Settings() {
         <TouchableOpacity style={styles.row} onPress={() => {/* Blocked logic */}}>
           <Text style={styles.rowText}>Blocked</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.row} onPress={() => {/* Log Out logic */}}>
+        <TouchableOpacity style={styles.row} onPress={() => setShowLogoutModal(true)}>
           <Text style={styles.rowText}>Log Out</Text>
         </TouchableOpacity>
+        {/* Log Out Modal */}
+        {showLogoutModal && (
+          <Modal
+  visible={showLogoutModal}
+  transparent
+  animationType="fade"
+  onRequestClose={() => setShowLogoutModal(false)}
+>
+  <View style={modalStyles.overlay}>
+    <View style={modalStyles.modalBox}>
+      <Text style={modalStyles.title}>Log out</Text>
+      <Text style={modalStyles.subtitle}>Are you sure you want to log out?</Text>
+
+      <TouchableOpacity style={modalStyles.logoutBtn} onPress={handleLogout}>
+        <Text style={modalStyles.logoutBtnText}>Log out</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => setShowLogoutModal(false)}>
+        <Text style={modalStyles.cancelText}>Cancel</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+</Modal>
+
+        )}
       </View>
     </View>
   );
 }
+
+export default SettingsScreen;
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#E6F0FA' },
@@ -87,5 +123,62 @@ const styles = StyleSheet.create({
     top: 48,
     zIndex: 2,
     padding: 8,
+  },
+});
+
+const modalStyles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.18)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+  },
+  modalBox: {
+    width: '100%',
+    maxWidth: 420,
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    padding: 28,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#222',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#444',
+    marginBottom: 24,
+    textAlign: 'center',
+  },
+  logoutBtn: {
+    backgroundColor: '#B3D8F7',
+    borderRadius: 24,
+    paddingVertical: 14,
+    paddingHorizontal: 32,
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: 12,
+    borderWidth: 2,
+    borderColor: '#B3D8F7',
+  },
+  logoutBtnText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '500',
+  },
+  cancelText: {
+    color: '#888',
+    fontSize: 16,
+    marginTop: 2,
+    textAlign: 'center',
   },
 });

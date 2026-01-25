@@ -94,15 +94,15 @@ export default function FriendPreferences() {
            </View>
            <MultiSlider
              values={ageRange}
-             min={18}
-             max={100}
+             min={16}
+             max={80}
              step={1}
              onValuesChange={vals => setAgeRange(vals)}
-             selectedStyle={{ backgroundColor: '#B3D8F7' }}
-             unselectedStyle={{ backgroundColor: '#F0F0F0' }}
+             selectedStyle={{ backgroundColor: '#B3D8F7', height: 6, borderRadius: 3 }}
+             unselectedStyle={{ backgroundColor: '#F0F0F0', height: 6, borderRadius: 3 }}
              markerStyle={{ backgroundColor: '#B3D8F7', borderWidth: 0 }}
-             containerStyle={{ marginTop: 0, marginBottom: 0 }}
-             trackStyle={{ height: 4, borderRadius: 2 }}
+             containerStyle={{ marginTop: 0, marginBottom: 0, paddingHorizontal: 0, width: '100%' }}
+             trackStyle={{ height: 4, borderRadius: 2, width: '100%' }}
            />
          </View>
          <TouchableOpacity style={styles.doneBtn} onPress={() => navigation.goBack()}>
