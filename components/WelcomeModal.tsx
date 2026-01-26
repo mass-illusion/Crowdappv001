@@ -52,7 +52,7 @@ const WelcomeModal: React.FC = () => {
         </TouchableOpacity>
         <Text style={styles.title}>Welcome {name || 'there'}!</Text>
         <Text style={styles.subtitle}>
-          There's a lot to discover, but let's get your profile set up first.
+          There's lots to discover. Let's {"\n"}get  your profile set up first.
         </Text>
         <TouchableOpacity style={styles.goButton} onPress={() => router.replace('/gender')}>
           <Text style={styles.goButtonText}>Let's go</Text>
@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
     color: '#888',
     textAlign: 'center',
     marginBottom: 28,
+    lineHeight: 22,
   },
   goButton: {
     backgroundColor: '#8CC7FF',

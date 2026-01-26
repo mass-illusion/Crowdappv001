@@ -226,7 +226,22 @@ return (
 
 
 
-      {/* Chips row */}
+
+
+      {/* Toggle */}
+      <View style={styles.toggleContainer}>
+        {['ABOUT', 'DETAILS', 'ACTIVITY'].map((label, idx) => (
+          <TouchableOpacity
+            key={label}
+            style={[styles.toggleButton, idx === 0 && styles.toggleButtonActive]}
+            // TODO: Add state for active tab and update style accordingly
+          >
+            <Text style={[styles.toggleText, idx === 0 && styles.toggleTextActive]}>{label}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      {/* Chips row below toggle */}
       <View style={styles.chipsRow}>
         {data.location ? (
           <View style={styles.chip}>
@@ -254,6 +269,7 @@ return (
       {/* About card */}
       {(data.about || data.dreamIs) ? (
         <View style={styles.card}>
+          <Text style={{ fontWeight: '700', fontSize: 15, color: '#222', marginBottom: 6, textAlign: 'left' }}>Bio</Text>
           <Text style={styles.aboutText}>
             {data.about}
             {data.about && data.dreamIs ? '\n\n' : ''}
@@ -320,6 +336,7 @@ return (
          <Text style={styles.sliderLabel}>Party</Text>
        </View>
      </View>
+
      {/* Traits Card */}
      <View style={[styles.card, styles.traitsCard]}>
       <Text style={styles.sectionLabel}>Interests</Text>
@@ -340,6 +357,14 @@ return (
         </View>
       )}
       {/* Only Identify As section will show if present. */}
+     </View>
+
+     {/* Extra Card Below Interests */}
+     <View style={styles.card}>
+       <Text style={{ fontWeight: '700', fontSize: 15, color: '#222', marginBottom: 6, textAlign: 'left' }}>Extra Header</Text>
+       <Text style={{ color: '#555', fontSize: 13, textAlign: 'left' }}>
+         This is the subtext for the extra card. You can customize this content as needed.
+       </Text>
      </View>
 
 
@@ -370,7 +395,42 @@ return (
 
 
 const styles = StyleSheet.create({
- compatSubheader: { fontSize:16, fontWeight:'700', color:'#22223B', marginTop:14, marginBottom:4, marginLeft:18 },
+  toggleContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderRadius: 24,
+    alignSelf: 'center',
+    marginTop: 18,
+    marginBottom: 6,
+    padding: 4,
+    shadowColor: '#000',
+    shadowOpacity: 0.03,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 1 },
+    width: 270,
+    maxWidth: '90%',
+  },
+  toggleButton: {
+    flex: 1,
+    paddingVertical: 7,
+    paddingHorizontal: 12,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  toggleButtonActive: {
+    backgroundColor: '#A2CCF2',
+  },
+  toggleText: {
+    color: '#A2CCF2',
+    fontWeight: '700',
+    fontSize: 10,
+    letterSpacing: 1,
+  },
+  toggleTextActive: {
+    color: '#fff',
+  },
+ compatSubheader: { fontSize:16, fontWeight:'700', color:'#22223B', marginTop:12, marginBottom:4, marginLeft:18 },
 safe: { flex: 1, backgroundColor: '#F2F4F7' },
 topBar: { flexDirection:'row', alignItems:'center', justifyContent:'space-between', paddingHorizontal:16, paddingVertical:8 },
 topTitle: { fontSize:16, fontWeight:'600', color:'#111' },

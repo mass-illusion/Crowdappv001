@@ -123,9 +123,9 @@ const styles = StyleSheet.create({
    fontWeight: 'bold',
    color: '#A0AEC0',
    textAlign: 'center',
-   marginBottom: -16,
+   marginBottom: -20,
  },
- card: { backgroundColor: '#fff', borderRadius: 24, padding: 18, marginTop: 32, shadowColor: '#000', shadowOpacity: 0.07, shadowRadius: 12, alignItems: 'center' },
+card: { backgroundColor: '#fff', borderRadius: 24, paddingVertical: 18, paddingHorizontal: 32, marginTop: 32, shadowColor: '#000', shadowOpacity: 0.07, shadowRadius: 12, alignItems: 'center' },
  lookingForGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', marginBottom: 22 },
  lookingForItem: { width: '30%', margin: '1.5%', alignItems: 'center', padding: 8, borderRadius: 12 },
  lookingForItemActive: { backgroundColor: '#F6F8FB' },
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
  sliderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8, width: '100%' },
  sliderLabel: { fontSize: 15, color: '#A0AEC0' },
  sliderValue: { fontSize: 15, color: '#A0AEC0' },
- doneBtn: { backgroundColor: '#A9C9F7', borderRadius: 24, alignItems: 'center', paddingVertical: 14, marginTop: 45, width: '100%' },
+doneBtn: { backgroundColor: '#B3D8F7', borderRadius: 24, alignItems: 'center', paddingVertical: 14, marginTop: 14, width: '100%' },
  doneBtnText: { color: '#fff', fontSize: 18, fontWeight: '500' },
 });
 
