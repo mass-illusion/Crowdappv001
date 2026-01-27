@@ -5,6 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from "react";
 import { ActionSheetIOS, Alert, Image, KeyboardAvoidingView, Linking, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import NextButtonSvg from '../assets/images/NEXTBLKBUTTON.svg';
 
 const EMPTY_AVATAR = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
 
@@ -130,42 +131,50 @@ const Upload: React.FC<UploadProps> = ({ onComplete }) => {
     }
   };
 
-  return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
-      {/* Forward Arrow Top Right */}
-      <TouchableOpacity style={styles.arrowButton} onPress={() => router.replace('/LookingForScreen')}>
-        <Text style={styles.arrowText}>→</Text>
-      </TouchableOpacity>
-      <Text style={styles.title}>UPLOAD</Text>
-      <View style={styles.profileCard}>
-        <View style={styles.avatarContainer}>
-          <TouchableOpacity onPress={handleProfilePhotoPress} activeOpacity={0.8}>
-            <Image source={photos[0] ? { uri: photos[0] } : { uri: EMPTY_AVATAR }} style={styles.avatar} />
+    return (
+      <View style={{ flex: 1, backgroundColor: '#fff' }}>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        >
+          {/* Forward Arrow Top Right */}
+          <TouchableOpacity style={styles.arrowButton} onPress={() => router.replace('/LookingForScreen')}>
+            <Text style={styles.arrowText}>→</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.cameraButton} onPress={() => handleChoosePhoto(0)}>
-            <Ionicons name="camera" size={28} color="#222" />
+          <Text style={styles.title}>UPLOAD</Text>
+          <View style={styles.profileCard}>
+            <View style={styles.avatarContainer}>
+              <TouchableOpacity onPress={handleProfilePhotoPress} activeOpacity={0.8}>
+                <Image source={photos[0] ? { uri: photos[0] } : { uri: EMPTY_AVATAR }} style={styles.avatar} />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.cameraButton} onPress={() => handleChoosePhoto(0)}>
+                <Ionicons name="camera" size={28} color="#222" />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.grid}>
+              {[1,2,3,4,5].map(i => (
+                <TouchableOpacity key={i} style={styles.gridItem} onPress={() => handleChoosePhoto(i)}>
+                  {photos[i] ? (
+                    <Image source={{ uri: photos[i] as string }} style={styles.gridPhoto} />
+                  ) : (
+                    <View style={styles.gridPlaceholder} />
+                  )}
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+          <TouchableOpacity
+            style={{
+              alignSelf: 'center',
+              marginTop: 12,
+            }}
+            onPress={() => router.replace('/LookingForScreen')}
+          >
+            <NextButtonSvg width={320} height={80} />
           </TouchableOpacity>
-        </View>
-        <View style={styles.grid}>
-          {[1,2,3,4,5].map(i => (
-            <TouchableOpacity key={i} style={styles.gridItem} onPress={() => handleChoosePhoto(i)}>
-              {photos[i] ? (
-                <Image source={{ uri: photos[i] as string }} style={styles.gridPhoto} />
-              ) : (
-                <View style={styles.gridPlaceholder} />
-              )}
-            </TouchableOpacity>
-          ))}
-        </View>
+        </KeyboardAvoidingView>
       </View>
-      <TouchableOpacity style={[styles.button, { marginTop: 48 }]} onPress={() => router.replace('/LookingForScreen')}>
-        <Text style={styles.buttonText}>Next</Text>
-      </TouchableOpacity>
-    </KeyboardAvoidingView>
-  );
+    );
 };
 
 const styles = StyleSheet.create({

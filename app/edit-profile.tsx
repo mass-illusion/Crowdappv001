@@ -1442,7 +1442,7 @@ export default function EditProfile() {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Core Identity</Text>
         <Text style={styles.sectionDescription}>
-          Sharing help us improve compatibility and personalize matches! Not all details are visible on your profile. Preview and manage visibility at anytime.
+          Sharing improves compatibility and personalizes matches. Not all details are visible on your profile. Preview and manage visibility at anytime.
         </Text>
         <View style={{ height: 20 }} />
       </View>
@@ -1798,12 +1798,26 @@ export default function EditProfile() {
                 </TouchableOpacity>
               );
             })}
-            {/* Specifically looking for... subheader and text box */}
+            {/* What You're Really Looking For header and subtitle */}
             <View style={{ marginTop: 16 }}>
-              <Text style={[styles.sectionTitle, { color: '#000' }]}>Specifically looking for...</Text>
+              <Text style={[styles.sectionTitle, { marginBottom: 4 }]}>What You're Really Looking For</Text>
+              <Text style={styles.lookingSubtitle}>
+                This stays private. We use this to match you with people who share your goals, experiences, and energy. You can vent, be honest, or skip.
+              </Text>
+              <Text style={[styles.sectionTitle, { color: '#000', marginTop: 18, fontSize: 14, lineHeight: 22, marginRight: 12 }]}>Describe the kind of friends or community you want in your life right now</Text>
               <TextInput
-                style={[styles.textInput, styles.textArea, { width: '100%', minHeight: 60 }]}
-                placeholder="Ex: Girlfriends to go on weekend getaways"
+                style={[styles.textInput, styles.textArea, { width: '100%', minHeight: 60, marginLeft: -4 }]} 
+                placeholder=""
+                placeholderTextColor="#999"
+                multiline
+                numberOfLines={2}
+              />
+
+              {/* New header and text box for frustrations/missing */}
+              <Text style={[styles.sectionTitle, { color: '#000', marginTop: 24, fontSize: 14, lineHeight: 22, marginRight: 12 }]}>What’s been frustrating or missing in your social life?</Text>
+              <TextInput
+                style={[styles.textInput, styles.textArea, { width: '100%', minHeight: 60, marginLeft: -4 }]} 
+                placeholder=""
                 placeholderTextColor="#999"
                 multiline
                 numberOfLines={2}
@@ -4006,6 +4020,16 @@ const styles = StyleSheet.create({
       letterSpacing: 0.5,
       paddingLeft: 0,
     },
+    lookingHeader: {
+      // No longer used, kept for reference
+    },
+    lookingSubtitle: {
+      fontSize: 12,
+      color: '#888',
+      textAlign: 'left',
+      marginBottom: 8,
+      lineHeight: 20,
+    },
     sportsModalCloseButton: {
       position: 'absolute',
       right: 16,
@@ -4136,7 +4160,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   sectionDescription: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#666',
     lineHeight: 20,
   },
@@ -4992,5 +5016,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+
 
 

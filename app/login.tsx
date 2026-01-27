@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
   rememberMeText: {
     fontSize: 14,
     color: '#222',
-    marginRight: 8,
+    marginRight: 2,
   },
   checkbox: {
     justifyContent: 'center',

@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useState } from "react";
 import { ActionSheetIOS, Alert, Image, KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import NextButtonSvg from '../assets/images/NEXT_BUTTON.svg';
 
 // Unisex outline avatar icon
 const EMPTY_AVATAR = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
@@ -127,10 +128,13 @@ const UploadScreen: React.FC<UploadScreenProps> = ({ onBack, onComplete }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       {/* Forward Arrow Top Right */}
-      <TouchableOpacity style={styles.arrowButton} onPress={() => router.replace('/LookingForScreen')}>
-        <Text style={styles.arrowText}>→</Text>
-      </TouchableOpacity>
-      <Text style={styles.title}>UPLOAD</Text>
+     <TouchableOpacity style={styles.arrowButton} onPress={() => router.replace('/LookingForScreen')}>
+  <NextButtonSvg width={40} height={40} />
+  <Text style={{ color: "red" }}>SVG TEST</Text>
+</TouchableOpacity>
+
+      <Text style={styles.title}>UPLOAD </Text>
+
       <View style={styles.profileCard}>
         <View style={styles.avatarContainer}>
           <TouchableOpacity onPress={handleProfilePhotoPress} activeOpacity={0.8}>
