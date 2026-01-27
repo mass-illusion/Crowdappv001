@@ -2,7 +2,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useRef, useState } from 'react';
 import { Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
-import RegisterButtonSvg from "../assets/images/REGISTER_BUTTON.svg";
+// import RegisterButtonSvg from "../assets/images/REGISTER_BUTTON.svg";
+import { Image } from 'react-native';
 import GoogleSvg from "../assets/images/google.svg";
 
 
@@ -167,7 +168,7 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
           onPress={handleSendCode}
           disabled={!canSubmit}
         >
-          <RegisterButtonSvg width={800} height={80} />
+          <Image source={require('../assets/images/REGISTER_BUTTON.webp')} style={{ width: 800, height: 80, resizeMode: 'contain' }} />
         </TouchableOpacity>
         <View style={styles.termsContainer}>
           <Text style={styles.termsText}>

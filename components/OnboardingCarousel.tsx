@@ -1,9 +1,9 @@
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Onboarding1 from '../assets/onboarding1.svg';
 import Onboarding2 from '../assets/onboarding2.svg';
-import Onboarding3 from '../assets/onboarding3.svg';
+const Onboarding3 = require('../assets/images/onboarding3.webp');
 
 const { width, height } = Dimensions.get('window');
 
@@ -28,7 +28,7 @@ export default function OnboardingCarousel({ onComplete }: OnboardingCarouselPro
     {
       title: 'Friend Groups',
       description: 'Create a friend group. Start a group chat directly in the app, and start your adventure!',
-      SvgComponent: Onboarding3,
+      image: Onboarding3,
     },
   ];
 
@@ -60,12 +60,16 @@ export default function OnboardingCarousel({ onComplete }: OnboardingCarouselPro
   return (
     <View style={styles.container}>
       <View style={[styles.page, currentPage === 0 && styles.pageFirst]}>
-        <View style={[
+        <View style={[ 
           styles.imageContainer, 
           currentPage === 0 && styles.imageContainerFirst,
           currentPage === 1 && styles.imageContainerSecond
         ]}>
-          <SvgComponent width={imageWidth} height={imageHeight} />
+          {currentSlide.image ? (
+            <Image source={currentSlide.image} style={{ width: imageWidth, height: imageHeight, resizeMode: 'contain' }} />
+          ) : (
+            <SvgComponent width={imageWidth} height={imageHeight} />
+          )}
         </View>
         <Text style={[styles.title, currentPage === 1 && styles.titleSecond, currentPage === 2 && styles.titleThird]}>{currentSlide.title}</Text>
         <Text style={[styles.description, currentPage === 1 && styles.descriptionSecond, currentPage === 2 && styles.descriptionThird]}>{currentSlide.description}</Text>

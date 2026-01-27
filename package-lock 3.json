@@ -49,7 +49,7 @@
         "react-native-gesture-handler": "~2.28.0",
         "react-native-maps": "1.20.1",
         "react-native-pager-view": "6.9.1",
-        "react-native-reanimated": "~3.7.0",
+        "react-native-reanimated": "~4.1.1",
         "react-native-safe-area-context": "~5.6.0",
         "react-native-screens": "~4.16.0",
         "react-native-svg": "15.12.1",
@@ -58,6 +58,7 @@
       },
       "devDependencies": {
         "@types/react": "~19.1.0",
+        "@types/react-native": "^0.72.8",
         "eslint": "^9.25.0",
         "eslint-config-expo": "~10.0.0",
         "react-native-svg-transformer": "^1.5.3",
@@ -1278,21 +1279,6 @@
       "license": "MIT",
       "dependencies": {
         "@babel/helper-plugin-utils": "^7.28.6"
-      },
-      "engines": {
-        "node": ">=6.9.0"
-      },
-      "peerDependencies": {
-        "@babel/core": "^7.0.0-0"
-      }
-    },
-    "node_modules/@babel/plugin-transform-object-assign": {
-      "version": "7.27.1",
-      "resolved": "https://registry.npmjs.org/@babel/plugin-transform-object-assign/-/plugin-transform-object-assign-7.27.1.tgz",
-      "integrity": "sha512-LP6tsnirA6iy13uBKiYgjJsfQrodmlSrpZModtlo1Vk8sOO68gfo7dfA9TGJyEgxTiO7czK4EGZm8FJEZtk4kQ==",
-      "license": "MIT",
-      "dependencies": {
-        "@babel/helper-plugin-utils": "^7.27.1"
       },
       "engines": {
         "node": ">=6.9.0"
@@ -3317,26 +3303,17 @@
       "license": "MIT"
     },
     "node_modules/@react-native/virtualized-lists": {
-      "version": "0.81.5",
-      "resolved": "https://registry.npmjs.org/@react-native/virtualized-lists/-/virtualized-lists-0.81.5.tgz",
-      "integrity": "sha512-UVXgV/db25OPIvwZySeToXD/9sKKhOdkcWmmf4Jh8iBZuyfML+/5CasaZ1E7Lqg6g3uqVQq75NqIwkYmORJMPw==",
+      "version": "0.72.8",
+      "resolved": "https://registry.npmjs.org/@react-native/virtualized-lists/-/virtualized-lists-0.72.8.tgz",
+      "integrity": "sha512-J3Q4Bkuo99k7mu+jPS9gSUSgq+lLRSI/+ahXNwV92XgJ/8UgOTxu2LPwhJnBk/sQKxq7E8WkZBnBiozukQMqrw==",
+      "dev": true,
       "license": "MIT",
       "dependencies": {
         "invariant": "^2.2.4",
         "nullthrows": "^1.1.1"
       },
-      "engines": {
-        "node": ">= 20.19.4"
-      },
       "peerDependencies": {
-        "@types/react": "^19.1.0",
-        "react": "*",
         "react-native": "*"
-      },
-      "peerDependenciesMeta": {
-        "@types/react": {
-          "optional": true
-        }
       }
     },
     "node_modules/@react-navigation/bottom-tabs": {
@@ -3972,6 +3949,17 @@
       "license": "MIT",
       "dependencies": {
         "csstype": "^3.0.2"
+      }
+    },
+    "node_modules/@types/react-native": {
+      "version": "0.72.8",
+      "resolved": "https://registry.npmjs.org/@types/react-native/-/react-native-0.72.8.tgz",
+      "integrity": "sha512-St6xA7+EoHN5mEYfdWnfYt0e8u6k2FR0P9s2arYgakQGFgU1f9FlPrIEcj0X24pLCF5c5i3WVuLCUdiCYHmOoA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "@react-native/virtualized-lists": "^0.72.4",
+        "@types/react": "*"
       }
     },
     "node_modules/@types/stack-utils": {
@@ -11739,25 +11727,31 @@
       }
     },
     "node_modules/react-native-reanimated": {
-      "version": "3.7.2",
-      "resolved": "https://registry.npmjs.org/react-native-reanimated/-/react-native-reanimated-3.7.2.tgz",
-      "integrity": "sha512-3KpTmYEcmHhkZeTqgWtioqnljpd4TLxKHClvarYsA3UXU2Tv+O1gqlRhVhfHBZuiDngVu436gWkde9+/VQVMFQ==",
+      "version": "4.1.6",
+      "resolved": "https://registry.npmjs.org/react-native-reanimated/-/react-native-reanimated-4.1.6.tgz",
+      "integrity": "sha512-F+ZJBYiok/6Jzp1re75F/9aLzkgoQCOh4yxrnwATa8392RvM3kx+fiXXFvwcgE59v48lMwd9q0nzF1oJLXpfxQ==",
       "license": "MIT",
       "dependencies": {
-        "@babel/plugin-transform-object-assign": "^7.16.7",
-        "@babel/preset-typescript": "^7.16.7",
-        "convert-source-map": "^2.0.0",
-        "invariant": "^2.2.4"
+        "react-native-is-edge-to-edge": "^1.2.1",
+        "semver": "7.7.2"
       },
       "peerDependencies": {
         "@babel/core": "^7.0.0-0",
-        "@babel/plugin-proposal-nullish-coalescing-operator": "^7.0.0-0",
-        "@babel/plugin-proposal-optional-chaining": "^7.0.0-0",
-        "@babel/plugin-transform-arrow-functions": "^7.0.0-0",
-        "@babel/plugin-transform-shorthand-properties": "^7.0.0-0",
-        "@babel/plugin-transform-template-literals": "^7.0.0-0",
         "react": "*",
-        "react-native": "*"
+        "react-native": "*",
+        "react-native-worklets": ">=0.5.0"
+      }
+    },
+    "node_modules/react-native-reanimated/node_modules/semver": {
+      "version": "7.7.2",
+      "resolved": "https://registry.npmjs.org/semver/-/semver-7.7.2.tgz",
+      "integrity": "sha512-RF0Fw+rO5AMf9MAyaRXI4AV0Ulj5lMHqVxxdSgiVbixSCXoEmmX/jk0CuJw4+3SqroYO9VoUh+HcuJivvtJemA==",
+      "license": "ISC",
+      "bin": {
+        "semver": "bin/semver.js"
+      },
+      "engines": {
+        "node": ">=10"
       }
     },
     "node_modules/react-native-safe-area-context": {
@@ -11883,6 +11877,29 @@
       },
       "engines": {
         "node": ">=10"
+      }
+    },
+    "node_modules/react-native/node_modules/@react-native/virtualized-lists": {
+      "version": "0.81.5",
+      "resolved": "https://registry.npmjs.org/@react-native/virtualized-lists/-/virtualized-lists-0.81.5.tgz",
+      "integrity": "sha512-UVXgV/db25OPIvwZySeToXD/9sKKhOdkcWmmf4Jh8iBZuyfML+/5CasaZ1E7Lqg6g3uqVQq75NqIwkYmORJMPw==",
+      "license": "MIT",
+      "dependencies": {
+        "invariant": "^2.2.4",
+        "nullthrows": "^1.1.1"
+      },
+      "engines": {
+        "node": ">= 20.19.4"
+      },
+      "peerDependencies": {
+        "@types/react": "^19.1.0",
+        "react": "*",
+        "react-native": "*"
+      },
+      "peerDependenciesMeta": {
+        "@types/react": {
+          "optional": true
+        }
       }
     },
     "node_modules/react-native/node_modules/commander": {

@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from "react";
-import { Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
-import NextButtonSvg from '../assets/images/NEXT_BUTTON.svg';
+import { Image, Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
@@ -57,7 +56,7 @@ const ProfileScreen: React.FC = () => {
           activeOpacity={0.8}
           disabled={!(fullName.trim().length > 0 && userName.length > 0)}
         >
-          <NextButtonSvg width="100%" height={80} />
+          <Image source={require('../assets/images/NEXT_BUTTON.webp')} style={{ width: '100%', height: 80, resizeMode: 'contain' }} />
         </TouchableOpacity>
       </View>
     </TouchableWithoutFeedback>
@@ -84,7 +83,7 @@ const ProfileScreen: React.FC = () => {
 },
 
     nextButton: {
-      marginTop: 32,
+      marginTop: 16,
       width: '100%',
       height: 80,
       alignItems: "center",

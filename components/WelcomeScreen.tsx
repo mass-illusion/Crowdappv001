@@ -1,8 +1,8 @@
 
 import { router } from 'expo-router';
-import React from 'react';
+import * as React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import CreateAccountButton from '../assets/images/create account.svg';
+// import CreateAccountButton from '../assets/images/create account.svg';
 import Crowd4Logo from '../assets/images/crowd4.svg';
 
 export default function WelcomeScreen() {
@@ -22,7 +22,7 @@ export default function WelcomeScreen() {
           onPress={() => router.push('/onboarding-carousel')}
           style={styles.buttonContainer}
         >
-          <CreateAccountButton width={300} height={60} />
+          <Image source={require('../assets/images/createaccount.webp')} style={{ width: 300, height: 60, resizeMode: 'contain' }} />
         </TouchableOpacity>
 
         {/* Already have account text */}
@@ -33,13 +33,13 @@ export default function WelcomeScreen() {
         {/* Mascots */}
         <View style={styles.mascotContainer}>
           <Image 
-            source={require('../assets/images/mascot1.png')} 
-            style={styles.mascot}
+            source={require('../assets/images/mascot1.png')}
+              style={[styles.mascot, { width: 112, height: 119, marginTop: 10, marginBottom: 0, transform: [{ rotate: '-3deg' }] }]}
             resizeMode="contain"
           />
           <Image 
-            source={require('../assets/images/mascot2.png')} 
-            style={styles.mascot}
+            source={require('../assets/images/mascot3.png')}
+            style={[styles.mascot, { marginBottom: -.5, transform: [{ rotate: '.5deg' }] }]}
             resizeMode="contain"
           />
         </View>
@@ -80,12 +80,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'center',
-    gap: 15,
+    gap: 22,
     marginTop: 120,
   },
   mascot: {
     width: 120,
-    height: 120,
+    height: 125,
   },
 });
 
