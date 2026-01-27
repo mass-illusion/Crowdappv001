@@ -34,7 +34,7 @@ export default function WelcomeScreen() {
         <View style={styles.mascotContainer}>
           <Image 
             source={require('../assets/images/mascot1.png')}
-              style={[styles.mascot, { width: 112, height: 119, marginTop: 10, marginBottom: 0, transform: [{ rotate: '-3deg' }] }]}
+              style={[styles.mascot, { width: 112, height: 119, marginTop: 10, marginBottom: -1, transform: [{ rotate: '-1deg' }] }]}
             resizeMode="contain"
           />
           <Image 
