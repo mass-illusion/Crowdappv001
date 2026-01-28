@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Onboarding1 from '../assets/onboarding1.svg';
 import Onboarding2 from '../assets/onboarding2.svg';
