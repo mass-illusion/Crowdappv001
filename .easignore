@@ -1,0 +1,38 @@
+# dependencies
+node_modules
+
+# version control
+.git
+
+# expo caches
+.expo
+.expo-shared
+
+# native projects (EAS regenerates these)
+ios
+android
+
+# local apps / junk
+Expo Orbit.app
+
+# misc
+debug
+Map
+tiniifiedsports
+*.zip
+*.log
+.DS_Store
+
+# Local apps / binaries
+Expo Orbit.app
+*.zip
+*.rpm
+*.HEIC
+*.jpg
+
+# Native folders
+ios
+android
+
+# Dependencies
+node_modules

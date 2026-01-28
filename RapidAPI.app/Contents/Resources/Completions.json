@@ -1,0 +1,5143 @@
+[
+  {
+    "desc" : "Content-Types that are acceptable",
+    "word" : "Accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Character sets that are acceptable",
+    "word" : "Accept-Charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Acceptable version in time",
+    "word" : "Accept-Datetime",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Acceptable encodings (compression)",
+    "word" : "Accept-Encoding",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Acceptable languages for response",
+    "word" : "Accept-Language",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Authentication credentials for HTTP authentication",
+    "word" : "Authorization",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Used to specify directives that MUST be obeyed by all caching mechanisms along the request\/response chain",
+    "word" : "Cache-Control",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "What type of connection the user-agent would prefer",
+    "word" : "Connection",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "The length of the request body in octets (8-bit bytes)",
+    "word" : "Content-Length",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "A Base64-encoded binary MD5 sum of the content of the request body",
+    "word" : "Content-MD5",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "The MIME type of the body of the request (for POST and PUT requests)",
+    "word" : "Content-Type",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "An HTTP cookie previously sent by the server with Set-Cookie",
+    "word" : "Cookie",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "word" : "DNT",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "The date and time that the message was sent",
+    "word" : "Date",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Indicates that particular server behaviors are required by the client",
+    "word" : "Expect",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "The email address of the user making the request",
+    "word" : "From",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Non-standard header used by Microsoft applications and load-balancers",
+    "word" : "Front-End-Https",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "The domain name of the server (for virtual hosting)",
+    "word" : "Host",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Only perform the action if the client supplied entity matches the same entity on the server",
+    "word" : "If-Match",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Allows a 304 Not Modified to be returned if content is unchanged",
+    "word" : "If-Modified-Since",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Allows a 304 Not Modified to be returned if content is unchanged, see HTTP ETag",
+    "word" : "If-None-Match",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "If the entity is unchanged, send me the part(s) that I am missing; otherwise, send me the entire new entity",
+    "word" : "If-Range",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Only send the response if the entity has not been modified since a specific time",
+    "word" : "If-Unmodified-Since",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Limit the number of times the message can be forwarded through proxies or gateways",
+    "word" : "Max-Forwards",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Implementation-specific headers that may have various effects anywhere along the request-response chain",
+    "word" : "Pragma",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Authorization credentials for connecting to a proxy",
+    "word" : "Proxy-Authorization",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "word" : "Proxy-Connection",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Request only part of an entity. Bytes are numbered from 0",
+    "word" : "Range",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "This is the address of the previous web page from which a link to the currently requested page was followed. (The word “referrer” is misspelled in the RFC as well as in most implementations.)",
+    "word" : "Referer",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "The transfer encodings the user agent is willing to accept",
+    "word" : "TE",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Ask the server to upgrade to another protocol",
+    "word" : "Upgrade",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "The user agent string of the user agent",
+    "word" : "User-Agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Informs the server of proxies through which the request was sent",
+    "word" : "Via",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "A general warning about possible problems with the entity body",
+    "word" : "Warning",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Non-standard header used when Authorization header is not applicable",
+    "word" : "X-Authorization",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Identifying the originating IP address of a client connecting to a web server through an HTTP proxy or load balancer",
+    "word" : "X-Forwarded-For",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Identifying the originating protocol of an HTTP request, since a reverse proxy (load balancer) may communicate with a web server using HTTP even if the request to the reverse proxy is HTTPS",
+    "word" : "X-Forwarded-Proto",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "word" : "X-Requested-With",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "Non-standard header prefix used for Amazon Web Services",
+    "word" : "x-amz",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "(AWS) The current date and time according to the requester",
+    "word" : "x-amz-date",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },
+  {
+    "desc" : "(AWS) Security Token",
+    "word" : "x-amz-security-token",
+    "category" : "LMCompletionCategoryHTTPRequestHeaders"
+  },  {
+    "word" : "BIG5",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Traditional Chinese (Big 5)"
+  },
+  {
+    "word" : "Big5-HKSCS",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Traditional Chinese (Big 5 HKSCS)"
+  },
+  {
+    "word" : "CP437",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Latin-US (DOS)"
+  },
+  {
+    "word" : "CP737",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Greek (DOS)"
+  },
+  {
+    "word" : "CP775",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Baltic Rim (DOS)"
+  },
+  {
+    "word" : "CP850",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Western (DOS Latin 1)"
+  },
+  {
+    "word" : "CP852",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Central European (DOS Latin 2)"
+  },
+  {
+    "word" : "CP857",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Turkish (DOS)"
+  },
+  {
+    "word" : "CP861",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Icelandic (DOS)"
+  },
+  {
+    "word" : "CP866",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Cyrillic (DOS)"
+  },
+  {
+    "word" : "CP874",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Thai (Windows DOS)"
+  },
+  {
+    "word" : "CP932",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Japanese (Windows, DOS)"
+  },
+  {
+    "word" : "CP936",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Simplified Chinese (Windows DOS)"
+  },
+  {
+    "word" : "CP949",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Korean (Windows DOS)"
+  },
+  {
+    "word" : "CP950",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Traditional Chinese (Windows DOS)"
+  },
+  {
+    "word" : "DOS-862",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Hebrew (DOS)"
+  },
+  {
+    "word" : "EUC-CN",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Simplified Chinese (EUC)"
+  },
+  {
+    "word" : "EUC-JP",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Japanese (EUC)"
+  },
+  {
+    "word" : "EUC-KR",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Korean (EUC)"
+  },
+  {
+    "word" : "EUC-TW",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Traditional Chinese (EUC)"
+  },
+  {
+    "word" : "GB18030",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chinese (GB 18030)"
+  },
+  {
+    "word" : "GBK",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chinese (GBK)"
+  },
+  {
+    "word" : "Googlebot\/2.1 (+http:\/\/www.google.com\/bot.html)",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Googlebot 2.1"
+  },
+  {
+    "word" : "HZ-GB-2312",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Simplified Chinese (HZ GB 2312)"
+  },
+  {
+    "word" : "IBM037",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Western (EBCDIC Latin 1)"
+  },
+  {
+    "word" : "IBM869",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Greek (DOS Greek 2)"
+  },
+  {
+    "word" : "ISO-2022-JP",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Japanese (ISO 2022-JP)"
+  },
+  {
+    "word" : "ISO-2022-KR",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Korean (ISO 2022-KR)"
+  },
+  {
+    "word" : "ISO-8859-1",
+    "filter" : "accept-charset",
+    "weight" : 8,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Western (ISO Latin 1)"
+  },
+  {
+    "word" : "ISO-8859-10",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Nordic (ISO Latin 6)"
+  },
+  {
+    "word" : "ISO-8859-11",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Thai (ISO 8859-11)"
+  },
+  {
+    "word" : "ISO-8859-13",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Baltic Rim (ISO Latin 7)"
+  },
+  {
+    "word" : "ISO-8859-14",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Celtic (ISO Latin 8)"
+  },
+  {
+    "word" : "ISO-8859-15",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Western (ISO Latin 9)"
+  },
+  {
+    "word" : "ISO-8859-16",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Romanian (ISO Latin 10)"
+  },
+  {
+    "word" : "ISO-8859-2",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Central European (ISO Latin 2)"
+  },
+  {
+    "word" : "ISO-8859-3",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Western (ISO Latin 3)"
+  },
+  {
+    "word" : "ISO-8859-4",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Central European (ISO Latin 4)"
+  },
+  {
+    "word" : "ISO-8859-5",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Cyrillic (ISO 8859-5)"
+  },
+  {
+    "word" : "ISO-8859-6",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Arabic (ISO 8859-6)"
+  },
+  {
+    "word" : "ISO-8859-7",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Greek (ISO 8859-7)"
+  },
+  {
+    "word" : "ISO-8859-8",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Hebrew (ISO 8859-8)"
+  },
+  {
+    "word" : "ISO-8859-9",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Turkish (ISO Latin 5)"
+  },
+  {
+    "word" : "KOI8-R",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Cyrillic (KOI8-R)"
+  },
+  {
+    "word" : "KOI8-U",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Ukrainian (KOI8-U)"
+  },
+  {
+    "word" : "MACINTOSH",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Western (Mac OS Roman)"
+  },
+  {
+    "word" : "Mozilla\/4.0 (compatible; MSIE 7.0; Windows NT 6.0)",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Internet Explorer 7.0 on Windows NT 6.0 (Windows Vista)"
+  },
+  {
+    "word" : "Mozilla\/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident\/4.0)",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Internet Explorer 8.0 on Windows NT 6.0 (Windows Vista)"
+  },
+  {
+    "word" : "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_5_8) AppleWebKit\/534.24 (KHTML, like Gecko) Chrome\/11.0.696.68 Safari\/534.24",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chrome 11.0 on Mac OS X Leopard 10.5.8"
+  },
+  {
+    "word" : "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_6_0) AppleWebKit\/537.4 (KHTML, like Gecko) Chrome\/22.0.1229.79 Safari\/537.4",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chrome 22.0 on Mac OS X Snow Leopard 10.6.0"
+  },
+  {
+    "word" : "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit\/535.7 (KHTML, like Gecko) Chrome\/16.0.912.36 Safari\/535.7",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chrome 16.0 on Mac OS X Snow Leopard 10.6.8"
+  },
+  {
+    "word" : "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_7_2) AppleWebKit\/535.1 (KHTML, like Gecko) Chrome\/14.0.835.186 Safari\/535.1",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chrome 14.0 on OS X Lion 10.7.2"
+  },
+  {
+    "word" : "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_7_3) AppleWebKit\/534.55.3 (KHTML, like Gecko) Version\/5.1.3 Safari\/534.53.10",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Safari 5.1.3 on OS X Lion 10.7.3"
+  },
+  {
+    "word" : "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit\/536.26.17 (KHTML, like Gecko) Version\/6.0.2 Safari\/536.26.17",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Safari 6.0.2 on OS X Lion 10.7.5"
+  },
+  {
+    "word" : "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit\/537.11 (KHTML, like Gecko) Chrome\/23.0.1271.95 Safari\/537.11",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chrome 23.0 on OS X Lion 10.7.5"
+  },
+  {
+    "word" : "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_8_0) AppleWebKit\/536.3 (KHTML, like Gecko) Chrome\/19.0.1063.0 Safari\/536.3",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chrome 19.0 on OS X Mountain Lion 10.8.0"
+  },
+  {
+    "word" : "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit\/537.17 (KHTML, like Gecko) Chrome\/24.0.1309.0 Safari\/537.17",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chrome 24.0 on OS X Mountain Lion 10.8.2"
+  },
+  {
+    "word" : "Mozilla\/5.0 (Windows NT 5.1) AppleWebKit\/534.25 (KHTML, like Gecko) Chrome\/12.0.704.0 Safari\/534.25",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chrome 12.0 on Windows NT 5.1 (Windows XP 32-bit)"
+  },
+  {
+    "word" : "Mozilla\/5.0 (Windows NT 5.1) AppleWebKit\/536.3 (KHTML, like Gecko) Chrome\/19.0.1063.0 Safari\/536.3",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chrome 19.0 on Windows NT 5.1 (Windows XP 32-bit)"
+  },
+  {
+    "word" : "Mozilla\/5.0 (Windows NT 6.0) AppleWebKit\/535.7 (KHTML, like Gecko) Chrome\/16.0.912.75 Safari\/535.7",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chrome 16.0 on Windows NT 6.0 (Windows Vista)"
+  },
+  {
+    "word" : "Mozilla\/5.0 (Windows NT 6.1) AppleWebKit\/537.2 (KHTML, like Gecko) Chrome\/22.0.1216.0 Safari\/537.2",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chrome 22.0 on Windows NT 6.1 (Windows 7)"
+  },
+  {
+    "word" : "Mozilla\/5.0 (Windows NT 6.1; WOW64) AppleWebKit\/535.8 (KHTML, like Gecko) Chrome\/17.0.940.0 Safari\/535.8",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chrome 17.0 on Windows NT 6.1 (Windows 7)"
+  },
+  {
+    "word" : "Mozilla\/5.0 (Windows NT 6.1; WOW64) AppleWebKit\/536.3 (KHTML, like Gecko) Chrome\/19.0.1063.0 Safari\/536.3",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chrome 19.0 on Windows NT 6.1 (Windows 7)"
+  },
+  {
+    "word" : "Mozilla\/5.0 (Windows NT 6.1; WOW64) AppleWebKit\/536.6 (KHTML, like Gecko) Chrome\/20.0.1092.0 Safari\/536.6",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chrome 20.0 on Windows NT 6.1 (Windows 7)"
+  },
+  {
+    "word" : "Mozilla\/5.0 (Windows NT 6.2) AppleWebKit\/537.11 (KHTML, like Gecko) Chrome\/23.0.1271.26 Safari\/537.11",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chrome 23.0 on Windows NT 6.2 (Windows 8)"
+  },
+  {
+    "word" : "Mozilla\/5.0 (Windows NT 6.2; WOW64) AppleWebKit\/537.15 (KHTML, like Gecko) Chrome\/24.0.1295.0 Safari\/537.15",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chrome 24.0 on Windows NT 6.2 (Windows 8)"
+  },
+  {
+    "word" : "Mozilla\/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit\/534.16 (KHTML, like Gecko) Chrome\/10.0.648.134 Safari\/534.16",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chrome 10.0 on Windows NT 5.1 (Windows XP 32-bit)"
+  },
+  {
+    "word" : "Mozilla\/5.0 (Windows; Windows NT 6.1) AppleWebKit\/534.57.2 (KHTML, like Gecko) Version\/5.1.7 Safari\/534.57.2",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Safari 5.1.7 on Windows NT 6.1 (Windows 7)"
+  },
+  {
+    "word" : "Mozilla\/5.0 (X11; Linux x86_64) AppleWebKit\/536.5 (KHTML, like Gecko) Chrome\/19.0.1084.9 Safari\/536.5",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chrome 19.0 on Linux (with X11)"
+  },
+  {
+    "word" : "Mozilla\/5.0 (compatible; Googlebot\/2.1; +http:\/\/www.google.com\/bot.html)",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Googlebot 2.1"
+  },
+  {
+    "word" : "Mozilla\/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident\/5.0)",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Internet Explorer 9.0 on Windows NT 6.1 (Windows 7)"
+  },
+  {
+    "word" : "Mozilla\/5.0 (iPad; CPU OS 6_0 like Mac OS X) AppleWebKit\/536.26 (KHTML, like Gecko) Version\/6.0 Mobile\/10A5355d Safari\/8536.25",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Safari 6.0 on iPad iOS 6.0"
+  },
+  {
+    "word" : "Mozilla\/5.0 (iPhone; CPU iPhone OS 5_1 like Mac OS X) AppleWebKit\/534.46 (KHTML, like Gecko) Version\/5.1 Mobile\/9B179 Safari\/7534.48.3",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Safari 5.1 on iPhone iOS 5.1"
+  },
+  {
+    "word" : "Opera\/12.80 (Windows NT 5.1; U; en) Presto\/2.10.289 Version\/12.02",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Opera 12.80 on Windows NT 5.1 (Windows XP 32-bit)"
+  },
+  {
+    "word" : "Opera\/9.80 (Macintosh; Intel Mac OS X 10.6.8; U; de) Presto\/2.9.168 Version\/11.52",
+    "filter" : "user-agent",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Opera 9.80 on Mac OS X Snow Leopard 10.6.8"
+  },
+  {
+    "word" : "SHIFT_JIS",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Japanese (Shift JIS)"
+  },
+  {
+    "word" : "Shift_JIS",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Japanese (Shift JIS X0213)"
+  },
+  {
+    "word" : "US-ASCII",
+    "filter" : "accept-charset",
+    "weight" : 9,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Western (ASCII)"
+  },
+  {
+    "word" : "UTF-16",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Unicode (UTF-16)"
+  },
+  {
+    "word" : "UTF-16BE",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Unicode (UTF-16BE)"
+  },
+  {
+    "word" : "UTF-16LE",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Unicode (UTF-16LE)"
+  },
+  {
+    "word" : "UTF-32",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Unicode (UTF-32)"
+  },
+  {
+    "word" : "UTF-32BE",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Unicode (UTF-32BE)"
+  },
+  {
+    "word" : "UTF-32LE",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Unicode (UTF-32LE)"
+  },
+  {
+    "word" : "UTF-8",
+    "filter" : "accept-charset",
+    "weight" : 10,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Unicode (UTF-8)"
+  },
+  {
+    "word" : "WINDOWS-1250",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Central European (Windows Latin 2)"
+  },
+  {
+    "word" : "WINDOWS-1251",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Cyrillic (Windows)"
+  },
+  {
+    "word" : "WINDOWS-1252",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Western (Windows Latin 1)"
+  },
+  {
+    "word" : "WINDOWS-1253",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Greek (Windows)"
+  },
+  {
+    "word" : "WINDOWS-1254",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Turkish (Windows Latin 5)"
+  },
+  {
+    "word" : "WINDOWS-1255",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Hebrew (Windows)"
+  },
+  {
+    "word" : "WINDOWS-1256",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Arabic (Windows)"
+  },
+  {
+    "word" : "WINDOWS-1257",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Baltic Rim (Windows)"
+  },
+  {
+    "word" : "WINDOWS-1258",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Vietnamese (Windows)"
+  },
+  {
+    "word" : "X-MAC-ARABIC",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Arabic (Mac OS)"
+  },
+  {
+    "word" : "X-MAC-CENTRALEURROMAN",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Central European (Mac OS)"
+  },
+  {
+    "word" : "X-MAC-CROATIAN",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Croatian (Mac OS)"
+  },
+  {
+    "word" : "X-MAC-CYRILLIC",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Cyrillic (Mac OS)"
+  },
+  {
+    "word" : "X-MAC-DEVANAGARI",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Devanagari (Mac OS)"
+  },
+  {
+    "word" : "X-MAC-DINGBATS",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Dingbats (Mac OS)"
+  },
+  {
+    "word" : "X-MAC-FARSI",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Farsi (Mac OS)"
+  },
+  {
+    "word" : "X-MAC-GREEK",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Greek (Mac OS)"
+  },
+  {
+    "word" : "X-MAC-GUJARATI",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Gujarati (Mac OS)"
+  },
+  {
+    "word" : "X-MAC-GURMUKHI",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Gurmukhi (Mac OS)"
+  },
+  {
+    "word" : "X-MAC-HEBREW",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Hebrew (Mac OS)"
+  },
+  {
+    "word" : "X-MAC-ICELANDIC",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Icelandic (Mac OS)"
+  },
+  {
+    "word" : "X-MAC-JAPANESE",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Japanese (Mac OS)"
+  },
+  {
+    "word" : "X-MAC-KOREAN",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Korean (Mac OS)"
+  },
+  {
+    "word" : "X-MAC-ROMAN-LATIN1",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Western (Mac Mail)"
+  },
+  {
+    "word" : "X-MAC-ROMANIAN",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Romanian (Mac OS)"
+  },
+  {
+    "word" : "X-MAC-SIMP-CHINESE",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Simplified Chinese (Mac OS)"
+  },
+  {
+    "word" : "X-MAC-SYMBOL",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Symbol (Mac OS)"
+  },
+  {
+    "word" : "X-MAC-THAI",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Thai (Mac OS)"
+  },
+  {
+    "word" : "X-MAC-TIBETAN",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Tibetan (Mac OS)"
+  },
+  {
+    "word" : "X-MAC-TRAD-CHINESE",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Traditional Chinese (Mac OS)"
+  },
+  {
+    "word" : "X-MAC-TURKISH",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Turkish (Mac OS)"
+  },
+  {
+    "word" : "X-MAC-UKRAINIAN",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Cyrillic (Mac OS Ukrainian)"
+  },
+  {
+    "word" : "X-NEXTSTEP",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Western (NextStep)"
+  },
+  {
+    "word" : "af",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Afrikaans"
+  },
+  {
+    "word" : "af-NA",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Afrikaans (Namibië)"
+  },
+  {
+    "word" : "af-ZA",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Afrikaans (Suid-Afrika)"
+  },
+  {
+    "word" : "agq",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Aghem"
+  },
+  {
+    "word" : "agq-CM",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Aghem (Kàmàlûŋ)"
+  },
+  {
+    "word" : "ak",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Akan"
+  },
+  {
+    "word" : "ak-GH",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Akan (Gaana)"
+  },
+  {
+    "word" : "am",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "አማርኛ"
+  },
+  {
+    "word" : "am-ET",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "አማርኛ (ኢትዮጵያ)"
+  },
+  {
+    "word" : "application\/EDI-X12",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "EDI X12 data"
+  },
+  {
+    "word" : "application\/EDI-X12",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "EDI X12 data"
+  },
+  {
+    "word" : "application\/EDIFACT",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "EDI EDIFACT data"
+  },
+  {
+    "word" : "application\/EDIFACT",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "EDI EDIFACT data"
+  },
+  {
+    "word" : "application\/atom+xml",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Atom feeds"
+  },
+  {
+    "word" : "application\/atom+xml",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Atom feeds"
+  },
+  {
+    "word" : "application\/ecmascript",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ECMAScript\/JavaScript"
+  },
+  {
+    "word" : "application\/ecmascript",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ECMAScript\/JavaScript"
+  },
+  {
+    "word" : "application\/font-woff",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Web Open Font Format"
+  },
+  {
+    "word" : "application\/font-woff",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Web Open Font Format"
+  },
+  {
+    "word" : "application\/gzip",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Gzip, Defined in RFC 6713"
+  },
+  {
+    "word" : "application\/gzip",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Gzip, Defined in RFC 6713"
+  },
+  {
+    "word" : "application\/javascript",
+    "filter" : "accept",
+    "weight" : 8,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ECMAScript\/JavaScript"
+  },
+  {
+    "word" : "application\/javascript",
+    "filter" : "content-type",
+    "weight" : 8,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ECMAScript\/JavaScript"
+  },
+  {
+    "word" : "application\/json",
+    "filter" : "accept",
+    "weight" : 10,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "JavaScript Object Notation JSON"
+  },
+  {
+    "word" : "application\/json",
+    "filter" : "content-type",
+    "weight" : 10,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "JavaScript Object Notation JSON"
+  },
+  {
+    "word" : "application\/octet-stream",
+    "filter" : "accept",
+    "weight" : 9,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Arbitrary binary data"
+  },
+  {
+    "word" : "application\/octet-stream",
+    "filter" : "content-type",
+    "weight" : 9,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Arbitrary binary data"
+  },
+  {
+    "word" : "application\/pdf",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Portable Document Format"
+  },
+  {
+    "word" : "application\/pdf",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Portable Document Format"
+  },
+  {
+    "word" : "application\/postscript",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "PostScript"
+  },
+  {
+    "word" : "application\/postscript",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "PostScript"
+  },
+  {
+    "word" : "application\/rdf+xml",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Resource Description Framework"
+  },
+  {
+    "word" : "application\/rdf+xml",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Resource Description Framework"
+  },
+  {
+    "word" : "application\/rss+xml",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "RSS feeds"
+  },
+  {
+    "word" : "application\/rss+xml",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "RSS feeds"
+  },
+  {
+    "word" : "application\/soap+xml",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "SOAP"
+  },
+  {
+    "word" : "application\/soap+xml",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "SOAP"
+  },
+  {
+    "word" : "application\/vnd.google-earth.kml+xml",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "KML files (e.g. for Google Earth)"
+  },
+  {
+    "word" : "application\/vnd.google-earth.kml+xml",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "KML files (e.g. for Google Earth)"
+  },
+  {
+    "word" : "application\/vnd.mozilla.xul+xml",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Mozilla XUL files"
+  },
+  {
+    "word" : "application\/vnd.mozilla.xul+xml",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Mozilla XUL files"
+  },
+  {
+    "word" : "application\/vnd.ms-excel",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Microsoft Excel files"
+  },
+  {
+    "word" : "application\/vnd.ms-excel",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Microsoft Excel files"
+  },
+  {
+    "word" : "application\/vnd.ms-powerpoint",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Microsoft Powerpoint files"
+  },
+  {
+    "word" : "application\/vnd.ms-powerpoint",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Microsoft Powerpoint files"
+  },
+  {
+    "word" : "application\/x-deb",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Debian software package"
+  },
+  {
+    "word" : "application\/x-deb",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Debian software package"
+  },
+  {
+    "word" : "application\/x-dvi",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "device-independent document in DVI format"
+  },
+  {
+    "word" : "application\/x-dvi",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "device-independent document in DVI format"
+  },
+  {
+    "word" : "application\/x-font-ttf",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "TrueType Font"
+  },
+  {
+    "word" : "application\/x-font-ttf",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "TrueType Font"
+  },
+  {
+    "word" : "application\/x-javascript",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : ""
+  },
+  {
+    "word" : "application\/x-javascript",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : ""
+  },
+  {
+    "word" : "application\/x-latex",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "LaTeX files"
+  },
+  {
+    "word" : "application\/x-latex",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "LaTeX files"
+  },
+  {
+    "word" : "application\/x-mpegURL",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : ".m3u8 variant playlist"
+  },
+  {
+    "word" : "application\/x-mpegURL",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : ".m3u8 variant playlist"
+  },
+  {
+    "word" : "application\/x-pkcs12",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "p12 files"
+  },
+  {
+    "word" : "application\/x-pkcs12",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "pfx files"
+  },
+  {
+    "word" : "application\/x-pkcs12",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "p12 files"
+  },
+  {
+    "word" : "application\/x-pkcs12",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "pfx files"
+  },
+  {
+    "word" : "application\/x-pkcs7-certificates",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "p7b files"
+  },
+  {
+    "word" : "application\/x-pkcs7-certificates",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "spc files"
+  },
+  {
+    "word" : "application\/x-pkcs7-certificates",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "p7b files"
+  },
+  {
+    "word" : "application\/x-pkcs7-certificates",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "spc files"
+  },
+  {
+    "word" : "application\/x-pkcs7-certreqresp",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "p7r files"
+  },
+  {
+    "word" : "application\/x-pkcs7-certreqresp",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "p7r files"
+  },
+  {
+    "word" : "application\/x-pkcs7-mime",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "p7c files"
+  },
+  {
+    "word" : "application\/x-pkcs7-mime",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "p7m files"
+  },
+  {
+    "word" : "application\/x-pkcs7-mime",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "p7c files"
+  },
+  {
+    "word" : "application\/x-pkcs7-mime",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "p7m files"
+  },
+  {
+    "word" : "application\/x-pkcs7-signature",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "p7s files"
+  },
+  {
+    "word" : "application\/x-pkcs7-signature",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "p7s files"
+  },
+  {
+    "word" : "application\/x-rar-compressed",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "RAR archive files"
+  },
+  {
+    "word" : "application\/x-rar-compressed",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "RAR archive files"
+  },
+  {
+    "word" : "application\/x-shockwave-flash",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Adobe Flash files for example with the extension .swf"
+  },
+  {
+    "word" : "application\/x-shockwave-flash",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Adobe Flash files for example with the extension .swf"
+  },
+  {
+    "word" : "application\/x-stuffit",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "StuffIt archive files"
+  },
+  {
+    "word" : "application\/x-stuffit",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "StuffIt archive files"
+  },
+  {
+    "word" : "application\/x-tar",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Tarball files"
+  },
+  {
+    "word" : "application\/x-tar",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Tarball files"
+  },
+  {
+    "word" : "application\/x-www-form-urlencoded",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Form Encoded Data"
+  },
+  {
+    "word" : "application\/x-www-form-urlencoded",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Form Encoded Data"
+  },
+  {
+    "word" : "application\/x-xpinstall",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Add-ons to Mozilla applications"
+  },
+  {
+    "word" : "application\/x-xpinstall",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Add-ons to Mozilla applications"
+  },
+  {
+    "word" : "application\/xhtml+xml",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "XHTML"
+  },
+  {
+    "word" : "application\/xhtml+xml",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "XHTML"
+  },
+  {
+    "word" : "application\/xml",
+    "filter" : "accept",
+    "weight" : 9,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "XML files"
+  },
+  {
+    "word" : "application\/xml",
+    "filter" : "content-type",
+    "weight" : 10,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "XML files"
+  },
+  {
+    "word" : "application\/xml-dtd",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "DTD files"
+  },
+  {
+    "word" : "application\/xml-dtd",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "DTD files"
+  },
+  {
+    "word" : "application\/xop+xml",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "XOP"
+  },
+  {
+    "word" : "application\/xop+xml",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "XOP"
+  },
+  {
+    "word" : "application\/zip",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ZIP archive files"
+  },
+  {
+    "word" : "application\/zip",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ZIP archive files"
+  },
+  {
+    "word" : "ar",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "العربية"
+  },
+  {
+    "word" : "ar-001",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "العربية (العالم)"
+  },
+  {
+    "word" : "ar-AE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "العربية (الإمارات العربية المتحدة)"
+  },
+  {
+    "word" : "ar-BH",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "العربية (البحرين)"
+  },
+  {
+    "word" : "ar-DZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "العربية (الجزائر)"
+  },
+  {
+    "word" : "ar-EG",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "العربية (مصر)"
+  },
+  {
+    "word" : "ar-IQ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "العربية (العراق)"
+  },
+  {
+    "word" : "ar-JO",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "العربية (الأردن)"
+  },
+  {
+    "word" : "ar-KW",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "العربية (الكويت)"
+  },
+  {
+    "word" : "ar-LB",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "العربية (لبنان)"
+  },
+  {
+    "filter" : "accept-language",
+    "word" : "ar-LY",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue"
+  },
+  {
+    "word" : "ar-MA",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "العربية (المغرب)"
+  },
+  {
+    "word" : "ar-OM",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "العربية (عُمان)"
+  },
+  {
+    "word" : "ar-QA",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "العربية (قطر)"
+  },
+  {
+    "word" : "ar-SA",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "العربية (المملكة العربية السعودية)"
+  },
+  {
+    "word" : "ar-SD",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "العربية (السودان)"
+  },
+  {
+    "word" : "ar-SY",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "العربية (سوريا)"
+  },
+  {
+    "word" : "ar-TN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "العربية (تونس)"
+  },
+  {
+    "word" : "ar-YE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "العربية (اليمن)"
+  },
+  {
+    "word" : "as",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "অসমীয়া"
+  },
+  {
+    "word" : "as-IN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "অসমীয়া (ভাৰত)"
+  },
+  {
+    "word" : "asa",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kipare"
+  },
+  {
+    "word" : "asa-TZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kipare (Tadhania)"
+  },
+  {
+    "word" : "audio\/L24",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "24bit Linear PCM audio at 8–48 kHz, 1-N channels"
+  },
+  {
+    "word" : "audio\/L24",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "24bit Linear PCM audio at 8–48 kHz, 1-N channels"
+  },
+  {
+    "word" : "audio\/basic",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "mulaw audio at 8 kHz, 1 channel"
+  },
+  {
+    "word" : "audio\/basic",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "mulaw audio at 8 kHz, 1 channel"
+  },
+  {
+    "word" : "audio\/mp4",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "MP4 audio"
+  },
+  {
+    "word" : "audio\/mp4",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "MP4 audio"
+  },
+  {
+    "word" : "audio\/mpeg",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "MP3 or other MPEG audio"
+  },
+  {
+    "word" : "audio\/mpeg",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "MP3 or other MPEG audio"
+  },
+  {
+    "word" : "audio\/ogg",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Ogg Vorbis, Speex, Flac and other audio"
+  },
+  {
+    "word" : "audio\/ogg",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Ogg Vorbis, Speex, Flac and other audio"
+  },
+  {
+    "word" : "audio\/vnd.rn-realaudio",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "RealAudio"
+  },
+  {
+    "word" : "audio\/vnd.rn-realaudio",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "RealAudio"
+  },
+  {
+    "word" : "audio\/vnd.wave",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "WAV audio"
+  },
+  {
+    "word" : "audio\/vnd.wave",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "WAV audio"
+  },
+  {
+    "word" : "audio\/vorbis",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Vorbis encoded audio"
+  },
+  {
+    "word" : "audio\/vorbis",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Vorbis encoded audio"
+  },
+  {
+    "word" : "audio\/webm",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "WebM open media format"
+  },
+  {
+    "word" : "audio\/webm",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "WebM open media format"
+  },
+  {
+    "word" : "audio\/x-aac",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : ".aac audio files"
+  },
+  {
+    "word" : "audio\/x-aac",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : ".aac audio files"
+  },
+  {
+    "word" : "audio\/x-caf",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Apple's CAF audio files"
+  },
+  {
+    "word" : "audio\/x-caf",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Apple's CAF audio files"
+  },
+  {
+    "word" : "az",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "azərbaycanca"
+  },
+  {
+    "word" : "az-Cyrl",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Азәрбајҹан (kiril)"
+  },
+  {
+    "word" : "az-Cyrl-AZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Азәрбајҹан (kiril, Азәрбајҹан)"
+  },
+  {
+    "word" : "az-Latn",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "azərbaycanca (latın)"
+  },
+  {
+    "word" : "az-Latn-AZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "azərbaycanca (latın, Azərbaycan)"
+  },
+  {
+    "word" : "bas",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Ɓàsàa"
+  },
+  {
+    "word" : "bas-CM",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Ɓàsàa (Kàmɛ̀rûn)"
+  },
+  {
+    "word" : "be",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "беларуская"
+  },
+  {
+    "word" : "be-BY",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "беларуская (Беларусь)"
+  },
+  {
+    "word" : "bem",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Ichibemba"
+  },
+  {
+    "word" : "bem-ZM",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Ichibemba (Zambia)"
+  },
+  {
+    "word" : "bez",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Hibena"
+  },
+  {
+    "word" : "bez-TZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Hibena (Hutanzania)"
+  },
+  {
+    "word" : "bg",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "български"
+  },
+  {
+    "word" : "bg-BG",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "български (България)"
+  },
+  {
+    "word" : "bm",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "bamanakan"
+  },
+  {
+    "word" : "bm-ML",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "bamanakan (Mali)"
+  },
+  {
+    "word" : "bn",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "বাংলা"
+  },
+  {
+    "word" : "bn-BD",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "বাংলা (বাংলাদেশ)"
+  },
+  {
+    "word" : "bn-IN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "বাংলা (ভারত)"
+  },
+  {
+    "word" : "bo",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "པོད་སྐད་"
+  },
+  {
+    "word" : "bo-CN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "པོད་སྐད་ (རྒྱ་ནག)"
+  },
+  {
+    "word" : "bo-IN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "པོད་སྐད་ (རྒྱ་གར་)"
+  },
+  {
+    "word" : "br",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "brezhoneg"
+  },
+  {
+    "word" : "br-FR",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "brezhoneg (Frañs)"
+  },
+  {
+    "word" : "brx",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "बड़ो"
+  },
+  {
+    "word" : "brx-IN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "बड़ो (भारत)"
+  },
+  {
+    "word" : "bs",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "bosanski"
+  },
+  {
+    "word" : "bs-BA",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "bosanski (Bosna i Hercegovina)"
+  },
+  {
+    "filter" : "range",
+    "word" : "bytes=",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue"
+  },
+  {
+    "word" : "bzip2",
+    "filter" : "accept-encoding",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Free and open source lossless data compression algorithm"
+  },
+  {
+    "word" : "ca",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "català"
+  },
+  {
+    "word" : "ca-ES",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "català (Espanya)"
+  },
+  {
+    "word" : "cgg",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Rukiga"
+  },
+  {
+    "word" : "cgg-UG",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Rukiga (Uganda)"
+  },
+  {
+    "word" : "chr",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ᏣᎳᎩ"
+  },
+  {
+    "word" : "chr-US",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ᏣᎳᎩ (ᎠᎹᏰᏟ)"
+  },
+  {
+    "word" : "compress",
+    "filter" : "accept-encoding",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "UNIX \"compress\" program method"
+  },
+  {
+    "word" : "cp864",
+    "filter" : "accept-charset",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Arabic (DOS)"
+  },
+  {
+    "word" : "cs",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "čeština"
+  },
+  {
+    "word" : "cs-CZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "čeština (Česká republika)"
+  },
+  {
+    "word" : "cy",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Cymraeg"
+  },
+  {
+    "word" : "cy-GB",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Cymraeg (Prydain Fawr)"
+  },
+  {
+    "word" : "da",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "dansk"
+  },
+  {
+    "word" : "da-DK",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "dansk (Danmark)"
+  },
+  {
+    "word" : "dav",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kitaita"
+  },
+  {
+    "word" : "dav-KE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kitaita (Kenya)"
+  },
+  {
+    "word" : "de",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Deutsch"
+  },
+  {
+    "word" : "de-AT",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Deutsch (Österreich)"
+  },
+  {
+    "word" : "de-BE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Deutsch (Belgien)"
+  },
+  {
+    "word" : "de-CH",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Deutsch (Schweiz)"
+  },
+  {
+    "word" : "de-DE",
+    "filter" : "accept-language",
+    "weight" : 9,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Deutsch (Deutschland)"
+  },
+  {
+    "word" : "de-LI",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Deutsch (Liechtenstein)"
+  },
+  {
+    "word" : "de-LU",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Deutsch (Luxemburg)"
+  },
+  {
+    "word" : "deflate",
+    "filter" : "accept-encoding",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "zlib compression (RFC 1950)"
+  },
+  {
+    "word" : "dje",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Zarmaciine"
+  },
+  {
+    "word" : "dje-NE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Zarmaciine (Nižer)"
+  },
+  {
+    "word" : "dua",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "duálá"
+  },
+  {
+    "word" : "dua-CM",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "duálá (Cameroun)"
+  },
+  {
+    "word" : "dyo",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "joola"
+  },
+  {
+    "word" : "dyo-SN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "joola (Senegal)"
+  },
+  {
+    "word" : "ebu",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kĩembu"
+  },
+  {
+    "word" : "ebu-KE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kĩembu (Kenya)"
+  },
+  {
+    "word" : "ee",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "eʋegbe"
+  },
+  {
+    "word" : "ee-GH",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "eʋegbe (Ghana nutome)"
+  },
+  {
+    "word" : "ee-TG",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "eʋegbe (Togo nutome)"
+  },
+  {
+    "word" : "el",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Ελληνικά"
+  },
+  {
+    "word" : "el-CY",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Ελληνικά (Κύπρος)"
+  },
+  {
+    "word" : "el-GR",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Ελληνικά (Ελλάδα)"
+  },
+  {
+    "word" : "en",
+    "filter" : "accept-language",
+    "weight" : 9,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English"
+  },
+  {
+    "word" : "en-AS",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (American Samoa)"
+  },
+  {
+    "word" : "en-AU",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Australia)"
+  },
+  {
+    "word" : "en-BB",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Barbados)"
+  },
+  {
+    "word" : "en-BE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Belgium)"
+  },
+  {
+    "word" : "en-BM",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Bermuda)"
+  },
+  {
+    "word" : "en-BW",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Botswana)"
+  },
+  {
+    "word" : "en-BZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Belize)"
+  },
+  {
+    "word" : "en-CA",
+    "filter" : "accept-language",
+    "weight" : 9,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Canada)"
+  },
+  {
+    "word" : "en-GB",
+    "filter" : "accept-language",
+    "weight" : 9,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (United Kingdom)"
+  },
+  {
+    "word" : "en-GU",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Guam)"
+  },
+  {
+    "word" : "en-GY",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Guyana)"
+  },
+  {
+    "word" : "en-HK",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Hong Kong SAR China)"
+  },
+  {
+    "word" : "en-IE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Ireland)"
+  },
+  {
+    "word" : "en-IN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (India)"
+  },
+  {
+    "word" : "en-JM",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Jamaica)"
+  },
+  {
+    "word" : "en-MH",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Marshall Islands)"
+  },
+  {
+    "word" : "en-MP",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Northern Mariana Islands)"
+  },
+  {
+    "word" : "en-MT",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Malta)"
+  },
+  {
+    "word" : "en-MU",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Mauritius)"
+  },
+  {
+    "word" : "en-NA",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Namibia)"
+  },
+  {
+    "word" : "en-NZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (New Zealand)"
+  },
+  {
+    "word" : "en-PH",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Philippines)"
+  },
+  {
+    "word" : "en-PK",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Pakistan)"
+  },
+  {
+    "word" : "en-SG",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Singapore)"
+  },
+  {
+    "word" : "en-TT",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Trinidad and Tobago)"
+  },
+  {
+    "word" : "en-UM",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (U.S. Minor Outlying Islands)"
+  },
+  {
+    "word" : "en-US",
+    "filter" : "accept-language",
+    "weight" : 10,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (United States)"
+  },
+  {
+    "word" : "en-US-POSIX",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (United States, Computer)"
+  },
+  {
+    "word" : "en-VI",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (U.S. Virgin Islands)"
+  },
+  {
+    "word" : "en-ZA",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (South Africa)"
+  },
+  {
+    "word" : "en-ZW",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "English (Zimbabwe)"
+  },
+  {
+    "word" : "eo",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "esperanto"
+  },
+  {
+    "word" : "es",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español"
+  },
+  {
+    "word" : "es-419",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (Latinoamérica)"
+  },
+  {
+    "word" : "es-AR",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (Argentina)"
+  },
+  {
+    "word" : "es-BO",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (Bolivia)"
+  },
+  {
+    "word" : "es-CL",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (Chile)"
+  },
+  {
+    "word" : "es-CO",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (Colombia)"
+  },
+  {
+    "word" : "es-CR",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (Costa Rica)"
+  },
+  {
+    "word" : "es-DO",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (República Dominicana)"
+  },
+  {
+    "word" : "es-EC",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (Ecuador)"
+  },
+  {
+    "word" : "es-ES",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (España)"
+  },
+  {
+    "word" : "es-GQ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (Guinea Ecuatorial)"
+  },
+  {
+    "word" : "es-GT",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (Guatemala)"
+  },
+  {
+    "word" : "es-HN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (Honduras)"
+  },
+  {
+    "word" : "es-MX",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (México)"
+  },
+  {
+    "word" : "es-NI",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (Nicaragua)"
+  },
+  {
+    "word" : "es-PA",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (Panamá)"
+  },
+  {
+    "word" : "es-PE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (Perú)"
+  },
+  {
+    "word" : "es-PR",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (Puerto Rico)"
+  },
+  {
+    "word" : "es-PY",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (Paraguay)"
+  },
+  {
+    "word" : "es-SV",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (El Salvador)"
+  },
+  {
+    "word" : "es-US",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (Estados Unidos)"
+  },
+  {
+    "word" : "es-UY",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (Uruguay)"
+  },
+  {
+    "word" : "es-VE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "español (Venezuela)"
+  },
+  {
+    "word" : "et",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "eesti"
+  },
+  {
+    "word" : "et-EE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "eesti (Eesti)"
+  },
+  {
+    "word" : "eu",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "euskara"
+  },
+  {
+    "word" : "eu-ES",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "euskara (Espainia)"
+  },
+  {
+    "word" : "ewo",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ewondo"
+  },
+  {
+    "word" : "ewo-CM",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ewondo (Kamǝrún)"
+  },
+  {
+    "word" : "exi",
+    "filter" : "accept-encoding",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "W3C Efficient XML Interchange"
+  },
+  {
+    "word" : "fa",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "فارسی"
+  },
+  {
+    "word" : "fa-AF",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "دری (افغانستان)"
+  },
+  {
+    "word" : "fa-IR",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "فارسی (ایران)"
+  },
+  {
+    "word" : "ff",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Pulaar"
+  },
+  {
+    "word" : "ff-SN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Pulaar (Senegaal)"
+  },
+  {
+    "word" : "fi",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "suomi"
+  },
+  {
+    "word" : "fi-FI",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "suomi (Suomi)"
+  },
+  {
+    "word" : "fil",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Filipino"
+  },
+  {
+    "word" : "fil-PH",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Filipino (Pilipinas)"
+  },
+  {
+    "word" : "fo",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "føroyskt"
+  },
+  {
+    "word" : "fo-FO",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "føroyskt (Føroyar)"
+  },
+  {
+    "word" : "fr",
+    "filter" : "accept-language",
+    "weight" : 9,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français"
+  },
+  {
+    "word" : "fr-BE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Belgique)"
+  },
+  {
+    "word" : "fr-BF",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Burkina Faso)"
+  },
+  {
+    "word" : "fr-BI",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Burundi)"
+  },
+  {
+    "word" : "fr-BJ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Bénin)"
+  },
+  {
+    "word" : "fr-BL",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Saint-Barthélémy)"
+  },
+  {
+    "word" : "fr-CA",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Canada)"
+  },
+  {
+    "word" : "fr-CD",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (République démocratique du Congo)"
+  },
+  {
+    "word" : "fr-CF",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (République centrafricaine)"
+  },
+  {
+    "word" : "fr-CG",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Congo-Brazzaville)"
+  },
+  {
+    "word" : "fr-CH",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Suisse)"
+  },
+  {
+    "word" : "fr-CI",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Côte d’Ivoire)"
+  },
+  {
+    "word" : "fr-CM",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Cameroun)"
+  },
+  {
+    "word" : "fr-DJ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Djibouti)"
+  },
+  {
+    "word" : "fr-FR",
+    "filter" : "accept-language",
+    "weight" : 9,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (France)"
+  },
+  {
+    "word" : "fr-GA",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Gabon)"
+  },
+  {
+    "word" : "fr-GF",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Guyane française)"
+  },
+  {
+    "word" : "fr-GN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Guinée)"
+  },
+  {
+    "word" : "fr-GP",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Guadeloupe)"
+  },
+  {
+    "word" : "fr-GQ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Guinée équatoriale)"
+  },
+  {
+    "word" : "fr-KM",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Comores)"
+  },
+  {
+    "word" : "fr-LU",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Luxembourg)"
+  },
+  {
+    "word" : "fr-MC",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Monaco)"
+  },
+  {
+    "word" : "fr-MF",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Saint-Martin)"
+  },
+  {
+    "word" : "fr-MG",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Madagascar)"
+  },
+  {
+    "word" : "fr-ML",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Mali)"
+  },
+  {
+    "word" : "fr-MQ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Martinique)"
+  },
+  {
+    "word" : "fr-NE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Niger)"
+  },
+  {
+    "word" : "fr-RE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Réunion)"
+  },
+  {
+    "word" : "fr-RW",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Rwanda)"
+  },
+  {
+    "word" : "fr-SN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Sénégal)"
+  },
+  {
+    "word" : "fr-TD",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Tchad)"
+  },
+  {
+    "word" : "fr-TG",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Togo)"
+  },
+  {
+    "word" : "fr-YT",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "français (Mayotte)"
+  },
+  {
+    "word" : "ga",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Gaeilge"
+  },
+  {
+    "word" : "ga-IE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Gaeilge (Éire)"
+  },
+  {
+    "word" : "gl",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "galego"
+  },
+  {
+    "word" : "gl-ES",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "galego (España)"
+  },
+  {
+    "word" : "gsw",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Schwiizertüütsch"
+  },
+  {
+    "word" : "gsw-CH",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Schwiizertüütsch (Schwiiz)"
+  },
+  {
+    "word" : "gu",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ગુજરાતી"
+  },
+  {
+    "word" : "gu-IN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ગુજરાતી (ભારત)"
+  },
+  {
+    "word" : "guz",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Ekegusii"
+  },
+  {
+    "word" : "guz-KE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Ekegusii (Kenya)"
+  },
+  {
+    "word" : "gv",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Gaelg"
+  },
+  {
+    "word" : "gv-GB",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Gaelg (Rywvaneth Unys)"
+  },
+  {
+    "word" : "gzip",
+    "filter" : "accept-encoding",
+    "weight" : 10,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "GNU zip compression (RFC 1952)"
+  },
+  {
+    "word" : "ha",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Hausa"
+  },
+  {
+    "word" : "ha-Latn",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Hausa (Latn)"
+  },
+  {
+    "word" : "ha-Latn-GH",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Hausa (Latn, Gana)"
+  },
+  {
+    "word" : "ha-Latn-NE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Hausa (Latn, Nijar)"
+  },
+  {
+    "word" : "ha-Latn-NG",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Hausa (Latn, Najeriya)"
+  },
+  {
+    "word" : "haw",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ʻŌlelo Hawaiʻi"
+  },
+  {
+    "word" : "haw-US",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ʻŌlelo Hawaiʻi (ʻAmelika Hui Pū ʻIa)"
+  },
+  {
+    "word" : "he",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "עברית"
+  },
+  {
+    "word" : "he-IL",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "עברית (ישראל)"
+  },
+  {
+    "word" : "hi",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "हिन्दी"
+  },
+  {
+    "word" : "hi-IN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "हिन्दी (भारत)"
+  },
+  {
+    "word" : "hr",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "hrvatski"
+  },
+  {
+    "word" : "hr-HR",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "hrvatski (Hrvatska)"
+  },
+  {
+    "word" : "hu",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "magyar"
+  },
+  {
+    "word" : "hu-HU",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "magyar (Magyarország)"
+  },
+  {
+    "word" : "hy",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Հայերէն"
+  },
+  {
+    "word" : "hy-AM",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Հայերէն (Հայաստանի Հանրապետութիւն)"
+  },
+  {
+    "word" : "id",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Bahasa Indonesia"
+  },
+  {
+    "word" : "id-ID",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Bahasa Indonesia (Indonesia)"
+  },
+  {
+    "word" : "identity",
+    "filter" : "accept-encoding",
+    "weight" : 10,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "No transformation is used. This is the default value for content coding."
+  },
+  {
+    "word" : "ig",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Igbo"
+  },
+  {
+    "word" : "ig-NG",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Igbo (Nigeria)"
+  },
+  {
+    "word" : "ii",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ꆈꌠꉙ"
+  },
+  {
+    "word" : "ii-CN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ꆈꌠꉙ (ꍏꇩ)"
+  },
+  {
+    "word" : "image\/gif",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "GIF image"
+  },
+  {
+    "word" : "image\/gif",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "GIF image"
+  },
+  {
+    "word" : "image\/jpeg",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "JPEG JFIF image"
+  },
+  {
+    "word" : "image\/jpeg",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "JPEG JFIF image"
+  },
+  {
+    "word" : "image\/pjpeg",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "JPEG JFIF image"
+  },
+  {
+    "word" : "image\/pjpeg",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "JPEG JFIF image"
+  },
+  {
+    "word" : "image\/png",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Portable Network Graphics"
+  },
+  {
+    "word" : "image\/png",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Portable Network Graphics"
+  },
+  {
+    "word" : "image\/svg+xml",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "SVG vector image"
+  },
+  {
+    "word" : "image\/svg+xml",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "SVG vector image"
+  },
+  {
+    "word" : "image\/tiff",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Tag Image File Format"
+  },
+  {
+    "word" : "image\/tiff",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Tag Image File Format"
+  },
+  {
+    "word" : "image\/vnd.microsoft.icon",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ICO image"
+  },
+  {
+    "word" : "image\/vnd.microsoft.icon",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ICO image"
+  },
+  {
+    "word" : "image\/x-xcf",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "GIMP image file"
+  },
+  {
+    "word" : "image\/x-xcf",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "GIMP image file"
+  },
+  {
+    "word" : "is",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "íslenska"
+  },
+  {
+    "word" : "is-IS",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "íslenska (Ísland)"
+  },
+  {
+    "word" : "it",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "italiano"
+  },
+  {
+    "word" : "it-CH",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "italiano (Svizzera)"
+  },
+  {
+    "word" : "it-IT",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "italiano (Italia)"
+  },
+  {
+    "word" : "ja",
+    "filter" : "accept-language",
+    "weight" : 9,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "日本語"
+  },
+  {
+    "word" : "ja-JP",
+    "filter" : "accept-language",
+    "weight" : 9,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "日本語(日本)"
+  },
+  {
+    "word" : "jmc",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kimachame"
+  },
+  {
+    "word" : "jmc-TZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kimachame (Tanzania)"
+  },
+  {
+    "word" : "ka",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ქართული"
+  },
+  {
+    "word" : "ka-GE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ქართული (საქართველო)"
+  },
+  {
+    "word" : "kab",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Taqbaylit"
+  },
+  {
+    "word" : "kab-DZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Taqbaylit (Lezzayer)"
+  },
+  {
+    "word" : "kam",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kikamba"
+  },
+  {
+    "word" : "kam-KE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kikamba (Kenya)"
+  },
+  {
+    "word" : "kde",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chimakonde"
+  },
+  {
+    "word" : "kde-TZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Chimakonde (Tanzania)"
+  },
+  {
+    "word" : "kea",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "kabuverdianu"
+  },
+  {
+    "word" : "kea-CV",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "kabuverdianu (Kabu Verdi)"
+  },
+  {
+    "word" : "khq",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Koyra ciini"
+  },
+  {
+    "word" : "khq-ML",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Koyra ciini (Maali)"
+  },
+  {
+    "word" : "ki",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Gikuyu"
+  },
+  {
+    "word" : "ki-KE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Gikuyu (Kenya)"
+  },
+  {
+    "word" : "kk",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "қазақ тілі"
+  },
+  {
+    "word" : "kk-Cyrl",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "қазақ тілі (кириллица)"
+  },
+  {
+    "word" : "kk-Cyrl-KZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "қазақ тілі (кириллица, Қазақстан)"
+  },
+  {
+    "word" : "kl",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "kalaallisut"
+  },
+  {
+    "word" : "kl-GL",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "kalaallisut (Kalaallit Nunaat)"
+  },
+  {
+    "word" : "kln",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kalenjin"
+  },
+  {
+    "word" : "kln-KE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kalenjin (Emetab Kenya)"
+  },
+  {
+    "word" : "km",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ភាសាខ្មែរ"
+  },
+  {
+    "word" : "km-KH",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ភាសាខ្មែរ (កម្ពុជា)"
+  },
+  {
+    "word" : "kn",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ಕನ್ನಡ"
+  },
+  {
+    "word" : "kn-IN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ಕನ್ನಡ (ಭಾರತ)"
+  },
+  {
+    "word" : "ko",
+    "filter" : "accept-language",
+    "weight" : 8,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "한국어"
+  },
+  {
+    "word" : "ko-KR",
+    "filter" : "accept-language",
+    "weight" : 8,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "한국어(대한민국)"
+  },
+  {
+    "word" : "kok",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "कोंकणी"
+  },
+  {
+    "word" : "kok-IN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "कोंकणी (भारत)"
+  },
+  {
+    "word" : "ksb",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kishambaa"
+  },
+  {
+    "word" : "ksb-TZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kishambaa (Tanzania)"
+  },
+  {
+    "word" : "ksf",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "rikpa"
+  },
+  {
+    "word" : "ksf-CM",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "rikpa (kamɛrún)"
+  },
+  {
+    "word" : "kw",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "kernewek"
+  },
+  {
+    "word" : "kw-GB",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "kernewek (Rywvaneth Unys)"
+  },
+  {
+    "word" : "lag",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kɨlaangi"
+  },
+  {
+    "word" : "lag-TZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kɨlaangi (Taansanía)"
+  },
+  {
+    "word" : "lg",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Luganda"
+  },
+  {
+    "word" : "lg-UG",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Luganda (Yuganda)"
+  },
+  {
+    "word" : "ln",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "lingála"
+  },
+  {
+    "word" : "ln-CD",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "lingála (Repibiki demokratiki ya Kongó)"
+  },
+  {
+    "word" : "ln-CG",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "lingála (Kongo)"
+  },
+  {
+    "word" : "lt",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "lietuvių"
+  },
+  {
+    "word" : "lt-LT",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "lietuvių (Lietuva)"
+  },
+  {
+    "word" : "lu",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Tshiluba"
+  },
+  {
+    "word" : "lu-CD",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Tshiluba (Ditunga wa Kongu)"
+  },
+  {
+    "word" : "luo",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Dholuo"
+  },
+  {
+    "word" : "luo-KE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Dholuo (Kenya)"
+  },
+  {
+    "word" : "luy",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Luluhia"
+  },
+  {
+    "word" : "luy-KE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Luluhia (Kenya)"
+  },
+  {
+    "word" : "lv",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "latviešu"
+  },
+  {
+    "word" : "lv-LV",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "latviešu (Latvija)"
+  },
+  {
+    "word" : "mas",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Maa"
+  },
+  {
+    "word" : "mas-KE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Maa (Kenya)"
+  },
+  {
+    "word" : "mas-TZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Maa (Tansania)"
+  },
+  {
+    "word" : "mer",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kĩmĩrũ"
+  },
+  {
+    "word" : "mer-KE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kĩmĩrũ (Kenya)"
+  },
+  {
+    "word" : "message\/http",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Defined in RFC 2616"
+  },
+  {
+    "word" : "message\/http",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Defined in RFC 2616"
+  },
+  {
+    "word" : "message\/imdn+xml",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "IMDN Instant Message Disposition Notification"
+  },
+  {
+    "word" : "message\/imdn+xml",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "IMDN Instant Message Disposition Notification"
+  },
+  {
+    "word" : "message\/partial",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Email"
+  },
+  {
+    "word" : "message\/partial",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Email"
+  },
+  {
+    "word" : "message\/rfc822",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Email"
+  },
+  {
+    "word" : "message\/rfc822",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Email"
+  },
+  {
+    "word" : "mfe",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "kreol morisien"
+  },
+  {
+    "word" : "mfe-MU",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "kreol morisien (Moris)"
+  },
+  {
+    "word" : "mg",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Malagasy"
+  },
+  {
+    "word" : "mg-MG",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Malagasy (Madagasikara)"
+  },
+  {
+    "word" : "mgh",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Makua"
+  },
+  {
+    "word" : "mgh-MZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Makua (Umozambiki)"
+  },
+  {
+    "word" : "mk",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "македонски"
+  },
+  {
+    "word" : "mk-MK",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "македонски (Македонија)"
+  },
+  {
+    "filter" : "accept-language",
+    "word" : "ml",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue"
+  },
+  {
+    "filter" : "accept-language",
+    "word" : "ml-IN",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue"
+  },
+  {
+    "word" : "model\/example",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Defined in RFC 4735"
+  },
+  {
+    "word" : "model\/example",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Defined in RFC 4735"
+  },
+  {
+    "word" : "model\/iges",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "IGS files, IGES files"
+  },
+  {
+    "word" : "model\/iges",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "IGS files, IGES files"
+  },
+  {
+    "word" : "model\/mesh",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "MSH files, MESH files"
+  },
+  {
+    "word" : "model\/mesh",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "MSH files, MESH files"
+  },
+  {
+    "word" : "model\/vrml",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "WRL files, VRML files"
+  },
+  {
+    "word" : "model\/vrml",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "WRL files, VRML files"
+  },
+  {
+    "word" : "model\/x3d+binary",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "X3DB binary files"
+  },
+  {
+    "word" : "model\/x3d+binary",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "X3DB binary files"
+  },
+  {
+    "word" : "model\/x3d+vrml",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "X3DV VRML files"
+  },
+  {
+    "word" : "model\/x3d+vrml",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "X3DV VRML files"
+  },
+  {
+    "word" : "model\/x3d+xml",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "X3D XML files"
+  },
+  {
+    "word" : "model\/x3d+xml",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "X3D XML files"
+  },
+  {
+    "word" : "mr",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "मराठी"
+  },
+  {
+    "word" : "mr-IN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "मराठी (भारत)"
+  },
+  {
+    "word" : "ms",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Bahasa Melayu"
+  },
+  {
+    "word" : "ms-BN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Bahasa Melayu (Brunei)"
+  },
+  {
+    "word" : "ms-MY",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Bahasa Melayu (Malaysia)"
+  },
+  {
+    "word" : "mt",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Malti"
+  },
+  {
+    "word" : "mt-MT",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Malti (Malta)"
+  },
+  {
+    "word" : "mua",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "MUNDAŊ"
+  },
+  {
+    "word" : "mua-CM",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "MUNDAŊ (kameruŋ)"
+  },
+  {
+    "word" : "multipart\/alternative",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "MIME Email"
+  },
+  {
+    "word" : "multipart\/alternative",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "MIME Email"
+  },
+  {
+    "word" : "multipart\/encrypted",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Defined in RFC 1847"
+  },
+  {
+    "word" : "multipart\/encrypted",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Defined in RFC 1847"
+  },
+  {
+    "word" : "multipart\/form-data",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "MIME Webform"
+  },
+  {
+    "word" : "multipart\/form-data",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "MIME Webform"
+  },
+  {
+    "word" : "multipart\/mixed",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "MIME Email"
+  },
+  {
+    "word" : "multipart\/mixed",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "MIME Email"
+  },
+  {
+    "word" : "multipart\/related",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "MIME Email"
+  },
+  {
+    "word" : "multipart\/related",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "MIME Email"
+  },
+  {
+    "word" : "multipart\/signed",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Defined in RFC 1847"
+  },
+  {
+    "word" : "multipart\/signed",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Defined in RFC 1847"
+  },
+  {
+    "word" : "my",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ဗမာ"
+  },
+  {
+    "word" : "my-MM",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ဗမာ (မြန်မာ)"
+  },
+  {
+    "word" : "naq",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Khoekhoegowab"
+  },
+  {
+    "word" : "naq-NA",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Khoekhoegowab (Namibiab)"
+  },
+  {
+    "word" : "nb",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "norsk bokmål"
+  },
+  {
+    "word" : "nb-NO",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "norsk bokmål (Norge)"
+  },
+  {
+    "word" : "nd",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "isiNdebele"
+  },
+  {
+    "word" : "nd-ZW",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "isiNdebele (Zimbabwe)"
+  },
+  {
+    "word" : "ne",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "नेपाली"
+  },
+  {
+    "word" : "ne-IN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "नेपाली (भारत)"
+  },
+  {
+    "word" : "ne-NP",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "नेपाली (नेपाल)"
+  },
+  {
+    "word" : "nl",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Nederlands"
+  },
+  {
+    "word" : "nl-AW",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Nederlands (Aruba)"
+  },
+  {
+    "word" : "nl-BE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Nederlands (België)"
+  },
+  {
+    "word" : "nl-CW",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Nederlands (Curaçao)"
+  },
+  {
+    "word" : "nl-NL",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Nederlands (Nederland)"
+  },
+  {
+    "word" : "nl-SX",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Nederlands (Sint Maarten)"
+  },
+  {
+    "word" : "nmg",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kwasio"
+  },
+  {
+    "word" : "nmg-CM",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kwasio (Cameroon)"
+  },
+  {
+    "word" : "nn",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "nynorsk"
+  },
+  {
+    "word" : "nn-NO",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "nynorsk (Noreg)"
+  },
+  {
+    "word" : "no-cache",
+    "filter" : "pragma",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Avoiding caching"
+  },
+  {
+    "word" : "nus",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Thok Nath"
+  },
+  {
+    "word" : "nus-SD",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Thok Nath (Sudan)"
+  },
+  {
+    "word" : "nyn",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Runyankore"
+  },
+  {
+    "word" : "nyn-UG",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Runyankore (Uganda)"
+  },
+  {
+    "word" : "om",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Oromoo"
+  },
+  {
+    "word" : "om-ET",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Oromoo (Itoophiyaa)"
+  },
+  {
+    "word" : "om-KE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Oromoo (Keeniyaa)"
+  },
+  {
+    "word" : "or",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ଓଡ଼ିଆ"
+  },
+  {
+    "word" : "or-IN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ଓଡ଼ିଆ (ଭାରତ)"
+  },
+  {
+    "word" : "pa",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ਪੰਜਾਬੀ"
+  },
+  {
+    "word" : "pa-Arab",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "پنجاب (العربية)"
+  },
+  {
+    "word" : "pa-Arab-PK",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "پنجاب (العربية, پکستان)"
+  },
+  {
+    "word" : "pa-Guru",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ਪੰਜਾਬੀ (Guru)"
+  },
+  {
+    "word" : "pa-Guru-IN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ਪੰਜਾਬੀ (Guru, ਭਾਰਤ)"
+  },
+  {
+    "word" : "pack200-gzip",
+    "filter" : "accept-encoding",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Network Transfer Format for Java Archives"
+  },
+  {
+    "word" : "pl",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "polski"
+  },
+  {
+    "word" : "pl-PL",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "polski (Polska)"
+  },
+  {
+    "word" : "ps",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "پښتو"
+  },
+  {
+    "word" : "ps-AF",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "پښتو (افغانستان)"
+  },
+  {
+    "word" : "pt",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "português"
+  },
+  {
+    "word" : "pt-AO",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "português (Angola)"
+  },
+  {
+    "word" : "pt-BR",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "português (Brasil)"
+  },
+  {
+    "word" : "pt-GW",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "português (Guiné Bissau)"
+  },
+  {
+    "word" : "pt-MZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "português (Moçambique)"
+  },
+  {
+    "word" : "pt-PT",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "português (Portugal)"
+  },
+  {
+    "word" : "pt-ST",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "português (São Tomé e Príncipe)"
+  },
+  {
+    "word" : "rm",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "rumantsch"
+  },
+  {
+    "word" : "rm-CH",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "rumantsch (Svizra)"
+  },
+  {
+    "word" : "rn",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Ikirundi"
+  },
+  {
+    "word" : "rn-BI",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Ikirundi (Uburundi)"
+  },
+  {
+    "word" : "ro",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "română"
+  },
+  {
+    "word" : "ro-MD",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "română (Republica Moldova)"
+  },
+  {
+    "word" : "ro-RO",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "română (România)"
+  },
+  {
+    "word" : "rof",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kihorombo"
+  },
+  {
+    "word" : "rof-TZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kihorombo (Tanzania)"
+  },
+  {
+    "word" : "ru",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "русский"
+  },
+  {
+    "word" : "ru-MD",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "русский (Молдова)"
+  },
+  {
+    "word" : "ru-RU",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "русский (Россия)"
+  },
+  {
+    "word" : "ru-UA",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "русский (Украина)"
+  },
+  {
+    "word" : "rw",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kinyarwanda"
+  },
+  {
+    "word" : "rw-RW",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kinyarwanda (Rwanda)"
+  },
+  {
+    "word" : "rwk",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kiruwa"
+  },
+  {
+    "word" : "rwk-TZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kiruwa (Tanzania)"
+  },
+  {
+    "word" : "saq",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kisampur"
+  },
+  {
+    "word" : "saq-KE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kisampur (Kenya)"
+  },
+  {
+    "word" : "sbp",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Ishisangu"
+  },
+  {
+    "word" : "sbp-TZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Ishisangu (Tansaniya)"
+  },
+  {
+    "word" : "sdch",
+    "filter" : "accept-encoding",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Google Shared Dictionary Compression for HTTP"
+  },
+  {
+    "word" : "seh",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "sena"
+  },
+  {
+    "word" : "seh-MZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "sena (Moçambique)"
+  },
+  {
+    "word" : "ses",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Koyraboro senni"
+  },
+  {
+    "word" : "ses-ML",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Koyraboro senni (Maali)"
+  },
+  {
+    "word" : "sg",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Sängö"
+  },
+  {
+    "word" : "sg-CF",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Sängö (Ködörösêse tî Bêafrîka)"
+  },
+  {
+    "word" : "shi",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "tamazight"
+  },
+  {
+    "word" : "shi-Latn",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "tamazight (Latn)"
+  },
+  {
+    "word" : "shi-Latn-MA",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "tamazight (Latn, lmɣrib)"
+  },
+  {
+    "word" : "shi-Tfng",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ⵜⴰⵎⴰⵣⵉⵖⵜ (Tfng)"
+  },
+  {
+    "filter" : "accept-language",
+    "word" : "shi-Tfng-MA",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue"
+  },
+  {
+    "word" : "si",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "සිංහල"
+  },
+  {
+    "filter" : "accept-language",
+    "word" : "si-LK",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue"
+  },
+  {
+    "word" : "sk",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "slovenčina"
+  },
+  {
+    "word" : "sk-SK",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "slovenčina (Slovenská republika)"
+  },
+  {
+    "word" : "sl",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "slovenščina"
+  },
+  {
+    "word" : "sl-SI",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "slovenščina (Slovenija)"
+  },
+  {
+    "word" : "sn",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "chiShona"
+  },
+  {
+    "word" : "sn-ZW",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "chiShona (Zimbabwe)"
+  },
+  {
+    "word" : "so",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Soomaali"
+  },
+  {
+    "word" : "so-DJ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Soomaali (Jabuuti)"
+  },
+  {
+    "word" : "so-ET",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Soomaali (Itoobiya)"
+  },
+  {
+    "word" : "so-KE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Soomaali (Kiiniya)"
+  },
+  {
+    "word" : "so-SO",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Soomaali (Soomaaliya)"
+  },
+  {
+    "word" : "sq",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "shqip"
+  },
+  {
+    "word" : "sq-AL",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "shqip (Shqipëria)"
+  },
+  {
+    "word" : "sr",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Српски"
+  },
+  {
+    "word" : "sr-Cyrl",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Српски (Ћирилица)"
+  },
+  {
+    "word" : "sr-Cyrl-BA",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Српски (Ћирилица, Босна и Херцеговина)"
+  },
+  {
+    "word" : "sr-Cyrl-ME",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Srpski (Ćirilica, Crna Gora)"
+  },
+  {
+    "word" : "sr-Cyrl-RS",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Српски (Ћирилица, Србија)"
+  },
+  {
+    "word" : "sr-Latn",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Srpski (Latinica)"
+  },
+  {
+    "word" : "sr-Latn-BA",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Srpski (Latinica, Bosna i Hercegovina)"
+  },
+  {
+    "word" : "sr-Latn-ME",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Srpski (Latinica, Crna Gora)"
+  },
+  {
+    "word" : "sr-Latn-RS",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Srpski (Latinica, Srbija)"
+  },
+  {
+    "word" : "sv",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "svenska"
+  },
+  {
+    "word" : "sv-FI",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "svenska (Finland)"
+  },
+  {
+    "word" : "sv-SE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "svenska (Sverige)"
+  },
+  {
+    "word" : "sw",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kiswahili"
+  },
+  {
+    "word" : "sw-KE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kiswahili (Kenya)"
+  },
+  {
+    "word" : "sw-TZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kiswahili (Tanzania)"
+  },
+  {
+    "word" : "swc",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kiswahili ya Kongo"
+  },
+  {
+    "word" : "swc-CD",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kiswahili ya Kongo (Jamhuri ya Kidemokrasia ya Kongo)"
+  },
+  {
+    "word" : "ta",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "தமிழ்"
+  },
+  {
+    "word" : "ta-IN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "தமிழ் (இந்தியா)"
+  },
+  {
+    "word" : "ta-LK",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "தமிழ் (இலங்கை)"
+  },
+  {
+    "word" : "te",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "తెలుగు"
+  },
+  {
+    "word" : "te-IN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "తెలుగు (భారత దేశం)"
+  },
+  {
+    "word" : "teo",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kiteso"
+  },
+  {
+    "word" : "teo-KE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kiteso (Kenia)"
+  },
+  {
+    "word" : "teo-UG",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kiteso (Uganda)"
+  },
+  {
+    "word" : "text\/cmd",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "commands"
+  },
+  {
+    "word" : "text\/cmd",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "commands"
+  },
+  {
+    "word" : "text\/css",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Cascading Style Sheets"
+  },
+  {
+    "word" : "text\/css",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Cascading Style Sheets"
+  },
+  {
+    "word" : "text\/csv",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Comma-separated values"
+  },
+  {
+    "word" : "text\/csv",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Comma-separated values"
+  },
+  {
+    "word" : "text\/html",
+    "filter" : "accept",
+    "weight" : 9,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "HTML"
+  },
+  {
+    "word" : "text\/html",
+    "filter" : "content-type",
+    "weight" : 9,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "HTML"
+  },
+  {
+    "word" : "text\/javascript",
+    "filter" : "accept",
+    "weight" : 8,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "JavaScript"
+  },
+  {
+    "word" : "text\/javascript",
+    "filter" : "content-type",
+    "weight" : 8,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "JavaScript"
+  },
+  {
+    "word" : "text\/plain",
+    "filter" : "accept",
+    "weight" : 9,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Textual data"
+  },
+  {
+    "word" : "text\/plain",
+    "filter" : "content-type",
+    "weight" : 9,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Textual data"
+  },
+  {
+    "word" : "text\/vcard",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "vCard (contact information)"
+  },
+  {
+    "word" : "text\/vcard",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "vCard (contact information)"
+  },
+  {
+    "word" : "text\/x-gwt-rpc",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "GoogleWebToolkit data"
+  },
+  {
+    "word" : "text\/x-gwt-rpc",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "GoogleWebToolkit data"
+  },
+  {
+    "word" : "text\/x-jquery-tmpl",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "jQuery template data"
+  },
+  {
+    "word" : "text\/x-jquery-tmpl",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "jQuery template data"
+  },
+  {
+    "word" : "text\/xml",
+    "filter" : "accept",
+    "weight" : 9,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Extensible Markup Language"
+  },
+  {
+    "word" : "text\/xml",
+    "filter" : "content-type",
+    "weight" : 8,
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Extensible Markup Language"
+  },
+  {
+    "word" : "th",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ไทย"
+  },
+  {
+    "word" : "th-TH",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ไทย (ไทย)"
+  },
+  {
+    "word" : "ti",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ትግርኛ"
+  },
+  {
+    "word" : "ti-ER",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ትግርኛ (ER)"
+  },
+  {
+    "word" : "ti-ET",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ትግርኛ (ET)"
+  },
+  {
+    "word" : "to",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "lea fakatonga"
+  },
+  {
+    "word" : "to-TO",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "lea fakatonga (Tonga)"
+  },
+  {
+    "word" : "tr",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Türkçe"
+  },
+  {
+    "word" : "tr-TR",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Türkçe (Türkiye)"
+  },
+  {
+    "word" : "twq",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Tasawaq senni"
+  },
+  {
+    "word" : "twq-NE",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Tasawaq senni (Nižer)"
+  },
+  {
+    "word" : "tzm",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Tamaziɣt"
+  },
+  {
+    "word" : "tzm-Latn",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Tamaziɣt (Latn)"
+  },
+  {
+    "word" : "tzm-Latn-MA",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Tamaziɣt (Latn, Meṛṛuk)"
+  },
+  {
+    "word" : "uk",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "українська"
+  },
+  {
+    "word" : "uk-UA",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "українська (Україна)"
+  },
+  {
+    "word" : "ur",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "اردو"
+  },
+  {
+    "word" : "ur-IN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "اردو (بھارت)"
+  },
+  {
+    "word" : "ur-PK",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "اردو (پاکستان)"
+  },
+  {
+    "word" : "uz",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Ўзбек"
+  },
+  {
+    "word" : "uz-Arab",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "اۉزبېک (Араб)"
+  },
+  {
+    "word" : "uz-Arab-AF",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "اۉزبېک (Араб, افغانستان)"
+  },
+  {
+    "word" : "uz-Cyrl",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Ўзбек (Кирил)"
+  },
+  {
+    "word" : "uz-Cyrl-UZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Ўзбек (Кирил, Ўзбекистон)"
+  },
+  {
+    "word" : "uz-Latn",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "oʼzbekcha (Lotin)"
+  },
+  {
+    "word" : "uz-Latn-UZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "oʼzbekcha (Lotin, Oʼzbekiston)"
+  },
+  {
+    "word" : "vai",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ꕙꔤ"
+  },
+  {
+    "word" : "vai-Latn",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Vai (Latn)"
+  },
+  {
+    "word" : "vai-Latn-LR",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Vai (Latn, Laibhiya)"
+  },
+  {
+    "word" : "vai-Vaii",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ꕙꔤ (Vaii)"
+  },
+  {
+    "word" : "vai-Vaii-LR",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "ꕙꔤ (Vaii, ꕞꔤꔫꕩ)"
+  },
+  {
+    "word" : "vi",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Tiếng Việt"
+  },
+  {
+    "word" : "vi-VN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Tiếng Việt (Việt Nam)"
+  },
+  {
+    "word" : "video\/mp4",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "MP4 video"
+  },
+  {
+    "word" : "video\/mp4",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "MP4 video"
+  },
+  {
+    "word" : "video\/mpeg",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "MPEG-1 video with multiplexed audio"
+  },
+  {
+    "word" : "video\/mpeg",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "MPEG-1 video with multiplexed audio"
+  },
+  {
+    "word" : "video\/ogg",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Ogg Theora or other video (with audio)"
+  },
+  {
+    "word" : "video\/ogg",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Ogg Theora or other video (with audio)"
+  },
+  {
+    "word" : "video\/quicktime",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "QuickTime video"
+  },
+  {
+    "word" : "video\/quicktime",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "QuickTime video"
+  },
+  {
+    "word" : "video\/webm",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "WebM Matroska-based open media format"
+  },
+  {
+    "word" : "video\/webm",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "WebM Matroska-based open media format"
+  },
+  {
+    "word" : "video\/x-flv",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Flash video (FLV files)"
+  },
+  {
+    "word" : "video\/x-flv",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Flash video (FLV files)"
+  },
+  {
+    "word" : "video\/x-matroska",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Matroska open media format"
+  },
+  {
+    "word" : "video\/x-matroska",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Matroska open media format"
+  },
+  {
+    "word" : "video\/x-ms-wmv",
+    "filter" : "accept",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Windows Media Video"
+  },
+  {
+    "word" : "video\/x-ms-wmv",
+    "filter" : "content-type",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Windows Media Video"
+  },
+  {
+    "word" : "vun",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kyivunjo"
+  },
+  {
+    "word" : "vun-TZ",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Kyivunjo (Tanzania)"
+  },
+  {
+    "word" : "xog",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Olusoga"
+  },
+  {
+    "word" : "xog-UG",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Olusoga (Yuganda)"
+  },
+  {
+    "word" : "yav",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "nuasue"
+  },
+  {
+    "word" : "yav-CM",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "nuasue (Kemelún)"
+  },
+  {
+    "word" : "yo",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Èdè Yorùbá"
+  },
+  {
+    "word" : "yo-NG",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "Èdè Yorùbá (Orílẹ́ède Nàìjíríà)"
+  },
+  {
+    "word" : "zh",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "中文"
+  },
+  {
+    "word" : "zh-Hans",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "中文（简体中文）"
+  },
+  {
+    "word" : "zh-Hans-CN",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "中文（简体中文、中国）"
+  },
+  {
+    "word" : "zh-Hans-HK",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "中文（简体中文、中国香港特别行政区）"
+  },
+  {
+    "word" : "zh-Hans-MO",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "中文（简体中文、中国澳门特别行政区）"
+  },
+  {
+    "word" : "zh-Hans-SG",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "中文（简体中文、新加坡）"
+  },
+  {
+    "word" : "zh-Hant",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "中文（繁體中文）"
+  },
+  {
+    "word" : "zh-Hant-HK",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "中文（繁體中文，中華人民共和國香港特別行政區）"
+  },
+  {
+    "word" : "zh-Hant-MO",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "中文（繁體中文，中華人民共和國澳門特別行政區）"
+  },
+  {
+    "word" : "zh-Hant-TW",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "中文（繁體中文，台灣）"
+  },
+  {
+    "word" : "zu",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "isiZulu"
+  },
+  {
+    "word" : "zu-ZA",
+    "filter" : "accept-language",
+    "category" : "LMCompletionCategoryHTTPRequestHeadersValue",
+    "desc" : "isiZulu (iNingizimu Afrika)"
+  },
+  {
+    "word" : "AWSAccessKeyId",
+    "category" : "LMCompletionCategoryHTTPRequestParameters"
+  },
+  {
+    "word" : "Expires",
+    "category" : "LMCompletionCategoryHTTPRequestParameters"
+  },
+  {
+    "word" : "Signature",
+    "category" : "LMCompletionCategoryHTTPRequestParameters"
+  }
+]

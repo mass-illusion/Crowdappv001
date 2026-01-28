@@ -1,29 +1,20 @@
 import { Stack } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import { useEffect, useState } from "react";
-import AnimatedSplashScreen from "../components/AnimatedSplashScreen";
-
-// Prevent the default splash screen from auto-hiding
-SplashScreen.preventAutoHideAsync();
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { StarredProfilesProvider } from "../contexts/StarredProfilesContext";
+import { AuthProvider } from "../contexts/AuthContext";
 
 export default function RootLayout() {
-  const [showSplash, setShowSplash] = useState(true);
-
-  useEffect(() => {
-    // Hide the default splash screen immediately
-    SplashScreen.hideAsync();
-  }, []);
-
   return (
-    <>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
-      />
-      {showSplash && (
-        <AnimatedSplashScreen onAnimationComplete={() => setShowSplash(false)} />
-      )}
-    </>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <AuthProvider>
+        <StarredProfilesProvider>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+            }}
+          />
+        </StarredProfilesProvider>
+      </AuthProvider>
+    </GestureHandlerRootView>
   );
 }

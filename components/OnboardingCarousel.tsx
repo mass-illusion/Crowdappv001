@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Onboarding1 from '../assets/onboarding1.svg';
 import Onboarding2 from '../assets/onboarding2.svg';
-import Onboarding3 from '../assets/onboarding3.svg';
+const Onboarding3 = require('../assets/images/onboarding3.webp');
 
 const { width, height } = Dimensions.get('window');
 
 interface OnboardingCarouselProps {
-  onComplete: () => void;
+  onComplete?: () => void;
 }
 
 export default function OnboardingCarousel({ onComplete }: OnboardingCarouselProps) {
@@ -27,15 +28,21 @@ export default function OnboardingCarousel({ onComplete }: OnboardingCarouselPro
     {
       title: 'Friend Groups',
       description: 'Create a friend group. Start a group chat directly in the app, and start your adventure!',
-      SvgComponent: Onboarding3,
+      image: Onboarding3,
     },
   ];
+
+  const router = useRouter();
 
   const handleNext = () => {
     if (currentPage < 2) {
       setCurrentPage(currentPage + 1);
     } else {
-      onComplete();
+      if (onComplete) {
+        onComplete();
+      } else {
+        router.replace('/registration');
+      }
     }
   };
 
@@ -53,12 +60,16 @@ export default function OnboardingCarousel({ onComplete }: OnboardingCarouselPro
   return (
     <View style={styles.container}>
       <View style={[styles.page, currentPage === 0 && styles.pageFirst]}>
-        <View style={[
+        <View style={[ 
           styles.imageContainer, 
           currentPage === 0 && styles.imageContainerFirst,
           currentPage === 1 && styles.imageContainerSecond
         ]}>
-          <SvgComponent width={imageWidth} height={imageHeight} />
+          {currentSlide.image ? (
+            <Image source={currentSlide.image} style={{ width: imageWidth, height: imageHeight, resizeMode: 'contain' }} />
+          ) : (
+            <SvgComponent width={imageWidth} height={imageHeight} />
+          )}
         </View>
         <Text style={[styles.title, currentPage === 1 && styles.titleSecond, currentPage === 2 && styles.titleThird]}>{currentSlide.title}</Text>
         <Text style={[styles.description, currentPage === 1 && styles.descriptionSecond, currentPage === 2 && styles.descriptionThird]}>{currentSlide.description}</Text>
@@ -67,9 +78,8 @@ export default function OnboardingCarousel({ onComplete }: OnboardingCarouselPro
       <View style={styles.footer}>
         <View style={styles.centerControls}>
           <TouchableOpacity 
-            style={[styles.backButton, currentPage === 0 && styles.disabledButton]} 
+            style={styles.backButton}
             onPress={handleBack}
-            disabled={currentPage === 0}
           >
             <Text style={styles.backIcon}>←</Text>
           </TouchableOpacity>
@@ -161,15 +171,16 @@ const styles = StyleSheet.create({
     color: '#A2CCF2',
     textAlign: 'left',
     lineHeight: 28,
-    paddingHorizontal: 20,
+    paddingLeft: 20,
+    paddingRight: 8,
   },
   descriptionSecond: {
     paddingLeft: 30,
-    paddingRight: 10,
+    paddingRight: 8,
     width: '100%',
     textAlign: 'left',
     lineHeight: 28,
-    fontSize: 20,
+    fontSize: 18,
   },
   descriptionThird: {
     paddingLeft: 30,
@@ -191,7 +202,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    gap: 40,
+    gap: 10,
   },
   backButton: {
     width: 50,
@@ -223,7 +234,7 @@ const styles = StyleSheet.create({
     width: 30,
   },
   inactiveDot: {
-    backgroundColor: '#D3D3D3',
+    backgroundColor: '#808080',
   },
   nextButton: {
     width: 50,
